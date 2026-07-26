@@ -4,7 +4,7 @@
   :root{
     --bg:#F5F4EE; --surface:#FCFBF7; --surface2:#EFEDE3;
     --ink:#1B1A16; --muted:#6E6A5F; --line:#E3E0D4; --line2:#CBC7B9;
-    --accent:#1B1A16; --accent-soft:#ECEAE0;
+    --accent:#1B1A16; --accent-soft:#ECEAE0; --link:#2F6FD1;
     --g-ink:#3E5A47; --g-bg:#E4E9E0;
     --b-ink:#44413A; --b-bg:#E9E6DB;
     --t-ink:#4A5B58; --t-bg:#E2E8E5;
@@ -18,7 +18,7 @@
     :root{
       --bg:#262624; --surface:#30302E; --surface2:#292927;
       --ink:#E8E6DC; --muted:#A6A296; --line:#3E3D38; --line2:#5A584F;
-      --accent:#E8E6DC; --accent-soft:#3B3A35;
+      --accent:#E8E6DC; --accent-soft:#3B3A35; --link:#8FB6F5;
       --g-ink:#9FC0A8; --g-bg:#2E3A31;
       --b-ink:#CDC9BB; --b-bg:#3A3830;
       --t-ink:#9FB9B4; --t-bg:#2D3835;
@@ -32,7 +32,7 @@
   :root[data-theme="dark"]{
     --bg:#262624; --surface:#30302E; --surface2:#292927;
     --ink:#E8E6DC; --muted:#A6A296; --line:#3E3D38; --line2:#5A584F;
-    --accent:#E8E6DC; --accent-soft:#3B3A35;
+    --accent:#E8E6DC; --accent-soft:#3B3A35; --link:#8FB6F5;
     --g-ink:#9FC0A8; --g-bg:#2E3A31;
     --b-ink:#CDC9BB; --b-bg:#3A3830;
     --t-ink:#9FB9B4; --t-bg:#2D3835;
@@ -45,7 +45,7 @@
   :root[data-theme="light"]{
     --bg:#F5F4EE; --surface:#FCFBF7; --surface2:#EFEDE3;
     --ink:#1B1A16; --muted:#6E6A5F; --line:#E3E0D4; --line2:#CBC7B9;
-    --accent:#1B1A16; --accent-soft:#ECEAE0;
+    --accent:#1B1A16; --accent-soft:#ECEAE0; --link:#2F6FD1;
     --g-ink:#3E5A47; --g-bg:#E4E9E0;
     --b-ink:#44413A; --b-bg:#E9E6DB;
     --t-ink:#4A5B58; --t-bg:#E2E8E5;
@@ -56,6 +56,7 @@
     --shadow:0 1px 2px rgba(27,26,22,.05),0 4px 14px rgba(27,26,22,.04);
   }
   *{box-sizing:border-box}
+  a{color:var(--link)}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0; background:var(--bg); color:var(--ink);
@@ -130,7 +131,7 @@
   .fmeta{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:12px}
   .count{font-size:14px; color:var(--muted); font-variant-numeric:tabular-nums}
   .count b{color:var(--ink)}
-  .linkbtn{appearance:none; background:none; border:none; color:var(--accent); font-size:13.5px; cursor:pointer; padding:2px 4px; font-weight:600}
+  .linkbtn{appearance:none; background:none; border:none; color:var(--link); font-size:13.5px; cursor:pointer; padding:2px 4px; font-weight:600}
   .linkbtn:hover{text-decoration:underline}
   .factions{display:flex; gap:14px; flex-wrap:wrap}
 
@@ -174,8 +175,8 @@
   .tagrow{display:flex; flex-wrap:wrap; gap:5px}
   .tag{font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; background:var(--surface2); border:1px solid var(--line); color:var(--muted)}
   .linksrow{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:12.5px}
-  .linksrow a{color:var(--ink); font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line2)}
-  .linksrow a:hover{text-decoration-color:var(--ink)}
+  .linksrow a{color:var(--link); font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:transparent}
+  .linksrow a:hover{text-decoration-color:var(--link)}
   .nv{color:var(--a-ink); font-weight:600}
   .card-foot{margin-top:auto; padding-top:9px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap}
@@ -184,7 +185,7 @@
   .cbtn{appearance:none; cursor:pointer; border:1px solid var(--line2); background:var(--surface);
     color:var(--muted); border-radius:6px; padding:3px 9px; font-size:12px; font-weight:600}
   .cbtn.on{background:var(--accent-soft); color:var(--accent); border-color:transparent}
-  .card a.off{color:var(--accent); font-size:12.5px; font-weight:600; text-decoration:none}
+  .card a.off{color:var(--link); font-size:12.5px; font-weight:600; text-decoration:none}
   .card a.off:hover{text-decoration:underline}
   .empty{text-align:center; color:var(--muted); padding:70px 20px; font-size:15px}
   .empty b{color:var(--ink)}
@@ -1945,23 +1946,6 @@ const DATA = [
  w:"vinuni.edu.vn",adm:"vinuni.edu.vn/admissions",admit:"A-levels ✓ · SAT accepted",
  note:"English-medium; young institution — weigh brand risk against money."},
 
-/* ============ EXPANSION — AFRICA ============ */
-{u:"Ashesi University",c:"Ghana",city:"Berekuso (Accra)",f:"🇬🇭",r:"Africa",tier:"comp-full",type:"Private",
- acc:"Selective",ug:"~1,400",me:1,cs:1,se:0,math:0,eng:1,tags:["MasterCard Foundation Scholars","Ethics-centered","English-medium"],
- s:"MasterCard Foundation Scholars + need aid",st:"Need-based (competitive)",
- cov:"MCF Scholars get comprehensive support — tuition, housing, stipends; Ashesi's own need aid covers others partially. Open to African internationals primarily.",
- blind:0,m100:0,merit:0,govt:0,docs:"Need documentation",
- plat:"Own portal",req:"A-levels/WASSCE · essays · interview",dl:"~Jan–Apr rounds (verify)",
- w:"ashesi.edu.gh",adm:"ashesi.edu.gh/admissions",admit:"A-levels ✓ · SAT accepted",
- note:"Mechanical/Computer Engineering + CS; the flagship funded option in West Africa."},
-{u:"African Leadership University (ALU)",c:"Rwanda",city:"Kigali (+ Mauritius)",f:"🇷🇼",r:"Africa",tier:"partial",type:"Private",
- acc:"Accessible",ug:"~2,000",me:0,cs:1,se:1,math:0,eng:1,tags:["Financing models","Pan-African network","Mission-driven"],
- s:"Scholarships + income-share financing",st:"Need + merit (partial)",
- cov:"Mix of partial scholarships and deferred-payment/income-share arrangements rather than classic full rides — read financing terms carefully.",
- blind:0,m100:0,merit:1,govt:0,docs:"Financing application",
- plat:"Own portal",req:"A-levels/WASSCE · essays",dl:"Rolling intakes (verify)",
- w:"alueducation.com",adm:"alueducation.com/apply",admit:"A-levels ✓ · SAT not needed",
- note:"Software Engineering programme exists; verify accreditation pathway for your target countries."},
 
 /* ============ EXPANSION — LATIN AMERICA ============ */
 {u:"University of São Paulo (USP)",c:"Brazil",city:"São Paulo",f:"🇧🇷",r:"Latin America",tier:"tuition-free",type:"Public",
@@ -2418,23 +2402,6 @@ const DATA = [
  w:"zu.ac.ae",adm:"zu.ac.ae/main/en/admission",admit:"A-levels ✓ · SAT accepted",
  note:"Computing and technological innovation rather than mechanical engineering."},
 
-/* ---- AFRICA ---- */
-{u:"American University in Cairo (AUC)",c:"Egypt",city:"Cairo",f:"🇪🇬",r:"Africa",tier:"full-tuition",type:"Private",
- qs:410,acc:"Selective",ug:"~5,500",me:1,cs:1,se:0,math:1,eng:1,tags:["Excellence Scholarship","US-accredited","English-medium"],
- s:"Excellence Scholarship Program",st:"Merit (competitive)",
- cov:"Awards range from 20% up to full tuition for high-achieving international applicants; the 1 March round is the priority deadline for scholarship consideration.",
- blind:0,m100:0,merit:1,govt:0,docs:"Scholarship application",
- plat:"Own portal",req:"A-levels/SAT · TOEFL/IELTS · essays",dl:"Early ~1 March · Regular ~1 June (verify)",fee:"~US$50",
- w:"aucegypt.edu",adm:"aucegypt.edu/admissions",fa:"aucegypt.edu/admissions/financial-aid",admit:"A-levels ✓ · SAT accepted",
- note:"US-accredited degrees with mechanical engineering and CS; Cairo's living costs are very low in dollar terms."},
-{u:"Moroccan Scholarship Programme (AMCI)",c:"Morocco",city:"Nationwide",f:"🇲🇦",r:"Africa",tier:"comp-full",type:"Public",
- acc:"Country-quota competitive",me:1,cs:1,se:0,math:1,eng:0,tags:["Government stipend","French-taught mostly","African quotas"],
- s:"AMCI Scholarship (Moroccan Government)",st:"Government (competitive)",
- cov:"Provides a monthly stipend with free or heavily subsidised tuition at Moroccan public institutions; most engineering programmes are taught in French.",
- blind:0,m100:0,merit:0,govt:1,docs:"AMCI dossier via your country",
- plat:"AMCI (amci.ma)",req:"A-levels/baccalaureate · French proficiency for most programmes",dl:"Usually June–July (verify)",fee:"No application fee",
- w:"amci.ma",adm:"amci.ma",admit:"A-levels ✓ · French usually required",
- note:"Strong quotas for sub-Saharan African students; engineering schools (ENSA, EMI) are French-medium."},
 
 /* ---- LATIN AMERICA ---- */
 {u:"Mexican Government Scholarship (AMEXCID)",c:"Mexico",city:"Nationwide",f:"🇲🇽",r:"Latin America",tier:"comp-full",type:"Public",
@@ -2597,7 +2564,88 @@ const DATA = [
  blind:0,m100:0,merit:0,govt:1,docs:"VIAA dossier if applying for the state scholarship",
  plat:"Own portal / DreamApply",req:"A-levels incl. Maths · IELTS/TOEFL",dl:"~Jun–Jul (state scholarship ~1 Apr — verify)",fee:"~€150 (verify)",
  w:"rtu.lv",adm:"rtu.lv/en/studies",admit:"A-levels ✓ · SAT not needed",
- note:"The practical anchor university for Latvia's state scholarship card."}
+ note:"The practical anchor university for Latvia's state scholarship card."},
+/* ============ EU EXPANSION II ============ */
+{u:"FAU Erlangen-Nürnberg",c:"Germany",city:"Erlangen / Nuremberg",f:"🇩🇪",r:"Western Europe",tier:"tuition-free",type:"Public",
+ acc:"Open by qualification (NC on some)",ug:"~39,000",me:1,cs:1,se:0,math:1,eng:0,tags:["No tuition","Siemens city","Strong AI research"],
+ s:"No tuition fees (public policy)",st:"University policy",
+ cov:"Bavarian public: no tuition, only a ~€150/semester fee. Siemens headquarters next door shapes the mechanical/electrical culture; living ≈ €900/mo self-funded.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None",
+ plat:"campo portal / uni-assist",req:"A-levels with Maths + science · German C1 for bachelor",dl:"Winter intake ~15 Jul (verify)",fee:"No application fee (uni-assist handling ~€75)",
+ w:"fau.de",adm:"fau.eu/education",admit:"A-levels ✓ · German C1",
+ note:"Consistently top-3 in Germany for AI research output; Deutschlandstipendium (€300/mo) available."},
+{u:"Graz University of Technology (TU Graz)",c:"Austria",city:"Graz",f:"🇦🇹",r:"Western Europe",tier:"low-tuition",type:"Public",
+ acc:"Open by qualification",ug:"~13,000",me:1,cs:1,se:1,math:1,eng:0,tags:["€726/semester","Softwareentwicklung degree","Automotive cluster"],
+ s:"Low tuition (national policy)",st:"University policy",
+ cov:"Non-EU fee ≈ €726/semester; German-taught bachelor including a dedicated software-development degree. Graz hosts AVL and Magna — an automotive-engineering internship hub.",
+ blind:0,m100:0,merit:0,govt:0,docs:"None",
+ plat:"TUGRAZonline",req:"A-levels incl. Maths · German C1 for bachelor",dl:"~Sep for winter (verify)",fee:"No application fee",
+ w:"tugraz.at",adm:"tugraz.at/en/studying-and-teaching",admit:"A-levels ✓ · German C1",
+ note:"Pairs naturally with Leoben (materials) as Austria's engineering axis outside Vienna."},
+{u:"Tampere University",c:"Finland",city:"Tampere",f:"🇫🇮",r:"Northern Europe",tier:"full-tuition",type:"Public",
+ acc:"Selective (SAT usable)",ug:"~20,000",me:0,cs:1,se:0,math:1,eng:1,tags:["English BSc","Tuition waivers","Finland's #2 tech hub"],
+ s:"Tampere scholarships (tuition waivers)",st:"Merit (competitive)",
+ cov:"English bachelor programmes with 100%/50% tuition waivers for top admits (performance-linked renewal), like Aalto's model; fees otherwise ~€10–12k/yr.",
+ blind:0,m100:0,merit:1,govt:0,docs:"With admission application",
+ plat:"studyinfo.fi",req:"A-levels or SAT as evidence · IELTS/TOEFL",dl:"~mid-Jan for autumn (verify)",fee:"~€100 (verify)",
+ w:"tuni.fi",adm:"tuni.fi/en/study-with-us",admit:"A-levels ✓ · SAT accepted",
+ note:"Check which English BSc runs in your entry year — the portfolio rotates."},
+{u:"Kaunas University of Technology (KTU)",c:"Lithuania",city:"Kaunas",f:"🇱🇹",r:"Northern Europe",tier:"full-tuition",type:"Public",
+ acc:"Accessible with strong file",ug:"~8,500",me:1,cs:1,se:0,math:0,eng:1,tags:["English eng BScs","Talent scholarships","Low costs"],
+ s:"KTU talent scholarships (fee waivers)",st:"Merit (competitive)",
+ cov:"English-taught Mechanical Engineering and Informatics BScs at ~€4k/yr, with talent scholarships that can zero the fee for strong applicants; Kaunas living ≈ €500–700/mo.",
+ blind:0,m100:0,merit:1,govt:0,docs:"With application",
+ plat:"Own portal / DreamApply",req:"A-levels incl. Maths · IELTS/TOEFL",dl:"~Jun for autumn (verify)",fee:"~€100 (verify)",
+ w:"ktu.edu",adm:"admissions.ktu.edu",admit:"A-levels ✓ · SAT not needed",
+ note:"Lithuania's main technical university; pairs with the Baltic state-scholarship schemes."},
+{u:"University of Porto",c:"Portugal",city:"Porto",f:"🇵🇹",r:"Southern Europe",tier:"low-tuition",type:"Public",
+ acc:"Grade-based entry",ug:"~30,000",me:1,cs:1,se:0,math:1,eng:0,tags:["FEUP engineering","~€7k/yr non-EU","Cheaper than Lisbon"],
+ s:"Low tuition (policy)",st:"University policy",
+ cov:"FEUP is one of southern Europe's respected engineering faculties; non-EU fees ~€7k/yr, Portuguese-taught, and Porto's living costs undercut Lisbon's.",
+ blind:0,m100:0,merit:0,govt:0,docs:"None",
+ plat:"Own portal",req:"A-levels incl. Maths/Physics · Portuguese B1–B2",dl:"Intl rounds ~Jan–May (verify)",fee:"~€100 (verify)",
+ w:"up.pt",adm:"up.pt/portal/en/study",admit:"A-levels ✓ · Portuguese required",
+ note:"With IST Lisbon, the two pillars of Portuguese engineering."},
+{u:"University of Trento",c:"Italy",city:"Trento",f:"🇮🇹",r:"Southern Europe",tier:"comp-full",type:"Public",
+ acc:"Programme-dependent",ug:"~16,000",me:1,cs:1,se:0,math:1,eng:0,tags:["Opera scholarships + housing","Alpine city","Strong CS dept"],
+ s:"UniTrento intl scholarships + Opera Universitaria",st:"Merit + need (competitive)",
+ cov:"Merit awards plus income-based Opera Universitaria support (fee waiver, canteen, subsidised housing) can bring low-income internationals close to fully covered — Italy's DSU model in one of its best-run provinces.",
+ blind:0,m100:0,merit:1,govt:1,docs:"ISEE-parificato income certification",
+ plat:"Own portal (apply.unitn.it)",req:"A-levels · programme tests · Italian for most BSc (verify English tracks)",dl:"Intl rounds ~Nov–Apr (verify)",fee:"~€30 (verify)",
+ w:"unitn.it",adm:"international.unitn.it",admit:"A-levels ✓ · Italian mostly",
+ note:"CS department ranks with Italy's best; the Trentino province funds students unusually well."},
+{u:"ELTE — Eötvös Loránd University",c:"Hungary",city:"Budapest",f:"🇭🇺",r:"Central & Eastern Europe",tier:"comp-full",type:"Public",
+ acc:"Entrance exam",ug:"~28,000",me:0,cs:1,se:0,math:1,eng:1,tags:["Stipendium Hungaricum","English CS/Math BScs","Erdős heritage"],
+ s:"Stipendium Hungaricum",st:"Government (competitive)",
+ cov:"Same SH package as BME (tuition + stipend + housing + insurance) at Hungary's classical university — English-taught Computer Science and Mathematics BScs with a deep pure-maths tradition.",
+ blind:0,m100:0,merit:0,govt:1,docs:"SH portal dossier via home country",
+ plat:"Stipendium Hungaricum portal + ELTE",req:"A-levels · entrance exam (Maths) · IELTS",dl:"SH ~15 Jan (verify)",fee:"No application fee via SH",
+ w:"elte.hu",adm:"elte.hu/en/admissions",sch:"stipendiumhungaricum.hu",admit:"A-levels ✓ · entrance exam",
+ note:"For maths-first students, ELTE over BME; for engineering, the reverse."},
+{u:"Masaryk University",c:"Czech Republic",city:"Brno",f:"🇨🇿",r:"Central & Eastern Europe",tier:"tuition-free",type:"Public",
+ acc:"Entrance exam per faculty",ug:"~30,000",me:0,cs:1,se:0,math:1,eng:1,tags:["Free in Czech","English CS ~€3k","Student city"],
+ s:"Tuition-free in Czech (any nationality)",st:"University policy",
+ cov:"Czech-taught study is free for all nationalities; English-taught informatics runs ~€3–5k/yr. Brno is a genuine student city (a fifth of the population studies) with a growing tech scene.",
+ blind:0,m100:0,merit:1,govt:1,docs:"Language cert or prep year",
+ plat:"Own portal (is.muni.cz)",req:"A-levels · faculty entrance test · Czech B2 (free track) or IELTS",dl:"~Feb–Apr (verify)",fee:"~€25 per application (verify)",
+ w:"muni.cz",adm:"muni.cz/en/admissions",admit:"A-levels ✓ · Czech B2 for free track",
+ note:"Faculty of Informatics sits beside Brno's Red Hat/IBM offices; CTU Prague remains the mech-eng pick."},
+{u:"National Technical University of Athens (NTUA)",c:"Greece",city:"Athens",f:"🇬🇷",r:"Southern Europe",tier:"low-tuition",type:"Public",
+ acc:"Entry by qualification (quota for internationals)",ug:"~14,000",me:1,cs:1,se:0,math:1,eng:0,tags:["Historic polytechnic","Very low fees","Greek-taught"],
+ s:"Low tuition (public policy)",st:"University policy",
+ cov:"Greece's flagship polytechnic charges little beyond nominal fees; degrees are Greek-taught 5-year diplomas (integrated master's). A special entry quota exists for foreign-school graduates.",
+ blind:0,m100:0,merit:0,govt:0,docs:"None",
+ plat:"Greek Ministry foreign-applicant round",req:"A-levels · Greek proficiency certificate (or a preparatory year)",dl:"~Jul (foreign-quota round — verify)",fee:"Low administrative fee (verify)",
+ w:"ntua.gr",adm:"ntua.gr/en",admit:"A-levels ✓ · Greek required",
+ note:"The 5-year integrated diploma is well-regarded across EU engineering employers."},
+{u:"University of Belgrade",c:"Serbia",city:"Belgrade",f:"🇷🇸",r:"Central & Eastern Europe",tier:"comp-full",type:"Public",
+ acc:"Country-quota competitive",ug:"~90,000",me:1,cs:1,se:0,math:1,eng:0,tags:["World in Serbia scholarship","Strong maths olympiad culture","Very low costs"],
+ s:"World in Serbia government scholarship",st:"Government (competitive)",
+ cov:"Serbia's government scheme covers tuition, dormitory, meals and a stipend for students from partner developing countries, with a Serbian language year included; self-funded fees are low (~€1–3k/yr) anyway.",
+ blind:0,m100:0,merit:0,govt:1,docs:"Ministry dossier via your country",
+ plat:"World in Serbia portal / own faculties",req:"A-levels · Serbian language year for most programmes · eligible nationality for the scholarship",dl:"Scheme rounds vary (verify)",fee:"Low administrative fee (verify)",
+ w:"bg.ac.rs",adm:"bg.ac.rs/en",admit:"A-levels ✓ · Serbian usually required",
+ note:"ETF (electrical engineering faculty) and the maths faculty have outsized olympiad pedigrees."}
 ];
 /* ==================== ESSAY DATABASE ==================== */
 /* exact:true = stable public wording quoted; exact:false = paraphrase of recent cycles — verify in portal */
@@ -2678,15 +2726,31 @@ const ESSAYS = {
 const TIERS=[["auto-full","Full ride · guaranteed"],["need-full","Full need-based aid"],["comp-full","Full ride · competitive"],["full-tuition","Tuition scholarship"],["tuition-free","Tuition-free"],["low-tuition","Low tuition"],["partial","Partial"]];
 const TIER_LABEL=Object.fromEntries(TIERS);
 const MAJOR_LABEL={me:"Mechanical Engineering",cs:"Computer Science",se:"Software Engineering (dedicated degree)",math:"Mathematics"};
-const REGIONS=["North America","Europe","Asia","Middle East","Africa","Latin America","Oceania"];
+const REGIONS=["North America","Western Europe","Northern Europe","Southern Europe","Central & Eastern Europe","Middle East","East Asia","Southeast Asia","South & Central Asia","Latin America","Oceania"];
+const REGION_OF={
+ "USA":"North America","Canada":"North America",
+ "United Kingdom":"Western Europe","Ireland":"Western Europe","France":"Western Europe","Belgium":"Western Europe","Netherlands":"Western Europe","Luxembourg":"Western Europe","Germany":"Western Europe","Austria":"Western Europe","Switzerland":"Western Europe",
+ "Sweden":"Northern Europe","Denmark":"Northern Europe","Norway":"Northern Europe","Finland":"Northern Europe","Iceland":"Northern Europe","Estonia":"Northern Europe","Latvia":"Northern Europe","Lithuania":"Northern Europe",
+ "Italy":"Southern Europe","Spain":"Southern Europe","Portugal":"Southern Europe","Malta":"Southern Europe","Greece":"Southern Europe",
+ "Poland":"Central & Eastern Europe","Hungary":"Central & Eastern Europe","Czech Republic":"Central & Eastern Europe","Slovakia":"Central & Eastern Europe","Slovenia":"Central & Eastern Europe","Croatia":"Central & Eastern Europe","Romania":"Central & Eastern Europe","Bulgaria":"Central & Eastern Europe","Serbia":"Central & Eastern Europe","Russia":"Central & Eastern Europe",
+ "UAE":"Middle East","Qatar":"Middle East","Saudi Arabia":"Middle East","Bahrain":"Middle East","Oman":"Middle East","Türkiye":"Middle East","IsDB member countries":"Middle East",
+ "Japan":"East Asia","South Korea":"East Asia","China":"East Asia","Hong Kong":"East Asia","Taiwan":"East Asia","Macau":"East Asia",
+ "Singapore":"Southeast Asia","Malaysia":"Southeast Asia","Brunei":"Southeast Asia","Vietnam":"Southeast Asia","Philippines":"Southeast Asia",
+ "India":"South & Central Asia","Kazakhstan":"South & Central Asia","Azerbaijan":"South & Central Asia",
+ "Brazil":"Latin America","Mexico":"Latin America",
+ "Australia":"Oceania","New Zealand":"Oceania"};
 const RSUB={
  "North America":"US need-based aid scales with family income; merit full rides are separate contests. Canadian full rides need school nomination.",
- "Europe":"Need-based full rides are rare (UCL, LSE, Reach Oxford); the volume plays are government schemes, tuition-free systems and 25–50% merit cuts — watch language requirements.",
- "Asia":"Government scholarships dominate (MEXT, GKS, CSC, Taiwan MOE) — applied via embassies about a year ahead. KAIST-model institutes fund essentially every admit.",
+ "Western Europe":"The UK's rare need-based rides (UCL, LSE, Reach Oxford) sit beside tuition-free Germany/Austria and low-fee France/Belgium — language is usually the real entry requirement.",
+ "Northern Europe":"Nordics: tuition-waiver scholarships (Finland, Estonia's TalTech/Tartu) and Iceland's no-tuition policy; Sweden and Denmark realistically start at master's.",
+ "Southern Europe":"Income-based fees and regional grants (Italy's DSU) can make study near-free; Malta teaches everything in English on an A-level system.",
+ "Central & Eastern Europe":"Government full rides (Stipendium Hungaricum, Banach, Romania, Serbia) plus the study-in-the-local-language-for-free loophole (Czechia, Slovakia).",
  "Middle East":"Several Gulf packages are automatic on admission (KFUPM, Khalifa); Türkiye Bursları is the region's big government ride.",
- "Oceania":"Full tuition is realistic (Melbourne, Monash, UNSW); full living support is not — budget accordingly.",
- "Africa":"The funded routes run through foundations (MasterCard Foundation Scholars) more than through universities themselves.",
- "Latin America":"The public giants are tuition-free or near-free for everyone — but only in Portuguese or Spanish; learn the language first."};
+ "East Asia":"Government scholarships dominate (MEXT, GKS, CSC, Taiwan MOE) — applied via embassies about a year ahead. KAIST-model institutes fund essentially every admit.",
+ "Southeast Asia":"Singapore's bonded scholarships are the region's gold standard; Malaysian branch campuses deliver Western degrees at a third of the price.",
+ "South & Central Asia":"State-funded quota schemes (ICCR, Kazakhstan) plus Nazarbayev's English-medium state grant.",
+ "Latin America":"The public giants are tuition-free or near-free for everyone — but only in Portuguese or Spanish; learn the language first.",
+ "Oceania":"Full tuition is realistic (Melbourne, Monash, UNSW); full living support is not — budget accordingly."};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -3074,6 +3138,7 @@ const SHEET={
 "Simon Fraser University":{fee:"~C$130",sdl:"USES: ~15 Dec"}};
 const BY_SLUG={};
 DATA.forEach(d=>{Object.assign(d,PROFILES[d.u]||{});
+ d.r=REGION_OF[d.c]||d.r;
  const s=SHEET[d.u];if(s){if(s.fee&&!d.fee)d.fee=s.fee;if(s.sdl)d.sdl=s.sdl}
  BY_SLUG[slug(d.u)]=d});
 function wLimit(wl){

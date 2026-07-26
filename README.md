@@ -1,7 +1,7 @@
 # Full-Ride Atlas
 
 A research platform for international students applying with A-levels and the SAT:
-251 universities across 61 countries with honest funding tiers (guaranteed full ride /
+257 universities across 59 countries with honest funding tiers (guaranteed full ride /
 full need-based aid / competitive full scholarship / tuition scholarship / tuition-free /
 low tuition / partial), dedicated per-university profile pages (official links, application
 info, aid stats, academics, essay prompts with in-browser drafting), smart filters,
