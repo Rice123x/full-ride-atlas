@@ -181,6 +181,19 @@
   .linksrow{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:12.5px}
   .linksrow a{color:var(--link); font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:transparent}
   .linksrow a:hover{text-decoration-color:var(--link)}
+  .planchip{display:inline-flex; gap:5px; align-items:baseline; font-size:11.5px; font-weight:600;
+    padding:3px 10px; border-radius:999px; border:1px solid var(--line); background:var(--surface2); color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .planchip b{color:var(--ink); font-weight:700}
+  .planchip.p-a{background:var(--a-bg); border-color:transparent; color:var(--a-ink)}
+  .planchip.p-a b{color:var(--a-ink)}
+  .planchip.p-g{background:var(--g-bg); border-color:transparent; color:var(--g-ink)}
+  .planchip.p-g b{color:var(--g-ink)}
+  .planchip.p-v{background:var(--v-bg); border-color:transparent; color:var(--v-ink)}
+  .planchip.p-v b{color:var(--v-ink)}
+  .planchip.p-b{background:var(--b-bg); border-color:transparent; color:var(--b-ink)}
+  .planchip.p-b b{color:var(--b-ink)}
+  table.cmp .planchip{margin:1px 2px 1px 0}
   .nv{color:var(--a-ink); font-weight:600}
   .card-foot{margin-top:auto; padding-top:9px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap}
@@ -324,11 +337,13 @@
 
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button class="tab on" role="tab" aria-selected="true" data-p="pUni">Universities</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pEssays">Essay Prep</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="pMy">My Colleges <span class="n" id="nSaved"></span></button>
+  <button class="tab" role="tab" aria-selected="false" data-p="pGov">Gov Scholarships</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="pAid">Financial Aid</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="pPlans">ED / EA / REA / RD</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="pEssays">Essay Helper</button>
   <button class="tab" role="tab" aria-selected="false" data-p="pActs">Activities Builder</button>
   <button class="tab" role="tab" aria-selected="false" data-p="pHonors">Honors Builder</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pCmp">Compare</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pSaved">My List <span class="n" id="nSaved"></span></button>
   <button class="tab" role="tab" aria-selected="false" data-p="pAI">AI Assistant</button>
 </nav>
 
@@ -385,18 +400,6 @@
   </div>
 </section>
 <main id="results"></main>
-</section>
-
-<!-- ================= ESSAYS ================= -->
-<section class="panel" id="pEssays" role="tabpanel">
-  <p class="panel-note"><b>Essay database.</b> Application-platform prompts are quoted where they are stable and public; university supplementals change yearly, so most are <b>paraphrased from recent cycles</b> with the year noted — always verify the current wording in your application portal before writing. Guidance (what they evaluate, mistakes, outlines) is editorial advice, not official.</p>
-  <div class="filters" style="margin-top:16px">
-    <div class="frow"><span class="flabel">Search prompts</span><input id="eq" type="search" placeholder="School, theme, keyword… e.g. “roommate”, “why us”, “community”"></div>
-    <div class="frow"><span class="flabel">Type</span><div class="chips" id="eChips">
-      <button class="chip on" data-v="">All</button><button class="chip" data-v="platform">Platforms</button><button class="chip" data-v="us">US universities</button><button class="chip" data-v="intl">UK / international</button>
-    </div></div>
-  </div>
-  <div id="eList"></div>
 </section>
 
 <!-- ================= ACTIVITIES ================= -->
@@ -477,17 +480,233 @@
   </div>
 </section>
 
-<!-- ================= COMPARE ================= -->
-<section class="panel" id="pCmp" role="tabpanel">
-  <p class="panel-note"><b>Comparison.</b> Add up to 4 universities with the <b>⇄ Compare</b> button on any card. Approximate figures are marked ≈; blank cells mean the data needs verification on official pages.</p>
-  <div id="cmpArea"></div>
+<!-- ================= GOV SCHOLARSHIPS ================= -->
+<section class="panel" id="pGov" role="tabpanel">
+  <p class="panel-note"><b>Government scholarships.</b> National schemes that fund international students — sorted so the <b>full rides</b> come first. Several entries are deliberate <b>heads-ups</b>: countries where people assume a government scholarship exists for undergraduates but it does not (the US, Canada, the UK, Germany, Switzerland, Sweden, Finland). Deadlines are typical cycles — always confirm the current call on the official site.</p>
+  <div class="filters" style="margin-top:16px">
+    <div class="frow"><span class="flabel">Coverage</span><div class="chips" id="gCov">
+      <button class="chip on" data-v="">All</button>
+      <button class="chip" data-v="full">Full ride</button>
+      <button class="chip" data-v="tuition">Tuition only</button>
+      <button class="chip" data-v="partial">Partial</button>
+      <button class="chip" data-v="heads">Heads-ups (not for undergrads)</button>
+    </div></div>
+    <div class="frow"><span class="flabel">Open to undergraduates</span><div class="chips" id="gUg">
+      <button class="chip on" data-v="">Any</button><button class="chip" data-v="1">Undergraduate-eligible only</button>
+    </div></div>
+    <div class="frow"><span class="flabel">Search</span><input id="gq" type="search" placeholder="Country, scheme, keyword… e.g. “MEXT”, “stipend”, “English-taught”"></div>
+    <div class="fmeta"><span class="count" id="gCount" aria-live="polite"></span></div>
+  </div>
+  <div id="gList"></div>
 </section>
 
-<!-- ================= SAVED ================= -->
-<section class="panel" id="pSaved" role="tabpanel">
-  <p class="panel-note"><b>My List.</b> Star universities with <b>☆ Save</b>. Each saved school gets an auto-generated application checklist (from its real requirements) plus a deadline field — enter the deadline after verifying it on the official page. Everything is stored in your browser only.</p>
-  <div class="btnrow"><button class="linkbtn" id="csvSaved">⬇ Export my list (CSV)</button><button class="linkbtn" id="printSaved">🖨 Print / PDF</button></div>
-  <div id="savedArea"></div>
+<!-- ================= FINANCIAL AID ================= -->
+<section class="panel" id="pAid" role="tabpanel">
+  <p class="panel-note"><b>Applying for financial aid.</b> Aid is a <i>separate application</i> from admission, with its own forms and its own deadlines — missing them usually means no aid for the whole degree, even if you are admitted. This is the general process; every university differs, so check each one's aid page (linked on its profile).</p>
+
+  <section class="up-sec"><h2>Step 1 · Work out what kind of money you are chasing</h2>
+    <div class="up-grid">
+      <div class="kv"><b>Need-based aid</b>The university calculates what your family can afford and covers the gap. You apply by submitting financial documents. Common in the US; rare elsewhere.</div>
+      <div class="kv"><b>Merit scholarships</b>Awarded for grades, test scores or talent — no financial documents, but often a separate essay and an earlier deadline (frequently ~1 December).</div>
+      <div class="kv"><b>Government scholarships</b>Run by a country, not a university. Applied for through an embassy or national portal, usually a year ahead. See the Gov Scholarships tab.</div>
+      <div class="kv"><b>Tuition-free systems</b>Not aid at all — Germany, Czechia, Iceland and others simply charge no tuition. Your task there is the language requirement and living costs.</div>
+    </div>
+  </section>
+
+  <section class="up-sec"><h2>Step 2 · Assemble your documents early</h2>
+    <p class="up-para">Start collecting these <b>months</b> before deadlines — translations and official stamps take weeks in many countries.</p>
+    <ul class="qa" style="margin-top:12px">
+      <li><b>Parents' income proof</b> — tax returns, employer salary letters, or an official statement of non-filing if your family does not file taxes</li>
+      <li><b>Bank statements</b> — usually the last 3–12 months for all household accounts</li>
+      <li><b>Proof of assets</b> — property, business ownership, savings, investments</li>
+      <li><b>Household details</b> — number of people supported, siblings in education, dependants</li>
+      <li><b>Special circumstances letter</b> — job loss, illness, currency collapse, single-parent household, supporting relatives. Write this yourself; it is the single most underused document.</li>
+      <li><b>Certified translations</b> into English, where documents are in another language</li>
+    </ul>
+  </section>
+
+  <section class="up-sec"><h2>Step 3 · Know which form each university wants</h2>
+    <div class="up-grid">
+      <div class="kv"><b>CSS Profile</b>Run by the College Board and used by most US private universities for international need-based aid. Has a fee, but fee waivers exist. This is the form most commonly required.</div>
+      <div class="kv"><b>ISFAA</b>International Student Financial Aid Application — a free paper alternative that some universities accept instead of the CSS Profile. Always ask if you cannot afford the CSS fee.</div>
+      <div class="kv"><b>FAFSA</b>US federal aid. <b>Not for international students</b> — only US citizens and eligible non-citizens. Ignore it unless you hold that status.</div>
+      <div class="kv"><b>University's own form</b>Common outside the US and at some US schools (Princeton, MIT and Berea all use their own). Check the aid page rather than assuming.</div>
+    </div>
+    <p class="up-para"><span class="k">Net Price Calculator · </span>Nearly every US university hosts one. Enter your family's finances and it estimates what you would actually pay. <b>Run it before you apply</b> — it can turn a "too expensive" university into a realistic one, and it is the only way to know whether an ED commitment is affordable.</p>
+  </section>
+
+  <section class="up-sec"><h2>Step 4 · Apply for aid at the same time as admission</h2>
+    <ul class="qa">
+      <li><b>Never apply for aid later.</b> At many universities — Stanford among them — international students who do not request aid when applying can never request it in later years.</li>
+      <li><b>Match the aid deadline to your application round.</b> If you apply Early Decision, the aid forms are usually due in November, not January.</li>
+      <li><b>Need-aware vs need-blind matters.</b> At need-aware schools, asking for aid is weighed in the admission decision. Ask anyway if you genuinely need it — an unaffordable acceptance is worth nothing.</li>
+      <li><b>Ask for a fee waiver</b> for the application and CSS Profile. Counsellors can request these, and universities grant them routinely.</li>
+    </ul>
+  </section>
+
+  <section class="up-sec"><h2>Step 5 · Read the award letter properly</h2>
+    <p class="up-para">An offer that looks generous can still leave a gap. Check each of these before accepting:</p>
+    <ul class="qa" style="margin-top:10px">
+      <li><b>Grant vs loan</b> — grants are gifts, loans must be repaid. "Aid" totals often blend the two.</li>
+      <li><b>Is it renewable?</b> For all four years, or only the first? What GPA must you maintain?</li>
+      <li><b>What is excluded?</b> Flights, visa fees, health insurance, books and personal expenses are often outside the package.</li>
+      <li><b>Does it cover the summer?</b> Many packages fund only the academic year.</li>
+      <li><b>Any bond or service condition?</b> Singapore's MOE Tuition Grant carries a three-year work bond; Australia Awards require you to return home for two years.</li>
+    </ul>
+    <p class="up-para"><span class="k">If the offer is not enough · </span>You may politely appeal. Write to the aid office, state the shortfall in specific numbers, attach evidence of any change in circumstances, and mention competing offers if you have them. Appeals succeed more often than students expect.</p>
+  </section>
+</section>
+
+<!-- ================= DECISION PLANS ================= -->
+<section class="panel" id="pPlans" role="tabpanel">
+  <p class="panel-note"><b>ED, EA, REA and RD explained.</b> When you apply to a US university, you choose an application plan. They differ in deadline, whether you are committed if admitted, and whether you can compare financial aid offers before deciding. For international students on a budget, that last point usually matters most.</p>
+
+  <div class="tblwrap" style="margin-top:18px"><table class="cmp"><thead><tr>
+    <th>Feature</th><th>Early Action (EA)</th><th>Early Decision (ED)</th><th>Restrictive EA (REA/SCEA)</th><th>Regular Decision (RD)</th></tr></thead><tbody>
+    <tr><td>Binding?</td><td><b>No</b></td><td><b>Yes</b></td><td>No</td><td>No</td></tr>
+    <tr><td>Deadline</td><td>1 or 15 November</td><td>1 or 15 November</td><td>1 November</td><td>1–15 January</td></tr>
+    <tr><td>Decision released</td><td>December–January</td><td>December</td><td>December</td><td>March–April</td></tr>
+    <tr><td>Apply early elsewhere?</td><td>Yes, freely</td><td>Only one ED</td><td>Restricted — see below</td><td>n/a</td></tr>
+    <tr><td>Compare aid offers?</td><td><b>Yes</b></td><td>Usually no</td><td><b>Yes</b></td><td><b>Yes</b></td></tr>
+    <tr><td>Signals interest</td><td>Moderate</td><td>Very high</td><td>High</td><td>Standard</td></tr>
+    <tr><td>Reply by</td><td>1 May</td><td>Immediately on admission</td><td>1 May</td><td>1 May</td></tr>
+  </tbody></table></div>
+
+  <section class="up-sec"><h2>Early Action (EA) — early answer, no commitment</h2>
+    <p class="up-para">You submit in November and hear back in December or January, but you are not obliged to attend. You may apply EA to several universities, compare scholarship and aid packages, and decline without penalty. Some universities also run <b>EA II</b> with deadlines around 1–15 January.</p>
+    <p class="up-para"><span class="k">Best for · </span>Students whose academic profile is already strong at the start of senior year and who want early results while keeping the freedom to compare offers.</p>
+    <p class="up-para"><span class="k">Watch out · </span>Everything must be ready months earlier — fewer chances to improve grades or retake the SAT.</p>
+  </section>
+
+  <section class="up-sec"><h2>Early Decision (ED) — binding commitment</h2>
+    <p class="up-para">Applying ED means you promise that if admitted you will enrol and withdraw all other applications. The agreement is signed by you, a parent or guardian, and your school counsellor. Some universities run <b>ED II</b> with a January deadline.</p>
+    <p class="up-para"><span class="k">Admission advantage · </span>Many universities admit a noticeably higher share of ED applicants — though the ED pool is also stronger and better prepared, so the gap is not purely a bonus.</p>
+    <p class="up-para"><span class="k">The financial aid exception · </span>The one legitimate escape is money. If the aid package genuinely makes attendance unaffordable, you may ask to be released — but only after discussing it with the aid office, and not simply because you changed your mind.</p>
+    <p class="up-para"><span class="k">Breaking ED · </span>Doing so without cause is treated as a serious breach: the offer can be rescinded, your counsellor may inform other colleges, and your credibility across the process suffers.</p>
+    <p class="up-para"><span class="k">Only apply ED if · </span>The university is your unquestioned first choice, you have researched it thoroughly, and you have <b>already run its Net Price Calculator</b> and believe the result is affordable.</p>
+  </section>
+
+  <section class="up-sec"><h2>Restrictive Early Action (REA / SCEA) — early, non-binding, restricted</h2>
+    <p class="up-para">You are not required to attend if admitted, but you agree not to submit certain other early applications while you wait. Policies vary, so read each university's rules — but generally you may not simultaneously apply to another private university's ED, REA or (often) EA programme.</p>
+    <p class="up-para">You usually <b>may</b> still apply early to public universities with non-binding EA, to international universities, and to rolling-admission institutions.</p>
+    <p class="up-para"><span class="k">Universities commonly using REA/SCEA · </span>Harvard, Yale, Stanford, Princeton and Notre Dame. Policies change — verify before you apply.</p>
+  </section>
+
+  <section class="up-sec"><h2>Regular Decision (RD) — the standard route</h2>
+    <p class="up-para">Applications are due in early-to-mid January and decisions arrive in March or early April, with a reply deadline of 1 May. There are no restrictions or commitments.</p>
+    <p class="up-para"><span class="k">Best for · </span>Students who need more time to raise grades, retake tests, strengthen activities or refine essays — and anyone who wants to compare every admission and aid offer before choosing.</p>
+    <p class="up-para"><span class="k">Watch out · </span>RD is usually the largest and most competitive round by volume.</p>
+  </section>
+
+  <section class="up-sec"><h2>So which should you choose?</h2>
+    <ul class="qa">
+      <li><b>Choose EA</b> if you want an early answer while keeping freedom to compare offers. For most international students needing aid, this is the safest early option.</li>
+      <li><b>Choose ED</b> only if one university is clearly your first choice, you would attend without hesitation, and the Net Price Calculator says you can afford it.</li>
+      <li><b>Choose REA</b> if your top choice offers it and you accept the restriction on other private early applications.</li>
+      <li><b>Choose RD</b> if you need more time, or want to weigh every aid package before committing.</li>
+    </ul>
+    <p class="up-para"><span class="k">For international applicants specifically · </span>Aid policy should drive this decision more than admission-rate statistics. A binding ED commitment removes your ability to compare packages — which is precisely the leverage a student who needs full funding cannot afford to give up.</p>
+  </section>
+</section>
+
+<!-- ================= MY COLLEGES ================= -->
+<section class="panel" id="pMy" role="tabpanel">
+  <p class="panel-note"><b>My Colleges.</b> Add universities with <b>+ Add to my colleges</b> on any card, then compare funding, deadlines and decision plans side by side and work the application checklist. Everything is stored in your browser only — no account, nothing uploaded.</p>
+  <div class="btnrow"><button class="linkbtn" id="csvSaved">⬇ Export CSV</button><button class="linkbtn" id="printSaved">🖨 Print / PDF</button><button class="linkbtn" id="clrSaved">Clear list</button></div>
+  <div id="myCmp"></div>
+  <div id="myList"></div>
+</section>
+
+<!-- ================= ESSAY HELPER ================= -->
+<section class="panel" id="pEssays" role="tabpanel">
+  <p class="panel-note"><b>Essay helper.</b> How to write the personal statement that goes to every Common App university — the principles, the structures that work, worked examples, and a revision checklist. <b>University-specific supplemental prompts now live on each university's own profile page</b> (open a card → See full profile → Essays).</p>
+
+  <section class="up-sec"><h2>What the personal essay is actually for</h2>
+    <p class="up-para">The essay shows you can write clearly and thoughtfully, and it lets an admissions officer hear your voice. The guiding question is simple: <b>what do you want the reader to know about you that grades, courses and test scores cannot show?</b></p>
+    <p class="up-para"><span class="k">Length · </span>250 words minimum, <b>650 maximum</b>. As the Common App itself puts it, 650 is your limit, not your goal — use the range if you need it, but do not pad to reach it. Most strong essays land between 500 and 650.</p>
+    <p class="up-para"><span class="k">One essay, many universities · </span>The same personal statement goes to every Common App college, so it must not be about any one university. Fit belongs in the supplements.</p>
+  </section>
+
+  <section class="up-sec"><h2>The seven Common App prompts (2025–26 cycle)</h2>
+    <ul class="qa">
+      <li><b>1 · Background &amp; identity —</b> Some students have a background, identity, interest, or talent that is so meaningful they believe their application would be incomplete without it. If this sounds like you, then please share your story.</li>
+      <li><b>2 · Setback —</b> The lessons we take from obstacles we encounter can be fundamental to later success. Recount a time when you faced a challenge, setback, or failure. How did it affect you, and what did you learn from the experience?</li>
+      <li><b>3 · Questioning a belief —</b> Reflect on a time when you questioned or challenged a belief or idea. What prompted your thinking? What was the outcome?</li>
+      <li><b>4 · Gratitude —</b> Reflect on something that someone has done for you that has made you happy or thankful in a surprising way. How has this gratitude affected or motivated you?</li>
+      <li><b>5 · Growth —</b> Discuss an accomplishment, event, or realization that sparked a period of personal growth and a new understanding of yourself or others.</li>
+      <li><b>6 · Engrossing topic —</b> Describe a topic, idea, or concept you find so engaging that it makes you lose all track of time. Why does it captivate you? What or who do you turn to when you want to learn more?</li>
+      <li><b>7 · Free choice —</b> Share an essay on any topic of your choice, including one you have already written or one of your own design.</li>
+    </ul>
+    <p class="up-para"><span class="k">Practical note · </span>Write your story first, then pick the prompt it fits. Prompt 7 exists precisely so a good story never has to be bent to fit a category.</p>
+  </section>
+
+  <section class="up-sec"><h2>Six principles that separate strong essays from forgettable ones</h2>
+    <ul class="qa">
+      <li><b>Small subject, deep treatment.</b> A single afternoon repairing a motorbike with your uncle beats a summary of your whole life. Narrow topics leave room for reflection; broad ones force you into listing.</li>
+      <li><b>Show the thinking, not just the event.</b> Admissions officers are not scoring your experience — they are reading how your mind works on it. Roughly half your words should be reflection.</li>
+      <li><b>Be concrete.</b> "I struggled with maths" is invisible. "I failed three consecutive mock papers and started keeping a notebook of every mistake I made" is a person.</li>
+      <li><b>Sound like yourself.</b> If a sentence is one you would never say aloud, cut it. Thesaurus vocabulary is the most common way students erase their own voice.</li>
+      <li><b>Change must be visible in behaviour.</b> Claiming growth is weak; showing what you now do differently is strong.</li>
+      <li><b>The ending should land, not summarise.</b> Avoid "this experience taught me the value of perseverance." Return to a concrete image and let the reader draw the conclusion.</li>
+    </ul>
+  </section>
+
+  <section class="up-sec"><h2>Three structures that reliably work</h2>
+    <div class="up-grid">
+      <div class="kv"><b>Moment → meaning</b>Open inside one specific scene (no scene-setting preamble). Tell what happened. Then spend the second half on what it changed in how you think or act. The most common structure, and the safest.</div>
+      <div class="kv"><b>Thread</b>Pick one recurring object, habit or place — a notebook, a bus route, your grandmother's kitchen — and revisit it at three points in time. The object carries the through-line while you show change around it.</div>
+      <div class="kv"><b>Question</b>Open with a genuine question you could not answer, chase it through two or three attempts, and end somewhere more honest than where you started. Ideal for Prompt 3 and 6.</div>
+    </div>
+    <p class="up-para"><span class="k">Rough word budget for a 600-word essay · </span>~120 words on the opening scene, ~180 on what happened, ~250 on reflection and change, ~50 on the close.</p>
+  </section>
+
+  <section class="up-sec"><h2>Worked example — the same opening, weak and strong</h2>
+    <p class="eguide">Both are written here as illustrations, not real students' essays. Compare what each one gives the reader in its first 60 words.</p>
+    <div class="ewrap"><h3>Weak opening</h3>
+      <p class="equote">"Ever since I was young, I have always been passionate about engineering. Engineering is a field that combines creativity and problem-solving, and it has the power to change the world. Throughout my life, I have faced many challenges that have taught me the importance of perseverance and hard work, and these qualities have shaped me into the person I am today."</p>
+      <p class="eguide"><b>Why it fails:</b> nothing here belongs to one specific person. Every clause could appear in ten thousand other essays. It states qualities instead of demonstrating them, and it has spent 60 words without a single concrete detail.</p>
+    </div>
+    <div class="ewrap"><h3>Strong opening</h3>
+      <p class="equote">"The fan my father brought home was already broken, which is why it was cheap. I was eleven, and I took it apart on the kitchen floor to find out why it hummed but would not turn. My mother stepped over the pieces for four days. On the fifth, the blades moved — and I understood that I had not fixed it so much as I had finally understood it."</p>
+      <p class="eguide"><b>Why it works:</b> it starts inside a specific moment, gives a detail only this writer would have (a mother stepping over the parts for four days), and ends on a thought that hints at the essay's real subject — the difference between fixing and understanding. It has earned the reader's attention before making any claim about itself.</p>
+    </div>
+  </section>
+
+  <section class="up-sec"><h2>Common mistakes that sink otherwise good essays</h2>
+    <ul class="qa">
+      <li><b>The résumé in prose.</b> Listing achievements the rest of the application already covers. The essay is the one place where you are not a list.</li>
+      <li><b>The manufactured hardship.</b> Writing about a "failure" that is really a humblebrag (an A instead of an A*). Readers see through it instantly.</li>
+      <li><b>The trauma dump without agency.</b> Real hardship is legitimate material — but the essay must show what you did, not only what happened to you.</li>
+      <li><b>The saviour narrative.</b> A trip abroad that "opened my eyes" to how much others lack. Almost always centres you at the expense of the people described.</li>
+      <li><b>The unearned ending.</b> A final paragraph of grand lessons that the story did not actually demonstrate.</li>
+      <li><b>The mismatched voice.</b> Vocabulary that no seventeen-year-old uses, or a tone borrowed from a sample essay.</li>
+      <li><b>Answering a different prompt.</b> Especially in supplements: a "why us" essay that never names anything specific about the university.</li>
+    </ul>
+  </section>
+
+  <section class="up-sec"><h2>Revision checklist — run this before you submit</h2>
+    <ul class="qa">
+      <li>Could <b>anyone else</b> have written this essay? If yes, it is not finished.</li>
+      <li>Delete the first paragraph. Is the essay better? Very often it is — most drafts warm up for 80 words before starting.</li>
+      <li>Is at least <b>half</b> of it reflection rather than narration?</li>
+      <li>Does a specific behaviour of yours change by the end?</li>
+      <li>Read it aloud. Every sentence you stumble on needs rewriting.</li>
+      <li>Have you named real things — places, people, objects, numbers — rather than categories?</li>
+      <li>Does the last line resolve an image rather than announce a moral?</li>
+      <li>Has someone who knows you well read it and said "yes, that sounds like you"?</li>
+      <li>Is it between 500 and 650 words, and free of any university's name (unless it is a supplement)?</li>
+    </ul>
+  </section>
+
+  <section class="up-sec"><h2>A realistic timeline</h2>
+    <ul class="qa">
+      <li><b>June–July —</b> Brainstorm without writing. List 15 small moments that mattered. Do not filter for impressiveness.</li>
+      <li><b>Late July —</b> Draft two different essays from two different moments. Most students discover their real topic in the second one.</li>
+      <li><b>August —</b> Rest the drafts a week, then cut ruthlessly. Get one outside reader.</li>
+      <li><b>September —</b> Finalise the personal statement; start supplements, which multiply fast (MIT, Caltech, Stanford and Harvard each ask for five or more).</li>
+      <li><b>October —</b> Finish early-round supplements a week before the deadline. Portals get slow on 1 November.</li>
+    </ul>
+  </section>
 </section>
 
 <!-- ================= AI ================= -->
@@ -2651,7 +2870,256 @@ const DATA = [
  blind:0,m100:0,merit:0,govt:1,docs:"Ministry dossier via your country",
  plat:"World in Serbia portal / own faculties",req:"A-levels · Serbian language year for most programmes · eligible nationality for the scholarship",dl:"Scheme rounds vary (verify)",fee:"Low administrative fee (verify)",
  w:"bg.ac.rs",adm:"bg.ac.rs/en",admit:"A-levels ✓ · Serbian usually required",
- note:"ETF (electrical engineering faculty) and the maths faculty have outsized olympiad pedigrees."}
+ note:"ETF (electrical engineering faculty) and the maths faculty have outsized olympiad pedigrees."},
+/* ============ ASIA + AUSTRALIA EXPANSION ============ */
+{u:"Fudan University",c:"China",city:"Shanghai",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:39,the:36,acc:"Selective intl review",ug:"~15,000",me:0,cs:1,se:0,math:1,neuro:1,aero:0,eng:1,tags:["C9 League","CSC + Shanghai awards","English tracks"],
+ s:"Chinese Government Scholarship (CSC) + Shanghai Government Scholarship",st:"Government (competitive)",
+ cov:"CSC covers full tuition, free dormitory, ~¥2,500/month stipend and medical insurance; the Shanghai Government Scholarship adds a city-level tier. Fudan runs some English-taught undergraduate tracks.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier (embassy Type A or university Type B)",
+ plat:"Fudan portal + campuschina.org",req:"A-levels · HSK 5 for Chinese-taught · IELTS/TOEFL for English tracks · interview",dl:"~Dec–Mar (verify)",fee:"~¥400–800",
+ w:"fudan.edu.cn",adm:"iso.fudan.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"China's strongest university for maths/economics after PKU; Shanghai location helps with internships."},
+{u:"Zhejiang University",c:"China",city:"Hangzhou",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:47,the:47,acc:"Selective intl review",ug:"~28,000",me:1,cs:1,se:1,math:1,neuro:1,aero:1,eng:1,tags:["C9 League","Alibaba's home city","Huge engineering"],
+ s:"Chinese Government Scholarship (CSC) + ZJU scholarships",st:"Government (competitive)",
+ cov:"CSC full package (tuition + dorm + ¥2,500/month + insurance); ZJU adds its own international awards. Mechanical, software and aerospace engineering all present at scale.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"ZJU portal + campuschina.org",req:"A-levels · HSK 4–5 for Chinese-taught · IELTS for English tracks",dl:"~Dec–Apr (verify)",fee:"~¥400–800",
+ w:"zju.edu.cn",adm:"iczu.zju.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"Hangzhou is Alibaba's headquarters — unusually strong startup and internship pipeline."},
+{u:"University of Science & Technology of China (USTC)",c:"China",city:"Hefei",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:133,acc:"Selective intl review",ug:"~7,500",me:1,cs:1,se:0,math:1,neuro:1,aero:1,eng:0,tags:["C9 League","Physics/maths elite","Quantum research"],
+ s:"Chinese Government Scholarship (CSC) + USTC awards",st:"Government (competitive)",
+ cov:"CSC full package; USTC's own president's scholarships add tiers. The most maths- and physics-intense of the C9 group.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"USTC portal + campuschina.org",req:"A-levels (strong Maths/Physics) · HSK 5 for most programmes",dl:"~Dec–Mar (verify)",fee:"~¥400–600",
+ w:"ustc.edu.cn",adm:"ic.ustc.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · HSK for most",
+ note:"China's leading quantum-information group; small, science-only, olympiad-heavy culture."},
+{u:"Nanjing University",c:"China",city:"Nanjing",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:134,acc:"Selective intl review",ug:"~13,000",me:0,cs:1,se:1,math:1,neuro:1,aero:0,eng:1,tags:["C9 League","Strong CS/software","Historic campus"],
+ s:"Chinese Government Scholarship (CSC) + Jiangsu Government Scholarship",st:"Government (competitive)",
+ cov:"CSC full package plus the provincial Jiangsu Government Scholarship — one of China's better-funded provinces for international students.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"NJU portal + campuschina.org",req:"A-levels · HSK 5 for Chinese-taught · IELTS for English tracks",dl:"~Dec–Mar (verify)",fee:"~¥400–600",
+ w:"nju.edu.cn",adm:"nju.edu.cn/en",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"Software Institute is nationally ranked; Nanjing's living costs undercut Beijing and Shanghai."},
+{u:"Harbin Institute of Technology (HIT)",c:"China",city:"Harbin",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:230,acc:"Selective intl review",ug:"~16,000",me:1,cs:1,se:0,math:1,neuro:0,aero:1,eng:0,tags:["C9 League","Aerospace powerhouse","Robotics"],
+ s:"Chinese Government Scholarship (CSC) + HIT awards",st:"Government (competitive)",
+ cov:"CSC full package; HIT's own international scholarships supplement it. China's premier aerospace and robotics engineering school.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"HIT portal + campuschina.org",req:"A-levels (Maths/Physics) · HSK 4–5 · Chinese-taught mostly",dl:"~Dec–Apr (verify)",fee:"~¥400–600",
+ w:"hit.edu.cn",adm:"en.hit.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · HSK required",
+ note:"Built the Shenzhou spacecraft systems; note Harbin winters reach −25°C."},
+{u:"Beihang University (BUAA)",c:"China",city:"Beijing",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ acc:"Selective intl review",ug:"~15,000",me:1,cs:1,se:1,math:1,neuro:0,aero:1,eng:1,tags:["China's aerospace flagship","CSC","English tracks"],
+ s:"Chinese Government Scholarship (CSC) + Beijing Government Scholarship",st:"Government (competitive)",
+ cov:"CSC full package plus the Beijing municipal scholarship. Beihang is the country's dedicated aeronautics and astronautics university.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"BUAA portal + campuschina.org",req:"A-levels (Maths/Physics) · HSK 4 · some English-taught engineering",dl:"~Dec–Apr (verify)",fee:"~¥400–800",
+ w:"buaa.edu.cn",adm:"ise.buaa.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"If aerospace is the goal and you're open to China, this is the single most on-target university here."},
+{u:"Tongji University",c:"China",city:"Shanghai",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:192,acc:"Selective intl review",ug:"~18,000",me:1,cs:1,se:1,math:1,neuro:0,aero:1,eng:1,tags:["German partnership","Automotive engineering","CSC"],
+ s:"Chinese Government Scholarship (CSC) + Shanghai Government Scholarship",st:"Government (competitive)",
+ cov:"CSC full package plus Shanghai's city scheme. Tongji's German connections mean German-language and English-taught engineering tracks alongside Chinese ones.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"Tongji portal + campuschina.org",req:"A-levels · HSK 4–5, or German/English for partnership tracks",dl:"~Dec–Apr (verify)",fee:"~¥500–800",
+ w:"tongji.edu.cn",adm:"study.tongji.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"Automotive and rail engineering are the signature strengths; strong Sino-German college."},
+{u:"Xi'an Jiaotong University",c:"China",city:"Xi'an",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:290,acc:"Selective intl review",ug:"~17,000",me:1,cs:1,se:1,math:1,neuro:0,aero:1,eng:1,tags:["C9 League","Mechanical engineering","Low living costs"],
+ s:"Chinese Government Scholarship (CSC) + Shaanxi awards",st:"Government (competitive)",
+ cov:"CSC full package; Xi'an's living costs are among the lowest of any major Chinese university city.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"XJTU portal + campuschina.org",req:"A-levels · HSK 4–5 · some English-taught engineering",dl:"~Dec–Apr (verify)",fee:"~¥400–600",
+ w:"xjtu.edu.cn",adm:"sie.xjtu.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"Historically China's top mechanical-engineering school (moved from Shanghai in 1956)."},
+{u:"Huazhong University of Science & Technology (HUST)",c:"China",city:"Wuhan",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:293,acc:"Selective intl review",ug:"~24,000",me:1,cs:1,se:1,math:1,neuro:1,aero:0,eng:1,tags:["Optics + mechanical","CSC","Huge campus"],
+ s:"Chinese Government Scholarship (CSC) + Hubei awards",st:"Government (competitive)",
+ cov:"CSC full package plus provincial awards; HUST is a mechanical- and optoelectronics-heavy engineering university.",
+ blind:0,m100:0,merit:1,govt:1,docs:"CSC dossier",
+ plat:"HUST portal + campuschina.org",req:"A-levels · HSK 4–5 · some English-taught programmes",dl:"~Dec–Apr (verify)",fee:"~¥400–600",
+ w:"hust.edu.cn",adm:"istu.hust.edu.cn",sch:"campuschina.org",admit:"A-levels ✓ · SAT accepted",
+ note:"Wuhan is China's largest student city; optics valley gives strong photonics/semiconductor exposure."},
+{u:"Duke Kunshan University (DKU)",c:"China",city:"Kunshan (Suzhou)",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Private",
+ acc:"~20% (est.)",ug:"~2,000",me:0,cs:1,se:0,math:1,neuro:1,aero:0,eng:1,tags:["Duke degree","Fully English","Generous scholarships"],
+ s:"DKU international scholarships (to full ride)",st:"Merit + need (competitive)",
+ cov:"Joint venture with Duke: graduates receive a Duke University degree. Scholarship tiers run from partial to full tuition plus room and board for outstanding international applicants.",
+ blind:0,m100:0,merit:1,govt:0,docs:"Aid application with admission",
+ plat:"Common App / own portal",req:"A-levels/SAT · TOEFL/IELTS · essays · interview",dl:"ED ~Nov · RD ~Jan (verify)",fee:"~US$80 (waivers available)",
+ w:"dukekunshan.edu.cn",adm:"dukekunshan.edu.cn/admissions",fa:"dukekunshan.edu.cn/admissions/financial-aid",admit:"A-levels ✓ · SAT accepted",
+ note:"Fully English-medium with a semester at Duke in North Carolina; no engineering, but strong data science and applied maths."},
+{u:"NYU Shanghai",c:"China",city:"Shanghai",f:"🇨🇳",r:"East Asia",tier:"comp-full",type:"Private",
+ acc:"~8% (intl, est.)",ug:"~2,000",me:0,cs:1,se:0,math:1,neuro:1,aero:0,eng:1,tags:["NYU degree","Fully English","Need-based + merit aid"],
+ s:"NYU Shanghai scholarships and need-based aid",st:"Need + merit (competitive)",
+ cov:"NYU degree taught entirely in English; substantial merit and need-based awards, with top scholarships covering tuition plus living costs. Study-away semesters at NYU New York and Abu Dhabi.",
+ blind:0,m100:0,merit:1,govt:0,docs:"CSS-style aid forms",
+ plat:"Common App",req:"A-levels/SAT · TOEFL/IELTS · Candidate Weekend for some",dl:"ED ~1 Nov · RD ~1 Jan (verify)",fee:"~US$80 (waivers available)",
+ w:"shanghai.nyu.edu",adm:"shanghai.nyu.edu/admissions",fa:"shanghai.nyu.edu/admissions/undergraduate/financial",admit:"A-levels ✓ · SAT accepted",
+ note:"Among the most selective English-medium options in mainland China; strong CS and data science."},
+{u:"CUHK-Shenzhen",c:"China",city:"Shenzhen",f:"🇨🇳",r:"East Asia",tier:"full-tuition",type:"Private",
+ acc:"Selective intl review",ug:"~7,000",me:1,cs:1,se:1,math:1,neuro:0,aero:0,eng:1,tags:["English-medium","CUHK degree","Shenzhen tech hub"],
+ s:"Entrance scholarships for international students",st:"Merit (competitive)",
+ cov:"Awards range up to full tuition (some with accommodation) for strong international admits; teaching is in English and the degree is awarded by CUHK.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With application",
+ plat:"Own portal",req:"A-levels or SAT/AP · IELTS/TOEFL · interview",dl:"Rounds ~Oct–Jun (verify)",fee:"~¥400",
+ w:"cuhk.edu.cn",adm:"admission.cuhk.edu.cn/international",admit:"A-levels ✓ · SAT ✓",
+ note:"Next to Huawei, DJI and Tencent — arguably the best hardware-internship location in Asia."},
+{u:"Xi'an Jiaotong-Liverpool University (XJTLU)",c:"China",city:"Suzhou",f:"🇨🇳",r:"East Asia",tier:"full-tuition",type:"Private",
+ acc:"Accessible with strong file",ug:"~20,000",me:1,cs:1,se:1,math:1,neuro:0,aero:0,eng:1,tags:["UK degree option","Fully English","2+2 to Liverpool"],
+ s:"XJTLU entrance scholarships",st:"Merit (partial to full tuition)",
+ cov:"English-medium joint venture; merit awards discount tuition (~¥88,000/yr) with top tiers approaching full. A 2+2 route lets you finish at the University of Liverpool for a UK degree.",
+ blind:0,m100:0,merit:1,govt:0,docs:"With application",
+ plat:"Own portal",req:"A-levels · IELTS · no Chinese required",dl:"Rolling rounds (verify)",fee:"~¥400–800",
+ w:"xjtlu.edu.cn",adm:"xjtlu.edu.cn/en/study",admit:"A-levels ✓ · SAT accepted",
+ note:"Genuine dedicated Software Engineering and Mechatronics degrees taught in English."},
+{u:"University of Nottingham Ningbo China (UNNC)",c:"China",city:"Ningbo",f:"🇨🇳",r:"East Asia",tier:"full-tuition",type:"Private",
+ acc:"Accessible with strong file",ug:"~8,000",me:1,cs:1,se:0,math:1,neuro:0,aero:1,eng:1,tags:["UK Nottingham degree","Fully English","Lower cost"],
+ s:"UNNC scholarships (to full tuition)",st:"Merit (competitive)",
+ cov:"Identical University of Nottingham degree taught in English at roughly a third of UK cost (~¥100,000/yr), with merit scholarships reaching full tuition for top A-level results.",
+ blind:0,m100:0,merit:1,govt:0,docs:"With application",
+ plat:"Own portal",req:"A-levels · IELTS · no Chinese required",dl:"Rolling rounds (verify)",fee:"~¥400",
+ w:"nottingham.edu.cn",adm:"nottingham.edu.cn/en/study",admit:"A-levels ✓ · SAT accepted",
+ note:"Aerospace and mechanical engineering available; same parchment as Nottingham UK."},
+{u:"Hong Kong Baptist University (HKBU)",c:"Hong Kong",city:"Hong Kong",f:"🇭🇰",r:"East Asia",tier:"full-tuition",type:"Public",
+ qs:275,acc:"Moderately selective",ug:"~7,000",me:0,cs:1,se:0,math:1,neuro:1,aero:0,eng:1,tags:["Admission scholarships","English-medium","Creative + science mix"],
+ s:"Admission scholarships for non-local students",st:"Merit (competitive)",
+ cov:"Entrance scholarships range up to full tuition plus hostel for outstanding international applicants; teaching is in English.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-considered)",
+ plat:"Own portal",req:"A-levels or SAT · IELTS/TOEFL",dl:"~Nov–Jan main round (verify)",fee:"~HK$300",
+ w:"hkbu.edu.hk",adm:"admissions.hkbu.edu.hk",admit:"A-levels ✓ · SAT ✓",
+ note:"Smaller and less competitive than HKU/CUHK/UST while keeping Hong Kong's English-medium advantage."},
+{u:"Lingnan University",c:"Hong Kong",city:"Hong Kong",f:"🇭🇰",r:"East Asia",tier:"full-tuition",type:"Public",
+ acc:"Accessible with strong file",ug:"~3,000",me:0,cs:1,se:0,math:1,neuro:0,aero:0,eng:1,tags:["Liberal arts","Entrance scholarships","Small classes"],
+ s:"Entrance scholarships for non-local students",st:"Merit (competitive)",
+ cov:"Hong Kong's liberal-arts university; entrance scholarships reach full tuition with hostel places for strong applicants.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-considered)",
+ plat:"Own portal",req:"A-levels or SAT · IELTS/TOEFL",dl:"~Nov–Jan (verify)",fee:"~HK$200",
+ w:"ln.edu.hk",adm:"ln.edu.hk/admissions",admit:"A-levels ✓ · SAT ✓",
+ note:"Data science and computing available; no engineering. Easiest Hong Kong entry point of the eight publics."},
+{u:"Seoul National University (SNU)",c:"South Korea",city:"Seoul",f:"🇰🇷",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:31,the:62,acc:"Selective intl review",ug:"~16,000",me:1,cs:1,se:0,math:1,neuro:1,aero:1,eng:0,tags:["Korea's #1","GKS partner","SNU President's fellowship"],
+ s:"GKS + SNU international scholarships",st:"Government + merit (competitive)",
+ cov:"Korea's flagship national university. GKS-U covers tuition, ₩900,000+/month, airfare and a Korean language year; SNU's own international awards add tuition-level support.",
+ blind:0,m100:0,merit:1,govt:1,docs:"GKS dossier or SNU aid forms",
+ plat:"SNU portal / Korean embassy (GKS)",req:"A-levels · TOPIK for most majors · some English-taught courses",dl:"Early ~Sep · Regular ~Oct–Nov (verify)",fee:"~US$100",
+ w:"snu.ac.kr",adm:"admission.snu.ac.kr",sch:"studyinkorea.go.kr",admit:"A-levels ✓ · Korean needed for most majors",
+ note:"Aerospace engineering is a named department; expect Korean-medium instruction after the language year."},
+{u:"Hanyang University",c:"South Korea",city:"Seoul",f:"🇰🇷",r:"East Asia",tier:"full-tuition",type:"Private",
+ qs:162,acc:"Accessible with strong file",ug:"~17,000",me:1,cs:1,se:1,math:1,neuro:0,aero:1,eng:1,tags:["Engineering-strong","Tuition scholarships","English tracks"],
+ s:"Hanyang international admission scholarships",st:"Merit (competitive)",
+ cov:"Tiered entrance awards from 30% up to 100% of tuition based on academic results; a meaningful share of engineering coursework is offered in English.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With application",
+ plat:"Own portal",req:"A-levels/SAT · TOPIK or TOEFL/IELTS",dl:"~Sep–Nov and ~Mar–May rounds (verify)",fee:"~₩100,000",
+ w:"hanyang.ac.kr",adm:"admission.hanyang.ac.kr",admit:"A-levels ✓ · SAT accepted",
+ note:"Korea's strongest engineering reputation outside KAIST/POSTECH/SNU; large founder-and-startup alumni network."},
+{u:"Tohoku University",c:"Japan",city:"Sendai",f:"🇯🇵",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:113,acc:"Small FGL cohort",ug:"~10,000",me:1,cs:1,se:0,math:1,neuro:1,aero:1,eng:1,tags:["FGL English degrees","MEXT recommendation","Materials science"],
+ s:"Future Global Leadership (FGL) + MEXT university recommendation",st:"Government + merit (competitive)",
+ cov:"The FGL programme teaches full degrees in English (Applied Marine Biology, Mechanical & Aerospace Engineering, Materials Science). Strong admits are recommended for MEXT, giving tuition plus a monthly stipend with no embassy exam.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With the FGL application",
+ plat:"Tohoku FGL portal",req:"A-levels/SAT/IB · TOEFL/IELTS · interview",dl:"~Oct–Dec for autumn entry (verify)",fee:"~¥5,000",
+ w:"tohoku.ac.jp",adm:"insc.tohoku.ac.jp/english",admit:"A-levels ✓ · SAT accepted",
+ note:"Its English-taught Mechanical & Aerospace Engineering degree is rare in Japan and directly on-target here."},
+{u:"Osaka University",c:"Japan",city:"Osaka",f:"🇯🇵",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:80,acc:"Selective intl review",ug:"~15,000",me:1,cs:1,se:0,math:1,neuro:1,aero:0,eng:0,tags:["MEXT placement","Research-heavy","Japanese-taught"],
+ s:"MEXT Scholarship (embassy or university recommendation)",st:"Government (competitive)",
+ cov:"MEXT covers full tuition, ¥117,000/month, airfare and a preparatory Japanese year. Most undergraduate teaching is in Japanese.",
+ blind:0,m100:0,merit:1,govt:1,docs:"Embassy MEXT dossier",
+ plat:"Japanese embassy / university portal",req:"MEXT written exams · A-levels support the file · Japanese for most degrees",dl:"Embassy call ~Apr–Jun (verify)",fee:"~¥17,000 (waived under MEXT)",
+ w:"osaka-u.ac.jp",adm:"osaka-u.ac.jp/en/admissions",sch:"studyinjapan.go.jp",admit:"A-levels ✓ · Japanese required",
+ note:"One of Japan's top-3 national universities; engineering and neuroscience both strong."},
+{u:"Kyushu University",c:"Japan",city:"Fukuoka",f:"🇯🇵",r:"East Asia",tier:"comp-full",type:"Public",
+ qs:135,acc:"Small English-track cohort",ug:"~11,000",me:1,cs:1,se:0,math:1,neuro:0,aero:1,eng:1,tags:["English undergrad tracks","MEXT","Aerospace dept"],
+ s:"MEXT + Kyushu international scholarships",st:"Government (competitive)",
+ cov:"MEXT full ride via embassy or university recommendation; Kyushu also runs limited English-taught undergraduate programmes in engineering and science.",
+ blind:0,m100:0,merit:1,govt:1,docs:"MEXT dossier / university forms",
+ plat:"Kyushu portal / embassy",req:"A-levels/SAT · TOEFL/IELTS for English tracks · Japanese otherwise",dl:"~Oct–Jan for English tracks (verify)",fee:"~¥5,000–17,000",
+ w:"kyushu-u.ac.jp",adm:"isc.kyushu-u.ac.jp/intlweb",sch:"studyinjapan.go.jp",admit:"A-levels ✓ · SAT accepted",
+ note:"Fukuoka has Japan's lowest living costs among major university cities."},
+{u:"Keio University",c:"Japan",city:"Tokyo",f:"🇯🇵",r:"East Asia",tier:"partial",type:"Private",
+ qs:189,acc:"Selective",ug:"~29,000",me:1,cs:1,se:0,math:1,neuro:0,aero:0,eng:1,tags:["PEARL English econ","Elite private","Corporate network"],
+ s:"Keio scholarships (partial) + JASSO",st:"Merit (partial)",
+ cov:"Japan's most prestigious private university. Scholarships are mostly partial (tuition reductions plus JASSO's ~¥48,000/month grant); PEARL (economics) and GIGA (science and technology) are taught in English.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With application",
+ plat:"Own portal",req:"A-levels/SAT · TOEFL/IELTS for English programmes",dl:"~Nov–Feb (verify)",fee:"~¥35,000",
+ w:"keio.ac.jp",adm:"admissions.keio.ac.jp",admit:"A-levels ✓ · SAT accepted",
+ note:"The GIGA programme covers computer and information engineering fully in English."},
+{u:"Sophia University",c:"Japan",city:"Tokyo",f:"🇯🇵",r:"East Asia",tier:"full-tuition",type:"Private",
+ acc:"Accessible with strong file",ug:"~12,000",me:0,cs:1,se:0,math:1,neuro:0,aero:0,eng:1,tags:["SPSF English degrees","Tuition-cut scholarships","Central Tokyo"],
+ s:"Sophia Program for Sustainable Futures (SPSF) scholarships",st:"Merit (competitive)",
+ cov:"English-taught degrees with scholarship tiers that can cover most or all of tuition for strong applicants; Jesuit university in central Tokyo.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With application",
+ plat:"Own portal",req:"A-levels/SAT · TOEFL/IELTS · essays",dl:"Rounds ~Sep–Feb (verify)",fee:"~¥35,000",
+ w:"sophia.ac.jp",adm:"sophia.ac.jp/eng/admissions",admit:"A-levels ✓ · SAT accepted",
+ note:"Green Science & Engineering track is English-taught; no mechanical or aerospace."},
+{u:"International Christian University (ICU)",c:"Japan",city:"Tokyo",f:"🇯🇵",r:"East Asia",tier:"full-tuition",type:"Private",
+ acc:"Accessible with strong file",ug:"~2,900",me:0,cs:1,se:0,math:1,neuro:1,aero:0,eng:1,tags:["Bilingual liberal arts","Need + merit aid","Small classes"],
+ s:"ICU Peace Bell and need-based scholarships",st:"Need + merit (competitive)",
+ cov:"Bilingual liberal-arts college where you can study in English throughout; the Peace Bell Scholarship and need-based awards cover tuition-level support for international students.",
+ blind:0,m100:0,merit:1,govt:0,docs:"Aid application with admission",
+ plat:"Own portal",req:"A-levels/SAT · TOEFL/IELTS · essays",dl:"~Nov–Feb rounds (verify)",fee:"~¥35,000",
+ w:"icu.ac.jp",adm:"icu.ac.jp/en/admissions",admit:"A-levels ✓ · SAT accepted",
+ note:"Closest thing in Japan to a US liberal-arts college; strong maths and CS within the arts-and-sciences structure."},
+{u:"Singapore Management University (SMU)",c:"Singapore",city:"Singapore",f:"🇸🇬",r:"Southeast Asia",tier:"full-tuition",type:"Public",
+ qs:511,acc:"Selective intl review",ug:"~9,000",me:0,cs:1,se:1,math:1,neuro:0,aero:0,eng:1,tags:["Seminar teaching","Global Impact Scholarship","City campus"],
+ s:"SMU Global Impact / Merit scholarships",st:"Merit (competitive)",
+ cov:"Top awards cover tuition (some with living stipends) after the MOE Tuition Grant; as with NUS and NTU, the grant carries a three-year Singapore work bond.",
+ blind:0,m100:0,merit:1,govt:1,docs:"Scholarship application",
+ plat:"Own portal",req:"A-levels (strong) · SAT accepted · interview",dl:"~Jan–Mar (verify)",fee:"~S$25",
+ w:"smu.edu.sg",adm:"admissions.smu.edu.sg",fa:"smu.edu.sg/scholarships",admit:"A-levels ✓ · SAT helpful",
+ note:"Computing and Information Systems includes a software-engineering track; no mechanical engineering."},
+{u:"Singapore Institute of Technology (SIT)",c:"Singapore",city:"Singapore",f:"🇸🇬",r:"Southeast Asia",tier:"partial",type:"Public",
+ acc:"Accessible with strong file",ug:"~10,000",me:1,cs:1,se:1,math:0,neuro:0,aero:1,eng:1,tags:["Applied degrees","Integrated work placement","Industry-linked"],
+ s:"SIT scholarships + MOE Tuition Grant",st:"Merit (partial)",
+ cov:"Applied-degree university where the MOE Tuition Grant subsidises fees (with the standard three-year bond); its own scholarships are mostly partial. Every degree includes a long paid industry placement.",
+ blind:0,m100:0,merit:1,govt:1,docs:"With application",
+ plat:"Own portal",req:"A-levels · IELTS/TOEFL · interview for some programmes",dl:"~Feb–Mar (verify)",fee:"~S$20",
+ w:"singaporetech.edu.sg",adm:"singaporetech.edu.sg/admissions",admit:"A-levels ✓ · SAT not needed",
+ note:"Named degrees in Software Engineering, Mechanical Engineering and Aerospace Systems — unusually specific."},
+{u:"University of Adelaide",c:"Australia",city:"Adelaide",f:"🇦🇺",r:"Oceania",tier:"partial",type:"Public",
+ qs:82,acc:"Entry by ATAR-equivalent",ug:"~20,000",me:1,cs:1,se:1,math:1,neuro:1,aero:1,eng:1,tags:["Global Academic Excellence","Cheaper city","Space industry hub"],
+ s:"Global Academic Excellence Scholarship",st:"Merit (partial)",
+ cov:"Automatic 15–30% tuition reductions for strong applicants, with a small number of higher awards; Adelaide's living costs are well below Sydney's and Melbourne's.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-assessed)",
+ plat:"Direct application",req:"A-levels · IELTS/TOEFL",dl:"Feb/Jul intakes (verify)",fee:"~A$120",
+ w:"adelaide.edu.au",adm:"adelaide.edu.au/study",fa:"scholarships.adelaide.edu.au",admit:"A-levels ✓ · SAT not needed",
+ note:"Home of the Australian Space Agency — the strongest aerospace-adjacent location in Australia."},
+{u:"University of Western Australia (UWA)",c:"Australia",city:"Perth",f:"🇦🇺",r:"Oceania",tier:"partial",type:"Public",
+ qs:77,acc:"Entry by ATAR-equivalent",ug:"~17,000",me:1,cs:1,se:1,math:1,neuro:1,aero:0,eng:1,tags:["Global Excellence awards","Group of Eight","Mining engineering"],
+ s:"Global Excellence Scholarship",st:"Merit (partial)",
+ cov:"Partial awards (typically A$12,000–48,000 across the degree); Perth's cost of living is moderate by Australian standards.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-assessed)",
+ plat:"Direct application",req:"A-levels · IELTS/TOEFL",dl:"Feb/Jul intakes (verify)",fee:"~A$100",
+ w:"uwa.edu.au",adm:"study.uwa.edu.au",fa:"scholarships.uwa.edu.au",admit:"A-levels ✓ · SAT not needed",
+ note:"Group of Eight member; mechanical and software engineering both accredited."},
+{u:"RMIT University",c:"Australia",city:"Melbourne",f:"🇦🇺",r:"Oceania",tier:"partial",type:"Public",
+ qs:123,acc:"Accessible entry",ug:"~40,000",me:1,cs:1,se:1,math:1,neuro:0,aero:1,eng:1,tags:["Aerospace engineering","Industry-focused","Vietnam campus"],
+ s:"RMIT international merit scholarships",st:"Merit (partial)",
+ cov:"Partial awards (commonly 20–30% of tuition); RMIT is Australia's most applied-engineering university and runs a lower-cost campus in Vietnam.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-assessed)",
+ plat:"Direct application",req:"A-levels · IELTS/TOEFL",dl:"Feb/Jul intakes (verify)",fee:"~A$100",
+ w:"rmit.edu.au",adm:"rmit.edu.au/study-with-us",fa:"rmit.edu.au/study-with-us/international-students/scholarships",admit:"A-levels ✓ · SAT not needed",
+ note:"Accredited Aerospace Engineering and Software Engineering degrees with strong placement records."},
+{u:"Queensland University of Technology (QUT)",c:"Australia",city:"Brisbane",f:"🇦🇺",r:"Oceania",tier:"partial",type:"Public",
+ qs:189,acc:"Accessible entry",ug:"~35,000",me:1,cs:1,se:1,math:1,neuro:0,aero:0,eng:1,tags:["Practical focus","Merit scholarships","Affordable Brisbane"],
+ s:"QUT international merit scholarships",st:"Merit (partial)",
+ cov:"Partial awards (typically 25% of tuition, renewable); Brisbane costs less than Sydney or Melbourne.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-assessed)",
+ plat:"Direct application",req:"A-levels · IELTS/TOEFL",dl:"Feb/Jul intakes (verify)",fee:"~A$100",
+ w:"qut.edu.au",adm:"qut.edu.au/study",fa:"qut.edu.au/study/fees-and-scholarships",admit:"A-levels ✓ · SAT not needed",
+ note:"Robotics research centre is nationally significant; software engineering accredited."},
+{u:"University of Wollongong (UOW)",c:"Australia",city:"Wollongong",f:"🇦🇺",r:"Oceania",tier:"partial",type:"Public",
+ qs:167,acc:"Accessible entry",ug:"~20,000",me:1,cs:1,se:1,math:1,neuro:0,aero:0,eng:1,tags:["Coastal campus","Merit scholarships","Lower costs"],
+ s:"UOW international merit scholarships",st:"Merit (partial)",
+ cov:"Partial awards (commonly 30% of tuition); Wollongong sits an hour from Sydney with noticeably lower living costs.",
+ blind:0,m100:0,merit:1,govt:0,docs:"None (auto-assessed)",
+ plat:"Direct application",req:"A-levels · IELTS/TOEFL",dl:"Feb/Jul intakes (verify)",fee:"~A$100",
+ w:"uow.edu.au",adm:"uow.edu.au/study",fa:"uow.edu.au/scholarships",admit:"A-levels ✓ · SAT not needed",
+ note:"Strong mechanical and materials engineering with a steelworks-linked industry history."}
 ];
 /* ==================== ESSAY DATABASE ==================== */
 /* exact:true = stable public wording quoted; exact:false = paraphrase of recent cycles — verify in portal */
@@ -2728,6 +3196,523 @@ const ESSAYS = {
  {y:"~recent",t:"Why NYUAD / global fit (paraphrase)",exact:0,q:"Application questions probe why this campus specifically: comfort with a 120-nationality cohort, living in Abu Dhabi, and using the global network (semesters in New York/Shanghai).",wl:"short answers",req:"Required",th:"Global readiness",ev:"Evidence you thrive amid difference — not just tolerate it.",mi:"Treating NYUAD as a backdoor to NYU New York (they can tell).",id:"Cross-cultural moments from your real life, however local.",ol:"Your context → one cross-difference story → NYUAD mechanisms you'd use."}]}
 };
 
+/* ==================== GOVERNMENT SCHOLARSHIPS ====================
+   cov: full = tuition + living (+ often flights) · tuition = fees only ·
+        partial = a contribution · pg = postgraduate only (heads-up) ·
+        none = no national undergraduate scheme exists (heads-up)      */
+const GOVT=[
+/* ---- East Asia ---- */
+{n:"MEXT Scholarship (Japanese Government)",c:"Japan",f:"🇯🇵",r:"East Asia",cov:"full",ug:1,
+ pays:"Full tuition · ¥117,000/month · round-trip airfare · a funded 1-year Japanese preparatory course",
+ elig:"Most nationalities; under 25 at application; strong maths/science record",
+ how:"Embassy track: apply to the Japanese embassy in your country and sit written exams in Maths, English and Physics/Chemistry. University-recommendation track: get admitted to a partner programme (e.g. Tohoku FGL, Kyoto iUP) which nominates you — no embassy exam.",
+ dl:"Embassy call opens ~April–June each year, a full year before entry",
+ lang:"Most degrees are Japanese-taught; the prep year teaches the language",
+ w:"studyinjapan.go.jp",
+ note:"The gold standard of Asian government scholarships — and one of the few that funds a language year before your degree."},
+{n:"Global Korea Scholarship (GKS-U)",c:"South Korea",f:"🇰🇷",r:"East Asia",cov:"full",ug:1,
+ pays:"Full tuition · ₩900,000+/month · airfare · settlement and completion allowances · medical insurance · a funded year of Korean language study",
+ elig:"Country quotas; under 25; minimum GPA/percentile thresholds",
+ how:"Two routes: the Korean embassy in your country, or directly to a partner university. You may only use one route per cycle.",
+ dl:"Embassy track ~September–October; university track ~September",
+ lang:"Korean-medium after the language year; some English-taught majors",
+ w:"studyinkorea.go.kr",
+ note:"Very competitive — country quotas are often in the single digits. Start the paperwork three months early; it is document-heavy."},
+{n:"Chinese Government Scholarship (CSC)",c:"China",f:"🇨🇳",r:"East Asia",cov:"full",ug:1,
+ pays:"Full tuition · free university dormitory (or housing allowance) · ~¥2,500/month stipend · comprehensive medical insurance",
+ elig:"Open to most nationalities; under 25 for undergraduate; good health certificate required",
+ how:"Type A via the Chinese embassy in your country; Type B directly to the university. Apply on campuschina.org plus the university's own portal.",
+ dl:"Roughly December–April depending on the route and university",
+ lang:"Most bachelor's are Chinese-taught (HSK 4–5); CSC can fund a preparatory Chinese year",
+ w:"campuschina.org",
+ note:"Provincial and municipal schemes (Beijing, Shanghai, Jiangsu, Zhejiang) run in parallel and are often easier than the national CSC."},
+{n:"Taiwan MOE Scholarship",c:"Taiwan",f:"🇹🇼",r:"East Asia",cov:"full",ug:1,
+ pays:"Tuition subsidy (capped ~NT$40,000/semester) · NT$15,000/month living stipend for the degree",
+ elig:"Most nationalities except PRC and overseas-Chinese-status applicants",
+ how:"Apply through the Taiwan representative office in your country, alongside admission to a Taiwanese university",
+ dl:"~February–March each year",
+ lang:"Mandarin for most programmes; pair with the Huayu language scholarship if starting from zero",
+ w:"studyintaiwan.org",
+ note:"If tuition exceeds the cap you pay the difference — check your university's fee schedule before committing."},
+{n:"TaiwanICDF Scholarship",c:"Taiwan",f:"🇹🇼",r:"East Asia",cov:"full",ug:1,
+ pays:"Full tuition and credit fees · accommodation · insurance · monthly allowance · return airfare",
+ elig:"Citizens of TaiwanICDF partner countries only",
+ how:"Apply via the Taiwan embassy/representative office plus the partner university",
+ dl:"~15 March",
+ lang:"Designated programmes are taught in English",
+ w:"icdf.org.tw",
+ note:"Usually a better fit than the general MOE scholarship because the degrees are English-taught by design."},
+{n:"HKSAR Government Scholarship Fund",c:"Hong Kong",f:"🇭🇰",r:"East Asia",cov:"tuition",ug:1,
+ pays:"Up to HK$80,000/year toward tuition (non-local students)",
+ elig:"Non-local students admitted to a publicly funded Hong Kong university",
+ how:"Nominated by your university after admission — no separate application",
+ dl:"Handled by the university after you are admitted",
+ lang:"English-medium throughout",
+ w:"cspe.edu.hk",
+ note:"Stacks with each university's own entrance scholarships, which is how students reach full funding in Hong Kong."},
+
+/* ---- Southeast Asia ---- */
+{n:"Brunei Darussalam Government Scholarship (BDGS)",c:"Brunei",f:"🇧🇳",r:"Southeast Asia",cov:"full",ug:1,
+ pays:"Full tuition · monthly personal, meal and book allowances · accommodation · return flights · baggage allowance",
+ elig:"Citizens of ASEAN, OIC, Commonwealth and other listed countries; aged 18–25",
+ how:"Apply online via Brunei's Ministry of Foreign Affairs; you must also apply separately to the university (UBD, UTB, KUPU SB)",
+ dl:"~15 December – 15 February",
+ lang:"English-medium",
+ w:"mfa.gov.bn",
+ note:"One of the most complete packages in Asia and far less competitive than MEXT or GKS. Choose UTB if you want engineering."},
+{n:"ASEAN Undergraduate Scholarship (NUS / NTU)",c:"Singapore",f:"🇸🇬",r:"Southeast Asia",cov:"full",ug:1,
+ pays:"Tuition after the MOE grant · S$5,800–6,500/year living allowance · accommodation allowance · one-time computer allowance",
+ elig:"ASEAN nationals (non-Singaporean) with outstanding A-level or equivalent results",
+ how:"Tick the scholarship section inside your NUS or NTU application; shortlisted candidates are interviewed",
+ dl:"NTU ~19 March; NUS follows the university application timeline",
+ lang:"English-medium",
+ w:"nus.edu.sg/oam/scholarships",
+ note:"Recipients sign the MOE Tuition Grant bond: three years working for a Singapore-registered company after graduation."},
+{n:"KNB Scholarship (Indonesia)",c:"Indonesia",f:"🇮🇩",r:"Southeast Asia",cov:"full",ug:1,
+ pays:"Tuition · monthly living allowance · settlement and book allowance · airfare · a preparatory Indonesian language year",
+ elig:"Citizens of developing countries with which Indonesia has partnerships",
+ how:"Apply via knb.kemdikbud.go.id with an embassy recommendation",
+ dl:"Usually ~February–April",
+ lang:"Indonesian after the language year; some English-taught programmes",
+ w:"knb.kemdikbud.go.id",
+ note:"Undergraduate places exist alongside postgraduate ones — check the current call, as levels offered vary by year."},
+{n:"Malaysia International Scholarship (MIS)",c:"Malaysia",f:"🇲🇾",r:"Southeast Asia",cov:"pg",ug:0,
+ pays:"Tuition and a monthly allowance — but at master's and PhD level",
+ elig:"International students at postgraduate level",
+ how:"Apply through Malaysia's Ministry of Higher Education portal",
+ dl:"Varies by call",
+ lang:"English-medium",
+ w:"biasiswa.mohe.gov.my",
+ note:"Heads-up: there is no Malaysian government full ride for international undergraduates. For undergraduate funding in Malaysia, look at Albukhary International University (fully sponsored, need-based) or the private universities' grade-based scholarship grids."},
+
+/* ---- South & Central Asia ---- */
+{n:"ICCR Scholarship Schemes (India)",c:"India",f:"🇮🇳",r:"South & Central Asia",cov:"full",ug:1,
+ pays:"Full tuition · monthly living stipend · house rent allowance · annual contingency grant · medical cover",
+ elig:"Varies by scheme; several are region- or country-specific (Africa, ASEAN, SAARC, Latin America)",
+ how:"Apply on the A2A portal (a2ascholarships.iccr.gov.in) with endorsement from the Indian mission in your country",
+ dl:"Most schemes close around April; check each scheme separately",
+ lang:"English-medium",
+ w:"a2ascholarships.iccr.gov.in",
+ note:"Placement is at Indian universities generally — the IITs are not part of the default allocation, so confirm which institutions accept your scheme."},
+{n:"Kazakhstan Government Scholarship (Quota)",c:"Kazakhstan",f:"🇰🇿",r:"South & Central Asia",cov:"full",ug:1,
+ pays:"Full tuition · monthly stipend · subsidised hostel accommodation",
+ elig:"International applicants under bilateral quotas; some places reserved for ethnic Kazakhs abroad",
+ how:"Apply through Kazakhstan's Ministry of Science and Higher Education or the embassy in your country",
+ dl:"Usually ~May",
+ lang:"Kazakh or Russian for most programmes; a preparatory language year is available",
+ w:"gov.kz",
+ note:"For English-medium study in Kazakhstan, Nazarbayev University's own state-grant route is the stronger option."},
+{n:"Azerbaijan Government Scholarship",c:"Azerbaijan",f:"🇦🇿",r:"South & Central Asia",cov:"full",ug:1,
+ pays:"Tuition · monthly stipend · accommodation",
+ elig:"International applicants; country coverage varies by year",
+ how:"Apply through Azerbaijan's Ministry of Science and Education portal",
+ dl:"~15 April",
+ lang:"Azerbaijani for most programmes; some English tracks (ADA University, Baku Higher Oil School)",
+ w:"edu.gov.az",
+ note:"Living costs in Baku are low, which makes even a partial award go far."},
+
+/* ---- Middle East ---- */
+{n:"Türkiye Bursları (Türkiye Scholarships)",c:"Türkiye",f:"🇹🇷",r:"Middle East",cov:"full",ug:1,
+ pays:"Full tuition · monthly stipend · university dormitory · return flights · health insurance · one funded year of Turkish language",
+ elig:"Open to all nationalities; under 21 for undergraduate; minimum ~70% academic average",
+ how:"One online application on turkiyeburslari.gov.tr covers both the scholarship and university placement — you rank up to 12 programme choices",
+ dl:"~10 January – 20 February each year",
+ lang:"Turkish after the language year; METU, Boğaziçi and ITU teach engineering fully in English",
+ w:"turkiyeburslari.gov.tr",
+ note:"Acceptance is roughly 2–3%, but it is one of the few full rides where a single application does everything. Interviews are held regionally."},
+{n:"Study in Saudi Arabia (Government Scholarship)",c:"Saudi Arabia",f:"🇸🇦",r:"Middle East",cov:"full",ug:1,
+ pays:"Typically tuition · accommodation · monthly stipend · health cover · annual flights (terms vary by university)",
+ elig:"International students admitted to participating Saudi universities",
+ how:"Apply through the unified national portal studyinsaudi.moe.gov.sa",
+ dl:"Usually ~May–August",
+ lang:"English for engineering at KFUPM and similar; Arabic elsewhere",
+ w:"studyinsaudi.moe.gov.sa",
+ note:"KFUPM's own package (tuition, stipend, housing, meals, flights) is effectively automatic on admission and is the strongest STEM route here."},
+{n:"Qatar Scholarship Program (QFFD)",c:"Qatar",f:"🇶🇦",r:"Middle East",cov:"full",ug:1,
+ pays:"Tuition · accommodation · living allowance · flights",
+ elig:"International students, with priority to partner and developing countries",
+ how:"Apply through the Qatar Scholarship portal alongside admission to a participating Qatari university",
+ dl:"Varies by university round",
+ lang:"English for engineering at Qatar University and Education City institutions",
+ w:"qatarscholarship.qa",
+ note:"Education City hosts branch campuses (Carnegie Mellon, Georgetown, Northwestern, Texas A&M) with their own separate aid."},
+{n:"Kuwait Government Scholarship",c:"Kuwait",f:"🇰🇼",r:"Middle East",cov:"full",ug:1,
+ pays:"Tuition · monthly stipend · accommodation · annual flights",
+ elig:"Nationals of countries with Kuwaiti cultural agreements",
+ how:"Apply through the Kuwaiti cultural office or embassy in your country",
+ dl:"Usually announced ~February–May",
+ lang:"Arabic for most programmes; English for engineering and medicine at Kuwait University",
+ w:"mohe.edu.kw",
+ note:"Country coverage is narrow — confirm your nationality is eligible before preparing documents."},
+{n:"Oman Government Scholarship (MOHERI)",c:"Oman",f:"🇴🇲",r:"Middle East",cov:"full",ug:1,
+ pays:"Tuition · accommodation · monthly allowance",
+ elig:"International students from partner countries",
+ how:"Apply through the Ministry of Higher Education, Research and Innovation portal",
+ dl:"Usually ~September",
+ lang:"English at Sultan Qaboos University for engineering and science",
+ w:"moheri.gov.om",
+ note:"Small annual intake; Sultan Qaboos University is the main destination."},
+{n:"Bahrain Ministry of Education Scholarships",c:"Bahrain",f:"🇧🇭",r:"Middle East",cov:"full",ug:1,
+ pays:"Full tuition, or a fully funded package with accommodation and stipend depending on the scheme",
+ elig:"International students from partner countries",
+ how:"Apply via Bahrain's Ministry of Education",
+ dl:"Usually ~July",
+ lang:"English at the University of Bahrain for engineering",
+ w:"moe.gov.bh",
+ note:"Confirm which institutions the scheme covers — coverage differs between schemes."},
+{n:"Islamic Development Bank (IsDB) Scholarship",c:"IsDB member countries",f:"🌍",r:"Middle East",cov:"full",ug:1,
+ pays:"Tuition · monthly living allowance · health insurance · travel costs",
+ elig:"Three separate programmes: for IsDB member countries, for Muslim communities in non-member countries, and a merit programme. STEM fields are prioritised.",
+ how:"Apply on the IsDB scholarship portal; you generally need admission to an approved university",
+ dl:"~31 January",
+ lang:"Depends on the host university",
+ w:"isdb.org/scholarships",
+ note:"Engineering and applied sciences are explicitly favoured — a strong fit if your country is a member."},
+
+/* ---- Central & Eastern Europe ---- */
+{n:"Stipendium Hungaricum",c:"Hungary",f:"🇭🇺",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Full tuition · monthly stipend (~HUF 43,700 at bachelor level) · dormitory place or housing allowance · medical insurance",
+ elig:"Citizens of roughly 80 partner countries; your national sending authority nominates you",
+ how:"Two applications in parallel: your country's sending partner AND the Tempus Public Foundation portal. Most programmes add an entrance exam.",
+ dl:"~15 January (call opens ~November)",
+ lang:"English-taught degrees at BME, Debrecen, ELTE, Óbuda and others",
+ w:"stipendiumhungaricum.hu",
+ note:"The single most accessible full ride in Europe for STEM students — English-taught mechanical, computer science and mathematics all available."},
+{n:"NAWA Banach Scholarship (Poland)",c:"Poland",f:"🇵🇱",r:"Central & Eastern Europe",cov:"full",ug:0,
+ pays:"Tuition waiver · monthly stipend for the duration of study",
+ elig:"Citizens of selected developing countries — check the current NAWA eligibility list",
+ how:"Apply through the NAWA portal",
+ dl:"Call usually opens in spring",
+ lang:"English-taught programmes available; Polish preparatory course funded",
+ w:"nawa.gov.pl/en",
+ note:"The Banach programme is primarily a master's scheme — for bachelor's, check NAWA's 'Poland My First Choice' and university-level waivers instead."},
+{n:"Romanian Government Scholarship",c:"Romania",f:"🇷🇴",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Tuition · monthly stipend · accommodation in university halls · a preparatory Romanian language year",
+ elig:"Non-EU citizens; some country groups excluded — check the current call",
+ how:"Apply through the Romanian Ministry of Foreign Affairs via the embassy in your country",
+ dl:"~15–31 March",
+ lang:"Romanian after the preparatory year; some English-taught engineering at Politehnica Bucharest",
+ w:"studyinromania.gov.ro",
+ note:"Very cheap living costs mean the stipend goes further here than in most of the EU."},
+{n:"World in Serbia",c:"Serbia",f:"🇷🇸",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Tuition · student dormitory · meals · monthly stipend · a Serbian language year",
+ elig:"Citizens of Non-Aligned Movement and other partner developing countries",
+ how:"Apply through Serbia's Ministry of Education, usually via your country's ministry or embassy",
+ dl:"Rounds vary by year",
+ lang:"Serbian after the language year",
+ w:"mpn.gov.rs",
+ note:"Belgrade's electrical engineering faculty and mathematics faculty have outsized olympiad pedigrees."},
+{n:"Czech Government Scholarship",c:"Czech Republic",f:"🇨🇿",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Tuition-free study · monthly stipend · a funded Czech language preparatory year",
+ elig:"Citizens of listed developing countries",
+ how:"Apply through the Czech embassy in your country",
+ dl:"Usually ~September–December for the following year",
+ lang:"Czech (that is the point of the funded language year)",
+ w:"mzv.gov.cz",
+ note:"Separately, ANY nationality can study tuition-free in Czech at a public university — the scholarship adds the stipend and language year on top."},
+{n:"Bulgarian Government Scholarship",c:"Bulgaria",f:"🇧🇬",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Tuition waiver · monthly stipend · dormitory accommodation",
+ elig:"Citizens of countries with bilateral education agreements with Bulgaria",
+ how:"Apply through Bulgaria's Ministry of Education or the embassy in your country",
+ dl:"Varies by bilateral agreement",
+ lang:"Bulgarian for most programmes; TU Sofia runs English and German engineering faculties",
+ w:"mon.bg",
+ note:"Even self-funded, Bulgaria is among the EU's cheapest routes to an English-taught engineering degree."},
+{n:"Croatian Bilateral Government Scholarship",c:"Croatia",f:"🇭🇷",r:"Central & Eastern Europe",cov:"full",ug:1,
+ pays:"Monthly stipend · accommodation support · tuition under bilateral terms",
+ elig:"Only citizens of countries holding a bilateral agreement with Croatia",
+ how:"Apply through the Agency for Mobility and EU Programmes (AMPEU)",
+ dl:"~10 April",
+ lang:"Croatian for most degree programmes; a language course is usually included",
+ w:"mobilnost.hr/en",
+ note:"Check whether your country has an agreement first — without one you are simply not eligible."},
+{n:"Open Doors: Russian Scholarship Project",c:"Russia",f:"🇷🇺",r:"Central & Eastern Europe",cov:"tuition",ug:1,
+ pays:"A tuition-free place at a participating Russian university; living costs are generally not covered",
+ elig:"Win the online subject olympiad — grades matter far less than the competition result",
+ how:"Register at od.globaluni.ru and sit the online rounds (maths, engineering and IT tracks available)",
+ dl:"Registration usually opens ~November",
+ lang:"Russian or English depending on programme",
+ w:"od.globaluni.ru",
+ note:"Weigh practical factors — banking, visas, mobility and how the degree is recognised where you want to work."},
+{n:"Latvian State Scholarship",c:"Latvia",f:"🇱🇻",r:"Northern Europe",cov:"full",ug:1,
+ pays:"Tuition · monthly stipend",
+ elig:"Citizens of countries with bilateral agreements with Latvia",
+ how:"Apply through the State Education Development Agency (VIAA)",
+ dl:"~1 April",
+ lang:"English-taught engineering and IT at Riga Technical University",
+ w:"viaa.gov.lv",
+ note:"Riga's living costs are among the lowest in the EU, so the stipend stretches unusually far."},
+{n:"Estonian National Scholarship",c:"Estonia",f:"🇪🇪",r:"Northern Europe",cov:"partial",ug:1,
+ pays:"About €350/month living stipend — tuition is NOT included",
+ elig:"Citizens of eligible partner countries",
+ how:"Apply via studyinestonia.ee",
+ dl:"~2 September – 1 October",
+ lang:"English-taught programmes at Tartu and TalTech",
+ w:"studyinestonia.ee",
+ note:"The winning move is to stack this stipend with a university tuition-waiver place at Tartu or TalTech — together they approximate a full ride."},
+
+/* ---- Southern / Western / Northern Europe ---- */
+{n:"Italian Regional Right-to-Study Grants (DSU)",c:"Italy",f:"🇮🇹",r:"Southern Europe",cov:"full",ug:1,
+ pays:"Full tuition waiver · roughly €5,000–7,000/year · free or subsidised canteen meals · often subsidised housing",
+ elig:"Need-based on certified family income (ISEE) — internationals fully eligible, no country restriction",
+ how:"Apply to the university first, then separately to that region's agency (ER.GO in Emilia-Romagna, EDISU in Piedmont, DiSCo in Lazio, and so on)",
+ dl:"Usually June–September, region by region",
+ lang:"Italian for most bachelor's; Politecnico di Torino teaches mechanical and computer engineering in English",
+ w:"universitaly.it",
+ note:"This is Italy's real full-ride mechanism and it is need-based rather than a merit contest. Start the ISEE-parificato paperwork early — it takes weeks."},
+{n:"Danish Government Scholarship",c:"Denmark",f:"🇩🇰",r:"Northern Europe",cov:"tuition",ug:1,
+ pays:"Full or partial tuition waivers, occasionally with a living grant",
+ elig:"Non-EU/EEA students admitted to a Danish university",
+ how:"The state funds a small pool that each university awards itself — you apply to the university, not the ministry",
+ dl:"~15 March",
+ lang:"English (DTU's BSc General Engineering is the main STEM route)",
+ w:"studyindenmark.dk",
+ note:"The pool is small and English-taught bachelor's are limited in Denmark; treat this as a long shot rather than a plan."},
+{n:"NL Scholarship (Netherlands)",c:"Netherlands",f:"🇳🇱",r:"Western Europe",cov:"partial",ug:1,
+ pays:"A one-off ~€5,000 in the first year only",
+ elig:"Non-EEA students at participating Dutch universities",
+ how:"Apply through the university you are admitted to",
+ dl:"Often ~1 February–1 May, set by each university",
+ lang:"English-taught bachelor's are widely available",
+ w:"studyinnl.org",
+ note:"Useful for shaving year one at TU Delft, TU/e, Twente or Maastricht — but you must budget the remaining three years yourself."},
+{n:"Government of Ireland International Education Scholarship",c:"Ireland",f:"🇮🇪",r:"Western Europe",cov:"partial",ug:1,
+ pays:"€10,000 stipend for one year plus a tuition-fee waiver for that year",
+ elig:"Non-EU/EEA students; undergraduate applicants are eligible",
+ how:"Apply through the Higher Education Authority call after securing admission",
+ dl:"Usually ~March",
+ lang:"English-medium",
+ w:"hea.ie",
+ note:"Covers a single year only — you need a separate plan for the remaining years of an Irish degree."},
+{n:"Swiss Government Excellence Scholarships",c:"Switzerland",f:"🇨🇭",r:"Western Europe",cov:"pg",ug:0,
+ pays:"Monthly stipend and fee waivers — but at master's, PhD and postdoc level only",
+ elig:"Postgraduate researchers",
+ how:"Via the Swiss embassy in your country",
+ dl:"Varies by country, usually autumn",
+ lang:"German, French or English",
+ w:"sbfi.admin.ch",
+ note:"Heads-up: Switzerland has no federal undergraduate scholarship for internationals. The undergraduate play is ETH's and EPFL's low tuition (roughly CHF 1,600–4,400/year), not a scholarship."},
+{n:"DAAD (Germany)",c:"Germany",f:"🇩🇪",r:"Western Europe",cov:"pg",ug:0,
+ pays:"Monthly stipends and travel grants — overwhelmingly master's and PhD level",
+ elig:"Postgraduate applicants; first-degree undergraduate scholarships are essentially non-existent",
+ how:"Apply via the DAAD scholarship database",
+ dl:"Varies by programme",
+ lang:"German or English",
+ w:"daad.de",
+ note:"Heads-up for undergraduates: the German route is not a scholarship but the tuition-free public system (RWTH Aachen, TU Berlin, TU Darmstadt, FAU) — about €300/semester plus your own living costs. Deutschlandstipendium adds €300/month for high performers."},
+{n:"Chevening / Commonwealth (United Kingdom)",c:"United Kingdom",f:"🇬🇧",r:"Western Europe",cov:"pg",ug:0,
+ pays:"Full master's funding including tuition, living costs and flights",
+ elig:"Master's applicants with work experience; undergraduates are not eligible",
+ how:"Chevening: apply online with two university offers. Commonwealth: via your national nominating agency.",
+ dl:"Chevening ~November",
+ lang:"English",
+ w:"chevening.org",
+ note:"Heads-up: the UK has no government undergraduate scholarship for internationals. Undergraduate full rides in the UK come from universities and foundations instead — UCL's Global Undergraduate Scholarship, LSE's Undergraduate Support Scheme, Reach Oxford, and the Jardine Foundation."},
+{n:"Eiffel Excellence Scholarship (France)",c:"France",f:"🇫🇷",r:"Western Europe",cov:"pg",ug:0,
+ pays:"Monthly allowance, travel and insurance — master's and PhD only",
+ elig:"Postgraduate applicants nominated by a French institution",
+ how:"Your French institution nominates you; you cannot apply directly",
+ dl:"Usually ~January",
+ lang:"French or English",
+ w:"campusfrance.org",
+ note:"Heads-up for undergraduates: France's advantage is low public tuition (roughly €2,900/year for a licence, often waived to EU rates) rather than a scholarship. INSA Lyon admits directly from A-levels into a 5-year engineering diploma."},
+{n:"Swedish Institute / Finland Scholarships",c:"Sweden",f:"🇸🇪",r:"Northern Europe",cov:"pg",ug:0,
+ pays:"Tuition and living costs — master's level only in both countries",
+ elig:"Master's applicants",
+ how:"SI Scholarships for Global Professionals (Sweden); Finland Scholarship (via Finnish universities)",
+ dl:"~January–February",
+ lang:"English",
+ w:"si.se",
+ note:"Heads-up: neither country funds international undergraduates nationally. In Finland, individual universities (Aalto, Helsinki, LUT, Tampere) do give 50–100% undergraduate tuition waivers — that is the route to use."},
+
+/* ---- Oceania ---- */
+{n:"Australia Awards Scholarships",c:"Australia",f:"🇦🇺",r:"Oceania",cov:"full",ug:1,
+ pays:"Full tuition · return air travel · establishment allowance · contribution to living expenses · overseas student health cover · introductory academic programme",
+ elig:"Citizens of participating partner countries; eligibility, fields and degree levels vary by country",
+ how:"Apply through the Australia Awards portal for your country",
+ dl:"Rolling by country — check your country's round",
+ lang:"English-medium",
+ w:"australiaawards.gov.au",
+ note:"Recipients normally must return home for two years after graduating. Read that contract clause before applying."},
+{n:"Manaaki New Zealand Scholarship",c:"New Zealand",f:"🇳🇿",r:"Oceania",cov:"full",ug:1,
+ pays:"Full tuition · living allowance · establishment allowance · medical insurance · travel",
+ elig:"Citizens of eligible Pacific, Asian, African, Latin American and Caribbean countries",
+ how:"Apply via the Manaaki New Zealand Scholarships portal",
+ dl:"Usually ~February–March",
+ lang:"English-medium",
+ w:"nzscholarships.govt.nz",
+ note:"One of the very few ways to study in New Zealand fully funded — NZ universities themselves offer only small partial awards."},
+
+/* ---- Americas ---- */
+{n:"AMEXCID Scholarship (Mexico)",c:"Mexico",f:"🇲🇽",r:"Latin America",cov:"full",ug:1,
+ pays:"Tuition · monthly stipend · IMSS health insurance · airfare in some categories",
+ elig:"Citizens of countries in Mexico's cooperation programmes",
+ how:"Apply through the Mexican embassy in your country; you must already be admitted or admissible to a partner programme",
+ dl:"Usually ~July–September",
+ lang:"Spanish (DELE or CELA proficiency required for most programmes)",
+ w:"gob.mx/amexcid",
+ note:"UNAM and Tec de Monterrey both participate."},
+{n:"PEC-G (Brazil)",c:"Brazil",f:"🇧🇷",r:"Latin America",cov:"tuition",ug:1,
+ pays:"Tuition-free undergraduate study at Brazilian federal and state universities; the separate PROMISAES grant adds a modest monthly allowance for some students",
+ elig:"Citizens of partner developing countries in Africa, Latin America, the Caribbean and Asia",
+ how:"Apply through the Brazilian embassy in your country; you must prove you can support yourself financially",
+ dl:"Usually ~mid-year for the following academic year",
+ lang:"Portuguese — you must pass the Celpe-Bras proficiency exam",
+ w:"gov.br/mre",
+ note:"A genuine undergraduate route that most students never hear about. Brazilian public universities charge no tuition to anyone, so PEC-G mainly handles your placement and visa."},
+{n:"United States — no federal undergraduate scholarship",c:"USA",f:"🇺🇸",r:"North America",cov:"none",ug:0,
+ pays:"Nothing at undergraduate level — the Fulbright Foreign Student Program is master's and PhD only",
+ elig:"n/a",
+ how:"n/a",
+ dl:"n/a",
+ lang:"English",
+ w:"educationusa.state.gov",
+ note:"Heads-up so you do not waste time: US undergraduate funding for internationals comes entirely from universities, not the government. The need-blind schools (MIT, Harvard, Princeton, Yale, Amherst, Dartmouth, Brown, Berea) and big merit programmes (Morehead-Cain, Jefferson, McDermott, Stamps) are the real routes."},
+{n:"Canada — no federal undergraduate scholarship",c:"Canada",f:"🇨🇦",r:"North America",cov:"none",ug:0,
+ pays:"Nothing at undergraduate level — Vanier is PhD-only",
+ elig:"n/a",
+ how:"n/a",
+ dl:"n/a",
+ lang:"English / French",
+ w:"educanada.ca",
+ note:"Heads-up: Canadian undergraduate funding comes from the universities themselves. Toronto's Lester B. Pearson scholarship and UBC's International Leader of Tomorrow award are the two genuine full rides, and both require your school to nominate you by around November."}
+];
+
+/* ==================== APPLICATION REQUIREMENTS & DECISION PLANS ====================
+   plans[] = {k:"ED|ED2|EA|EA2|REA|RD|Rolling", d:"deadline", note}
+   reqs    = what a rising senior / recent school-leaver must assemble
+   essays[]= {t:title, w:limit, q:prompt}  — from Common App listings, Fall 2026 cycle  */
+const APPLY={
+"Massachusetts Institute of Technology (MIT)":{
+ fee:"US$75 (international and domestic; fee waivers available on request)",
+ test:"SAT or ACT — always required",
+ eng:"IELTS accepted (MIT's preferred English test)",
+ grades:"Courses & Grades: required. Secondary school report, official transcript, mid-year grades when available, final transcript on graduation.",
+ recs:"2 teacher evaluations — one from a maths or science teacher, one from humanities, social science or a language — plus 1 counsellor recommendation. School report, mid-year report and final report all required.",
+ extra:"Activities are entered on MIT's own form (not a résumé) and you may list only four — choose the four that matter most.",
+ plans:[{k:"EA",d:"1 November",note:"Non-restrictive — you may apply early elsewhere"},{k:"RD",d:"4 January"}],
+ essays:[
+  {t:"Field of study",w:"200 words",q:"What field of study appeals to you the most right now? Tell us more about why this field of study at MIT appeals to you."},
+  {t:"Something you do for pleasure",w:"200 words",q:"We know you lead a busy life, full of activities, many of which are required of you. Tell us about something you do simply for the pleasure of it."},
+  {t:"Blazing your own trail",w:"200 words",q:"While some reach their goals following well-trodden paths, others blaze their own trails achieving the unexpected. In what ways have you done something different than what was expected in your educational journey?"},
+  {t:"Collaboration",w:"200 words",q:"MIT brings people with diverse backgrounds together to collaborate, from tackling the world's biggest challenges to lending a helping hand. Describe one way you have collaborated with others to learn from them, with them, or contribute to your community together."},
+  {t:"An unexpected challenge",w:"200 words",q:"How did you manage a situation or challenge that you didn't expect? What did you learn from it?"},
+  {t:"Anything else",w:"open ended",q:"What information do you want us to know?"}]},
+
+"California Institute of Technology (Caltech)":{
+ fee:"US$75 (international and domestic)",
+ test:"SAT or ACT — always required (check Caltech's current test policy page)",
+ eng:"Duolingo, IELTS or TOEFL accepted",
+ grades:"Courses & Grades: not used. School report, mid-year report and final report are required.",
+ recs:"2 teacher evaluations required (1 further optional); up to 2 optional other evaluations.",
+ extra:"Caltech describes its students as research-driven, change-motivated, well-rounded and sleep-deprived — the essays are looking for genuine STEM obsession.",
+ plans:[{k:"EA",d:"1 November",note:"Restrictive early action — check the current policy"},{k:"RD",d:"3 January"}],
+ essays:[
+  {t:"Topic of interest",w:"200 words",q:"Why did you choose your proposed area of interest? If you selected 'other', what topics are you interested in pursuing?"},
+  {t:"Your STEM present: curiosity",w:"150 words",q:"Regardless of your STEM interest listed above, take this opportunity to nerd out and talk to us about whatever STEM rabbit hole you have found yourself falling into. Be as specific or broad as you would like."},
+  {t:"Your STEM past (choose one)",w:"200 words",q:"Either: Tell us how you initially found your interest and passion for science or for a particular STEM topic, and how you have pursued or developed it over the last few years. Or: Tell us about a meaningful STEM-related experience from the last few years and share how and why it inspired your curiosity."},
+  {t:"Creativity in action",w:"200 words",q:"The creativity, inventiveness, and innovation of Caltech's students, faculty, and researchers have won Nobel Prizes and put rovers on Mars. But Techers also imagine smaller-scale innovations every day, from new ways to design solar cells to how to 3D-print dorm decor to experimenting in the kitchen. How have you been a creator, inventor, or innovator in your own life?"},
+  {t:"Short takes — choose 2 of 4",w:"250 words for both",q:"1. Hobby: What is an interest or hobby you do for fun, and why does it bring you joy? · 2. Teach: If you could teach a class on any topic or concept, what would it be and why? · 3. Identity: What is a core piece of your identity or being that shapes how you view or interact with the world? · 4. Concept: What is a concept that blew your mind or baffled you when you first encountered it?"},
+  {t:"Academics (optional)",w:"—",q:"Have you had any extenuating circumstances (such as limited course selection, inconsistent grades, or disruptions) that have affected your coursework but are not described elsewhere in your application?"}]},
+
+"Harvard University":{
+ fee:"US$90 (international and domestic; fee waivers available)",
+ test:"SAT or ACT — always required",
+ eng:"No English proficiency test required",
+ grades:"Courses & Grades: not used. School report, mid-year report and final report all required.",
+ recs:"2 teacher evaluations required (1 optional), plus a counsellor recommendation. Up to 2 optional other evaluations.",
+ extra:"Harvard offers 50 fields of study (called concentrations) — you list three possible fields and rate on a 1–5 scale how settled your academic, vocational and extracurricular plans are. You also rank which Harvard activities interest you.",
+ plans:[{k:"REA",d:"1 November",note:"Restrictive Early Action — non-binding, but you may not apply ED or REA elsewhere"},{k:"RD",d:"1 January"}],
+ essays:[
+  {t:"Life experiences and contribution",w:"150 words",q:"Harvard has long recognized the importance of enrolling a student body with a diversity of perspectives and experiences. How will the life experiences that shaped who you are today enable you to contribute to Harvard?"},
+  {t:"Disagreement",w:"150 words",q:"Describe a time when you strongly disagreed with someone about an idea or issue. How did you communicate or engage with this person? What did you learn from this experience?"},
+  {t:"What shaped you",w:"150 words",q:"Briefly describe any of your extracurricular activities, employment experience, travel, or family responsibilities that have shaped who you are."},
+  {t:"Using your education",w:"150 words",q:"How do you hope to use your Harvard education in the future?"},
+  {t:"Roommate list",w:"150 words",q:"Top 3 things your roommates might like to know about you."}]},
+
+"Princeton University":{
+ fee:"US$75 (international and domestic; fee waivers available)",
+ test:"Never required — Princeton is test-optional (verify the current policy)",
+ eng:"See Princeton's website for accepted English tests",
+ grades:"Courses & Grades: not used. School report, mid-year report and final report all required.",
+ recs:"2 teacher evaluations required, plus a counsellor recommendation. Up to 2 optional other evaluations.",
+ extra:"You choose between the A.B. (liberal arts) and B.S.E. (engineering) degree, then rank a first-choice major and minor and a second-choice major and minor.",
+ plans:[{k:"REA",d:"1 November",note:"Single-Choice Early Action — non-binding, restricted"},{k:"RD",d:"1 January"}],
+ essays:[
+  {t:"Your Voice",w:"500 words",q:"Princeton values community and encourages students, faculty, staff and leadership to engage in respectful conversations that can expand their perspectives and challenge their ideas and beliefs. As a prospective member of this community, reflect on how your lived experiences will impact the conversations you will have in the classroom, the dining hall or other campus spaces. What lessons have you learned in life thus far? What will your classmates learn from you? In short, how has your lived experience shaped you?"},
+  {t:"Service and civic engagement",w:"250 words",q:"Princeton has a longstanding commitment to understanding our responsibility to society through service and civic engagement. How does your own story intersect with these ideals?"},
+  {t:"More about me",w:"50 words each",q:"What is a new skill you would like to learn in college? · What brings you joy? · What song represents the soundtrack of your life at this moment?"}]},
+
+"Stanford University":{
+ fee:"US$100 (international and domestic; fee waivers available)",
+ test:"SAT (without essay) or ACT (without science or writing) — always required",
+ eng:"See Stanford's website for accepted English tests",
+ grades:"Courses & Grades: required. School report, mid-year report and final report all required.",
+ recs:"2 teacher evaluations required, plus a counsellor recommendation. 1 optional other evaluation.",
+ extra:"You rank three Stanford academic programmes that interest you most. Eight short writing responses in total — the shortest are 50 words, so every word has to work.",
+ plans:[{k:"REA",d:"1 November",note:"Restrictive Early Action — non-binding, restricted"},{k:"RD",d:"5 January"}],
+ essays:[
+  {t:"Short question — society",w:"50 words",q:"What is the most significant challenge that society faces today?"},
+  {t:"Short question — summers",w:"50 words",q:"How did you spend your last two summers?"},
+  {t:"Short question — history",w:"50 words",q:"What historical moment or event do you wish you could have witnessed?"},
+  {t:"Short question — activity",w:"50 words",q:"Briefly elaborate on one of your extracurricular activities, a job you hold, or responsibilities you have for your family."},
+  {t:"Short question — five things",w:"50 words",q:"List five things that are important to you."},
+  {t:"Excitement about learning",w:"250 words",q:"The Stanford community is deeply curious and driven to learn in and out of the classroom. Reflect on an idea or experience that makes you genuinely excited about learning."},
+  {t:"Letter to your future roommate",w:"250 words",q:"Virtually all of Stanford's undergraduates live on campus. Write a note to your future roommate that reveals something about you or that will help your roommate — and us — get to know you better."},
+  {t:"Distinctive contribution",w:"250 words",q:"Please describe what aspects of your life experiences, interests and character would help you make a distinctive contribution as an undergraduate to Stanford University."}]},
+
+"Yale University":{
+ fee:"US$80 (international and domestic; fee waivers available)",
+ test:"Flexible — Yale accepts SAT, ACT, AP or IB results (check the current policy)",
+ eng:"No English proficiency test required",
+ grades:"Courses & Grades: not used. School report, mid-year report and final report all required.",
+ recs:"2 teacher evaluations required, plus a counsellor recommendation.",
+ extra:"You select three academic areas of interest, then write about a topic connected to them.",
+ plans:[{k:"REA",d:"1 November",note:"Single-Choice Early Action — non-binding, restricted"},{k:"RD",d:"2 January"}],
+ essays:[
+  {t:"Academic interest",w:"200 words",q:"Tell us about a topic or idea that excites you and is related to one or more academic areas you selected above. Why are you drawn to it?"},
+  {t:"Why Yale",w:"125 words",q:"Reflect on how your interests, values, and/or experiences have drawn you to Yale."},
+  {t:"Short takes",w:"200 characters each",q:"What inspires you? · If you could teach any college course, write a book, or create an original piece of art of any kind, what would it be? · Other than a family member, who is someone who has had a significant influence on you, and what has been the impact? · What is something about you that is not included anywhere else in your application?"},
+  {t:"Yale essay — choose one of three",w:"400 words",q:"1. Reflect on a time you discussed an issue important to you with someone holding an opposing view. Why did you find the experience meaningful? · 2. Reflect on your membership in a community to which you feel connected. Why is this community meaningful to you? You may define community however you like. · 3. Reflect on an element of your personal experience that you feel will enrich your college. How has it shaped you?"}]},
+
+"University of Southern California":{
+ fee:"US$85 (international and domestic)",
+ test:"Never required — USC is test-optional (verify the current policy)",
+ eng:"See USC's website for accepted English tests",
+ grades:"Courses & Grades: required. School report, counsellor recommendation, mid-year report and final report all required.",
+ recs:"Counsellor recommendation required; teacher evaluations are optional (1 optional).",
+ extra:"You indicate one major you want to pursue at USC. Merit scholarship consideration requires the early December application deadline.",
+ plans:[{k:"EA",d:"1 November",note:"Non-restrictive"},{k:"RD",d:"15 January",note:"Merit scholarship deadline is ~1 December — earlier than RD"}],
+ essays:[
+  {t:"Why your major at USC",w:"~250 words",q:"Describe how you plan to pursue your academic interests and why you want to explore them at USC specifically. Please feel free to address your first- and second-choice major selections."},
+  {t:"Educational gap (if applicable)",w:"250 words",q:"Starting with the beginning of high school/secondary school, if you have had a gap where you were not enrolled in school during a fall or spring term, please address this gap in your educational history. You do not need to address a summer break."},
+  {t:"Describe yourself in three words",w:"3 words",q:"First word · Second word · Third word"},
+  {t:"One-word / short answers",w:"a few words each",q:"Favourite snack · Best movie of all time · Dream job · If your life had a theme song, what would it be? · Dream trip · TV show you binge watch · Ideal roommate as a well-known person or fictional character · Favourite book · What topic would you teach a class on?"}]}
+};
+
+/* Generic decision plans inferred from each university's existing deadline text,
+   used when a school has no hand-written APPLY entry. */
+function inferPlans(d){
+ const t=(d.dl||"")+" "+(d.plat||"");
+ const out=[];
+ const grab=(re)=>{const m=re.exec(t);return m?m[1].trim():null};
+ if(/\bED2\b|ED II/i.test(t))out.push({k:"ED2",d:grab(/ED2[^·\n]*?~?([0-9]+\s*\w+)/i)||"January (verify)"});
+ if(/\bED\b/i.test(t))out.push({k:"ED",d:grab(/\bED\b[^·\n]*?~?([0-9]+\s*\w+)/i)||"November (verify)",note:"Binding"});
+ if(/\bREA\b|SCEA/i.test(t))out.push({k:"REA",d:grab(/\bREA\b[^·\n]*?~?([0-9]+\s*\w+)/i)||"November (verify)",note:"Restricted, non-binding"});
+ if(/\bEA\b/i.test(t))out.push({k:"EA",d:grab(/\bEA\b[^·\n]*?~?([0-9]+\s*\w+)/i)||"November (verify)"});
+ if(/\bRD\b/i.test(t))out.push({k:"RD",d:grab(/\bRD\b[^·\n]*?~?([0-9]+\s*\w+)/i)||"January (verify)"});
+ if(/rolling/i.test(t))out.push({k:"Rolling",d:"Rolling intake"});
+ return out}
+
+const PLAN_INFO={
+ ED:{name:"Early Decision",bind:"Binding",color:"a"},
+ ED2:{name:"Early Decision II",bind:"Binding",color:"a"},
+ EA:{name:"Early Action",bind:"Non-binding",color:"g"},
+ EA2:{name:"Early Action II",bind:"Non-binding",color:"g"},
+ REA:{name:"Restrictive / Single-Choice Early Action",bind:"Non-binding but restricted",color:"v"},
+ RD:{name:"Regular Decision",bind:"Non-binding",color:"b"},
+ Rolling:{name:"Rolling Admission",bind:"Non-binding",color:"s"}};
+
 /* ==================== APP ==================== */
 const TIERS=[["auto-full","Full ride · guaranteed"],["need-full","Full need-based aid"],["comp-full","Full ride · competitive"],["full-tuition","Tuition scholarship"],["tuition-free","Tuition-free"],["low-tuition","Low tuition"],["partial","Partial"]];
 const TIER_LABEL=Object.fromEntries(TIERS);
@@ -2765,7 +3750,7 @@ const link=(u,t)=>u?'<a href="https://'+esc(u)+'" target="_blank" rel="noopener"
 
 const state={major:"all",tiers:new Set(TIERS.map(t=>t[0])),ctys:new Set(),q:"",
  adv:{blind:"",m100:"",merit:"",govt:"",type:"",rtop:"",atop:"",eng:"",plat:"",dlt:"",sort:""}};
-let saved=new Set(store.get("fra2_saved",[])), cmp=new Set(store.get("fra2_cmp",[]));
+let saved=new Set(store.get("fra2_saved",[]));
 
 /* header counts */
 $("#nUni").textContent=DATA.length;
@@ -2775,8 +3760,8 @@ $("#nCty").textContent=new Set(DATA.map(d=>d.c)).size;
 $$(".tab").forEach(t=>t.addEventListener("click",()=>{
  $$(".tab").forEach(x=>{x.classList.toggle("on",x===t);x.setAttribute("aria-selected",x===t)});
  $$(".panel").forEach(p=>p.classList.toggle("on",p.id===t.dataset.p));
- if(t.dataset.p==="pCmp")renderCmp();
- if(t.dataset.p==="pSaved")renderSaved();
+ if(t.dataset.p==="pMy")renderMy();
+ if(t.dataset.p==="pGov")renderGovt();
 }));
 function gotoTab(id){$$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});$$(".panel").forEach(p=>p.classList.toggle("on",p.id===id))}
 
@@ -2860,8 +3845,7 @@ function card(d,i){
  +(d.note?'<p class="note">'+esc(d.note)+"</p>":"")
  +'<div><button class="linkbtn" data-view="'+esc(d.u)+'">See full profile →</button></div>'
  +'<div class="card-foot"><span class="admit">'+esc(d.admit||"")+"</span>"
- +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ Saved":"☆ Save")+"</button>"
- +'<button class="cbtn'+(cmp.has(d.u)?" on":"")+'" data-cmp="'+esc(d.u)+'">⇄ Compare</button></div></div>'
+ +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ In my colleges":"+ Add to my colleges")+"</button></div></div>"
  +"</article>"}
 
 function render(){
@@ -2879,107 +3863,103 @@ function render(){
 
 function bindCardButtons(){
  $$("[data-save]").forEach(b=>b.onclick=()=>{const k=b.dataset.save;saved.has(k)?saved.delete(k):saved.add(k);
-  store.set("fra2_saved",[...saved]);$("#nSaved").textContent=saved.size?"("+saved.size+")":"";render()});
- $$("[data-cmp]").forEach(b=>b.onclick=()=>{const k=b.dataset.cmp;
-  if(cmp.has(k))cmp.delete(k);else{if(cmp.size>=4){alert("Compare holds 4 universities — remove one first.");return}cmp.add(k)}
-  store.set("fra2_cmp",[...cmp]);render();renderCmpBar()});
+  store.set("fra2_saved",[...saved]);updSavedCount();render();renderMy()});
  $$("[data-view]").forEach(b=>b.onclick=()=>{location.hash="#/u/"+slug(b.dataset.view)})}
-
+function updSavedCount(){$("#nSaved").textContent=saved.size?"("+saved.size+")":""}
 /* compare */
-function renderCmpBar(){const bar=$("#cmpBar");bar.classList.toggle("on",cmp.size>0);
- $("#cmpN").textContent=cmp.size}
-function renderCmp(){
- const list=[...cmp].map(k=>DATA.find(d=>d.u===k)).filter(Boolean);
- const area=$("#cmpArea");
- if(!list.length){area.innerHTML='<p class="empty"><b>Nothing to compare yet.</b><br>Use ⇄ Compare on university cards (up to 4).</p>';return}
- const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
- const majors=d=>["me","cs","se","math","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
- area.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>"<th>"+d.f+" "+esc(d.u)+"</th>").join("")+"</tr></thead><tbody>"
- +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
- +row("Funding tier",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
- +row("Scholarship / aid",d=>esc(d.s))
- +row("How it works",d=>esc(d.cov))
- +row("QS ≈",d=>d.qs?"#"+d.qs:null)+row("THE ≈",d=>d.the?"#"+d.the:null)+row("US News ≈",d=>d.usn?"#"+d.usn:null)
- +row("Acceptance ≈",d=>esc(d.acc||""))+row("Undergrads",d=>esc(d.ug||""))+row("Public/Private",d=>d.type)
- +row("Need-blind (intl)",d=>yn(d.blind))+row("Meets 100% need",d=>yn(d.m100))+row("Merit money",d=>yn(d.merit))+row("Govt route",d=>yn(d.govt))
- +row("Your majors",majors)
- +row("Platform",d=>esc(d.plat||""))+row("Requirements",d=>esc(d.req||""))+row("Typical deadlines",d=>esc(d.dl||""))
- +row("Aid documents",d=>esc(d.docs||""))
- +row("Links",d=>[link(d.w,"Site"),link(d.adm,"Admissions"),link(d.fa,"Aid"),link(d.sch,"Scholarship")].filter(Boolean).join(" · "))
- +row("",d=>'<button class="cbtn" data-uncmp="'+esc(d.u)+'">Remove</button>')
- +"</tbody></table></div>";
- $$("[data-uncmp]").forEach(b=>b.onclick=()=>{cmp.delete(b.dataset.uncmp);store.set("fra2_cmp",[...cmp]);renderCmp();renderCmpBar();render()})}
-
-/* saved / dashboard */
+function renderCmpBar(){const bar=$("#cmpBar");if(!bar)return;bar.classList.toggle("on",saved.size>0);$("#cmpN").textContent=saved.size}
 function tasksFor(d){const t=["Create account: "+(d.plat||"application portal"),"Transcript + predicted grades ready"];
- const r=(d.req||"").toLowerCase();
- if(/sat|act/.test(r))t.push("SAT/ACT taken & scores sent");
+ const A=APPLY[d.u]; const r=((A&&A.test?A.test+" ":"")+(d.req||"")).toLowerCase();
+ if(/sat|act/.test(r)&&!/never required|not needed|not used/.test(r))t.push("SAT/ACT taken & scores sent");
  if(/ielts|toefl|det|duolingo/.test(r))t.push("English test taken & sent");
- if(/lor|recommend|reference/.test(r))t.push("Recommendation letters requested");
+ if(A&&A.recs)t.push("Recommendations requested: "+A.recs.split(".")[0]);
+ else if(/lor|recommend|reference/.test(r))t.push("Recommendation letters requested");
+ if(A&&A.grades)t.push("School report / transcript / mid-year report arranged");
  if(/interview/.test(r))t.push("Interview prepared");
  if(/test|exam|step|mat|til|tol/.test(r)&&!/sat/.test(r))t.push("Admissions/entrance test prepared");
- if(d.essay)t.push("Essays drafted & reviewed");
+ if((A&&A.essays)||d.essay)t.push("Essays drafted & reviewed");
  if(d.docs&&!/^(none|—)/i.test(d.docs))t.push("Aid documents: "+d.docs);
  t.push("Deadline verified on official page");return t}
-function renderSaved(){
- const area=$("#savedArea");const list=[...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean);
- $("#nSaved").textContent=saved.size?"("+saved.size+")":"";
- if(!list.length){area.innerHTML='<p class="empty"><b>No saved universities yet.</b><br>Star them with ☆ Save on any card.</p>';return}
+function planChips(d){
+ const A=APPLY[d.u]; const pl=(A&&A.plans)||inferPlans(d);
+ if(!pl.length)return '<span class="tag">'+(d.c==="USA"?"Plans not on file — verify on the official page":"ED / EA / REA / RD are US-specific — this university uses a single application cycle")+"</span>";
+ return pl.map(p=>{const I=PLAN_INFO[p.k]||{name:p.k,bind:""};
+  return '<span class="planchip p-'+(I.color||"s")+'"><b>'+p.k+'</b> '+esc(p.d||"")+(I.bind?' · '+I.bind:'')+'</span>'}).join("")}
+function renderMy(){
+ const list=[...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean);
+ updSavedCount();
+ const cmpArea=$("#myCmp"),listArea=$("#myList");
+ if(!cmpArea)return;
+ if(!list.length){cmpArea.innerHTML='<p class="empty"><b>No colleges yet.</b><br>Use <b>+ Add to my colleges</b> on any university card.</p>';listArea.innerHTML="";return}
+ const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
+ const majors=d=>["me","cs","se","math","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
+ cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>"<th>"+d.f+" "+esc(d.u)+"</th>").join("")+"</tr></thead><tbody>"
+ +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
+ +row("Funding level",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
+ +row("Fully or partly funded?",d=>({"auto-full":"<b>Fully funded</b> — follows admission","need-full":"<b>Fully funded</b> if your need qualifies","comp-full":"<b>Fully funded</b> if you win the award","full-tuition":"Tuition only — living costs on you","tuition-free":"No tuition — living costs on you","low-tuition":"Low fees — mostly self-funded","partial":"Partly funded — mostly self-funded"})[d.tier])
+ +row("Scholarship / aid",d=>esc(d.s))
+ +row("Decision plans",d=>planChips(d))
+ +row("Deadlines (verify)",d=>esc(d.dl||""))
+ +row("Scholarship deadline",d=>esc(d.sdl||""))
+ +row("Application fee",d=>{const A=APPLY[d.u];return esc((A&&A.fee)||d.fee||"")})
+ +row("Tests required",d=>{const A=APPLY[d.u];return esc((A&&A.test)||d.req||"")})
+ +row("Platform",d=>esc(d.plat||""))
+ +row("Acceptance ≈",d=>esc(d.acc||""))
+ +row("QS ≈",d=>d.qs?"#"+d.qs:null)
+ +row("Need-blind (intl)",d=>yn(d.blind))+row("Meets 100% need",d=>yn(d.m100))+row("Merit money",d=>yn(d.merit))
+ +row("Your majors",majors)
+ +row("Links",d=>[link(d.w,"Site"),link(d.adm,"Admissions"),link(d.fa,"Aid")].filter(Boolean).join(" · "))
+ +row("",d=>'<button class="cbtn" data-unsave="'+esc(d.u)+'">Remove</button>')
+ +"</tbody></table></div>";
  const cks=store.get("fra2_ck",{}),dls=store.get("fra2_dl",{});
- area.innerHTML=list.map((d,di)=>{const tasks=tasksFor(d);const ck=cks[d.u]||[];const done=tasks.filter((_,i)=>ck[i]).length;
+ listArea.innerHTML='<h2 style="font-size:19px;margin:26px 0 0">Application checklist</h2>'+list.map((d,di)=>{
+  const tasks=tasksFor(d);const ck=cks[d.u]||[];const done=tasks.filter((_,i)=>ck[i]).length;
   return '<div class="saved-card"><div class="saved-top"><div><h3 class="uni" style="font-size:16px">'+d.f+" "+esc(d.u)+'</h3>'
-  +'<p class="cty">'+esc(d.c)+' · <span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span> · "+esc(d.s)+"</p></div>"
-  +'<button class="cbtn" data-save="'+esc(d.u)+'">★ Remove</button></div>'
+  +'<p class="cty">'+esc(d.c)+' · <span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span></p>"
+  +'<div class="tagrow" style="margin-top:8px">'+planChips(d)+"</div></div>"
+  +'<button class="cbtn" data-unsave="'+esc(d.u)+'">★ Remove</button></div>'
   +'<div class="prog"><i style="width:'+Math.round(done/tasks.length*100)+'%"></i></div>'
   +'<span class="counter">'+done+"/"+tasks.length+" done</span>"
   +'<div class="ck">'+tasks.map((t,i)=>'<label><input type="checkbox" data-ck="'+di+':'+i+'"'+(ck[i]?" checked":"")+'><span class="'+(ck[i]?"done":"")+'">'+esc(t)+"</span></label>").join("")+"</div>"
-  +'<div class="dlrow"><label for="dl'+di+'"><b>Deadline (you verified):</b></label><input id="dl'+di+'" type="text" placeholder="e.g. 1 Nov 2026 EA" value="'+esc(dls[d.u]||"")+'" data-dl="'+esc(d.u)+'">'
-  +(d.adm?'<a class="off" href="https://'+esc(d.adm)+'" target="_blank" rel="noopener">Official page ↗</a>':"")+"</div></div>"}).join("");
- $$("#savedArea [data-save]").forEach(b=>b.onclick=()=>{saved.delete(b.dataset.save);store.set("fra2_saved",[...saved]);renderSaved();render()});
- $$("#savedArea [data-ck]").forEach(cb=>cb.onchange=()=>{const[di,i]=cb.dataset.ck.split(":").map(Number);const d=list[di];
-  const all=store.get("fra2_ck",{});const arr=all[d.u]||[];arr[i]=cb.checked;all[d.u]=arr;store.set("fra2_ck",all);renderSaved()});
- $$("#savedArea [data-dl]").forEach(inp=>inp.onchange=()=>{const all=store.get("fra2_dl",{});all[inp.dataset.dl]=inp.value;store.set("fra2_dl",all)})}
+  +'<div class="dlrow"><label for="dl'+di+'"><b>Deadline you verified:</b></label><input id="dl'+di+'" type="text" placeholder="e.g. 1 Nov 2026 (EA)" value="'+esc(dls[d.u]||"")+'" data-dl="'+esc(d.u)+'">'
+  +'<button class="linkbtn" data-view="'+esc(d.u)+'">Open full profile →</button></div></div>'}).join("");
+ $$("#pMy [data-unsave]").forEach(b=>b.onclick=()=>{saved.delete(b.dataset.unsave);store.set("fra2_saved",[...saved]);renderMy();render()});
+ $$("#pMy [data-ck]").forEach(cb=>cb.onchange=()=>{const[di,i]=cb.dataset.ck.split(":").map(Number);const d=list[di];
+  const all=store.get("fra2_ck",{});const arr=all[d.u]||[];arr[i]=cb.checked;all[d.u]=arr;store.set("fra2_ck",all);renderMy()});
+ $$("#pMy [data-dl]").forEach(inp=>inp.onchange=()=>{const all=store.get("fra2_dl",{});all[inp.dataset.dl]=inp.value;store.set("fra2_dl",all)});
+ $$("#pMy [data-view]").forEach(b=>b.onclick=()=>{location.hash="#/u/"+slug(b.dataset.view)})}
 
-/* CSV + print */
-function toCSV(rows){const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
- const head=["University","Country","City","Funding tier","Scholarship","How it works","Platform","Typical deadlines","Website","Admissions"];
- return "﻿"+[head.map(q).join(",")].concat(rows.map(d=>[d.u,d.c,d.city||"",TIER_LABEL[d.tier],d.s,d.cov,d.plat||"",d.dl||"",d.w||"",d.adm||""].map(q).join(","))).join("\n")}
-function dl(name,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/csv"}));a.download=name;a.click()}
-$("#csvBtn").onclick=()=>dl("full-ride-atlas.csv",toCSV(DATA.filter(matches)));
-$("#printBtn").onclick=()=>window.print();
-$("#csvSaved").onclick=()=>dl("my-university-list.csv",toCSV([...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean)));
-$("#printSaved").onclick=()=>window.print();
-
-/* essays */
-let estate={q:"",cat:""};
-$("#eq").addEventListener("input",e=>{estate.q=e.target.value.trim().toLowerCase();renderEssays()});
-$$("#eChips .chip").forEach(b=>b.addEventListener("click",()=>{estate.cat=b.dataset.v;
- $$("#eChips .chip").forEach(x=>x.classList.toggle("on",x===b));renderEssays()}));
-function renderEssays(open){
- const keys=Object.keys(ESSAYS).sort((a,b)=>{const A=ESSAYS[a],B=ESSAYS[b];
-  const w=x=>x.cat==="platform"?0:1;return w(A)-w(B)||A.name.localeCompare(B.name)});
- const out=keys.map(k=>{const g=ESSAYS[k];
-  if(estate.cat&&g.cat!==estate.cat)return"";
-  const ps=g.prompts.filter(p=>!estate.q||(g.name+" "+p.t+" "+p.q+" "+p.th).toLowerCase().includes(estate.q));
-  if(!ps.length)return"";
-  return '<div class="egroup"><h3>'+esc(g.name)+"</h3><p class='esub'>"+esc(g.sub)+(g.link?" · "+link(g.link,"official page ↗"):"")+"</p>"
-  +ps.map(p=>'<details class="ep"'+(open===k?" open":"")+'><summary>'+esc(p.t)
-   +' <span class="emeta">'+esc(p.y)+" · "+esc(p.wl)+" · "+esc(p.req)+"</span></summary>"
-   +'<div class="ebody">'
-   +'<p class="'+(p.exact?"equote":"")+'">'+(p.exact?"“"+esc(p.q)+"”":"<b>Paraphrase — verify wording in your portal:</b> "+esc(p.q))+"</p>"
-   +'<p><span class="el">Theme</span> '+esc(p.th)+"</p>"
-   +'<p><span class="el">What they evaluate</span> '+esc(p.ev)+"</p>"
-   +'<p><span class="el">Common mistakes</span> '+esc(p.mi)+"</p>"
-   +'<p><span class="el">Brainstorm</span> '+esc(p.id)+"</p>"
-   +'<p><span class="el">Suggested outline</span> '+esc(p.ol)+"</p>"
-   +"</div></details>").join("")+"</div>"}).filter(Boolean).join("");
- $("#eList").innerHTML=out||'<p class="empty"><b>No prompts match.</b></p>'}
-function openEssay(key){gotoTab("pEssays");estate.q="";$("#eq").value="";estate.cat="";
- $$("#eChips .chip").forEach((x,i)=>x.classList.toggle("on",i===0));
- renderEssays(key);
- const g=$$("#eList .egroup h3").find(h=>h.textContent===ESSAYS[key].name);
- if(g)g.scrollIntoView({behavior:"smooth",block:"start"})}
-
+/* ---------- Government scholarships ---------- */
+const gstate={cov:"",ug:"",q:""};
+const COVLAB={full:"Full ride",tuition:"Tuition only",partial:"Partial",pg:"Postgraduate only",none:"No national scheme"};
+const COVCLS={full:"auto-full",tuition:"full-tuition",partial:"partial",pg:"low-tuition",none:"low-tuition"};
+function renderGovt(){
+ const order={full:0,tuition:1,partial:2,pg:3,none:4};
+ let hits=GOVT.filter(g=>{
+  if(gstate.cov==="heads"){if(g.cov!=="pg"&&g.cov!=="none")return false}
+  else if(gstate.cov&&g.cov!==gstate.cov)return false;
+  if(gstate.ug&&g.ug!==1)return false;
+  if(gstate.q){const h=(g.n+" "+g.c+" "+g.pays+" "+g.elig+" "+g.how+" "+g.lang+" "+g.note).toLowerCase();
+   if(!h.includes(gstate.q))return false}
+  return true});
+ hits=[...hits].sort((a,b)=>(order[a.cov]-order[b.cov])||REGIONS.indexOf(a.r)-REGIONS.indexOf(b.r)||a.c.localeCompare(b.c));
+ const out=[];
+ REGIONS.forEach(rg=>{
+  const rows=hits.filter(g=>g.r===rg);if(!rows.length)return;
+  out.push('<section class="region"><h2>'+rg+'</h2><div class="grid">'+rows.map(g=>
+   '<article class="card"><div class="card-top"><div><h3 class="uni"><span class="flag">'+g.f+"</span>"+esc(g.n)+'</h3>'
+   +'<p class="cty">'+esc(g.c)+"</p></div>"
+   +'<span class="badge '+COVCLS[g.cov]+'">'+COVLAB[g.cov]+"</span></div>"
+   +'<p class="covers"><span class="k">Pays for · </span>'+esc(g.pays)+"</p>"
+   +'<ul class="qa"><li><b>Who can apply:</b> '+esc(g.elig)+"</li>"
+   +"<li><b>How:</b> "+esc(g.how)+"</li>"
+   +"<li><b>Deadline:</b> "+esc(g.dl)+" <span class='nv'>— verify</span></li>"
+   +"<li><b>Language:</b> "+esc(g.lang)+"</li></ul>"
+   +'<p class="note">'+esc(g.note)+"</p>"
+   +'<div class="card-foot"><span class="admit">'+(g.ug?"Open to undergraduates":"Not for undergraduates")+"</span>"
+   +'<div class="linksrow">'+link(g.w,"Official page")+"</div></div></article>").join("")+"</div></section>")});
+ $("#gList").innerHTML=out.length?out.join(""):'<p class="empty"><b>No schemes match.</b></p>';
+ $("#gCount").innerHTML="Showing <b>"+hits.length+"</b> of "+GOVT.length+" government schemes"}
 /* copy buttons */
 document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(!b)return;
  const el=document.getElementById(b.dataset.copy);
@@ -3051,13 +4031,12 @@ $("#hClear").onclick=()=>{$("#hName").value="";$("#hOrg").value="";$("#hYear").v
 renderHons();
 
 /* ---------- AI assistant prompt ---------- */
-let aiInc=new Set(["saved","cmp"]);
+let aiInc=new Set(["saved"]);
 $$("#aiInc .chip").forEach(b=>b.onclick=()=>{const v=b.dataset.v;aiInc.has(v)?aiInc.delete(v):aiInc.add(v);b.classList.toggle("on")});
 function uniLine(d){return "- "+d.u+" ("+(d.city?d.city+", ":"")+d.c+") · "+TIER_LABEL[d.tier]+" · "+d.s+" · How funding works: "+d.cov+" · Platform: "+(d.plat||"?")+" · Typical deadlines: "+(d.dl||"?")+" · Official: "+(d.adm||d.w||"?")}
 $("#aiBuild").onclick=()=>{
  let unis=[];
  if(aiInc.has("saved"))unis.push(...[...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean));
- if(aiInc.has("cmp"))unis.push(...[...cmp].map(k=>DATA.find(d=>d.u===k)).filter(Boolean));
  if(aiInc.has("filtered"))unis.push(...DATA.filter(matches).slice(0,15));
  unis=[...new Map(unis.map(d=>[d.u,d])).values()];
  $("#aiOut").textContent=
@@ -3168,11 +4147,19 @@ function promptsFor(d){
 function kvBox(l,v){return '<div class="kv"><b>'+l+"</b>"+(v?esc(v):NV)+"</div>"}
 function renderUni(d){
  const s=slug(d.u);
+ const A=APPLY[d.u]||null;
  const P=promptsFor(d);
  const drafts=store.get("fra2_essays",{})[s]||{};
  const majors=[["me","Mechanical Engineering"],["cs","Computer Science"],["se","Software Engineering (dedicated)"],["math","Mathematics"],["neuro","Neuroscience"],["aero","Aerospace Engineering"]];
  let essayHTML;
- if(P){
+ if(A&&A.essays){
+  essayHTML='<p class="eguide" style="margin-bottom:6px">'+esc(d.u)+"'s own supplemental questions for this cycle, alongside the Common App personal essay. Drafts autosave in this browser only — always confirm the current wording in your application portal.</p>"
+  +A.essays.map((p,i)=>{const L=wLimit(p.w);
+   return '<div class="ewrap"><h3>'+esc(p.t)+'</h3><p class="emeta">'+esc(p.w)+"</p>"
+   +'<p class="equote">'+esc(p.q)+"</p>"
+   +'<textarea class="essaybox" data-eb="'+i+'" data-n="'+L.n+'" data-unit="'+L.unit+'" placeholder="Draft here…">'+esc(drafts[i]||"")+"</textarea>"
+   +'<div class="eboxmeta"><span class="ewords" id="ew'+i+'"></span><span class="esaved">Autosaved locally</span></div></div>'}).join("")
+ }else if(P){
   essayHTML='<p class="eguide" style="margin-bottom:6px">'+esc(P.label)+". Drafts save automatically in this browser only.</p>"
   +P.list.map((p,i)=>{const L=wLimit(p.wl);
    return '<div class="ewrap"><h3>'+esc(p.t)+'</h3><p class="emeta">'+esc(p.y)+" · "+esc(p.wl)+" · "+esc(p.req)+"</p>"
@@ -3206,6 +4193,19 @@ function renderUni(d){
  +"<li>Need-blind for internationals? "+yn(d.blind)+"</li><li>Meets 100% demonstrated need? "+yn(d.m100)+"</li>"
  +"<li>Merit scholarships? "+yn(d.merit)+"</li><li>Government-scholarship route? "+yn(d.govt)+"</li>"
  +"<li>Aid documents: "+(d.docs?esc(d.docs):NV)+"</li></ul></section>"
+ +'<section class="up-sec"><h2>What you need to apply</h2>'
+ +'<p class="eguide" style="margin-bottom:12px">Checklist for a rising senior or recent school-leaver.</p><div class="up-grid">'
+ +kvBox("Standardised tests",(A&&A.test)||d.req)
+ +kvBox("English proficiency",(A&&A.eng)||"Check the admissions page — IELTS/TOEFL/Duolingo are the usual options")
+ +kvBox("Transcript & school reports",(A&&A.grades)||"Official transcript and predicted grades; most universities also want a school report and final transcript")
+ +kvBox("Recommendations",(A&&A.recs)||"Typically 1–2 teacher references plus a counsellor report — ask teachers at least a month ahead")
+ +kvBox("Application fee",(A&&A.fee)||d.fee||"Varies — fee waivers are often granted on request")
+ +((A&&A.extra)?kvBox("Also worth knowing",A.extra):"")+"</div></section>"
+ +'<section class="up-sec"><h2>Decision plans &amp; deadlines</h2>'
+ +'<div class="tagrow">'+planChips(d)+"</div>"
+ +'<p class="up-para"><span class="k">Typical cycle · </span>'+esc(d.dl||"Needs verification")+" <span class='nv'>— always confirm on the official page</span></p>"
+ +(d.sdl?'<p class="up-para"><span class="k">Scholarship deadline · </span>'+esc(d.sdl)+"</p>":"")
+ +'<p class="eguide" style="margin-top:10px">New to these? See the <b>ED / EA / REA / RD</b> tab for what each plan commits you to.</p></section>'
  +'<section class="up-sec"><h2>Academics</h2>'
  +'<div class="majors">'+majors.map(([k,l])=>'<span class="mpill '+(d[k]?"yes":"no")+'">'+l+"</span>").join("")+"</div>"
  +'<p class="up-para"><span class="k">Known for · </span>'+esc(d.goodAt||(d.tags||[]).join(" · ")||"—")+"</p>"
@@ -3228,12 +4228,20 @@ function router(){
 window.addEventListener("hashchange",router);
 
 /* compare bar (inject) */
-document.body.insertAdjacentHTML("beforeend",'<div class="cmpbar" id="cmpBar"><span><b id="cmpN">0</b> selected for comparison</span><button id="cmpGo">Compare →</button><button class="clr" id="cmpClr">Clear</button></div>');
-$("#cmpGo").onclick=()=>{gotoTab("pCmp");renderCmp()};
-$("#cmpClr").onclick=()=>{cmp.clear();store.set("fra2_cmp",[]);renderCmpBar();render()};
+document.body.insertAdjacentHTML("beforeend",'<div class="cmpbar" id="cmpBar"><span><b id="cmpN">0</b> in my colleges</span><button id="cmpGo">Open my colleges →</button><button class="clr" id="cmpClr">Clear</button></div>');
+$("#cmpGo").onclick=()=>{gotoTab("pMy");renderMy()};
+$("#cmpClr").onclick=()=>{saved.clear();store.set("fra2_saved",[]);renderCmpBar();renderMy();render()};
 
 /* init */
 $("#nSaved").textContent=saved.size?"("+saved.size+")":"";
 buildCtyChips();
-render();renderEssays();renderCmpBar();router();
+render();renderCmpBar();renderMy();renderGovt();router();
+/* gov scholarship filters */
+$$("#gCov .chip").forEach(b=>b.onclick=()=>{gstate.cov=b.dataset.v;$$("#gCov .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
+$$("#gUg .chip").forEach(b=>b.onclick=()=>{gstate.ug=b.dataset.v;$$("#gUg .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
+let gqt;$("#gq").addEventListener("input",e=>{clearTimeout(gqt);gqt=setTimeout(()=>{gstate.q=e.target.value.trim().toLowerCase();renderGovt()},120)});
+/* my colleges actions */
+$("#csvSaved").onclick=()=>dl("my-colleges.csv",toCSV([...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean)));
+$("#printSaved").onclick=()=>window.print();
+$("#clrSaved").onclick=()=>{if(confirm("Remove all universities from My Colleges?")){saved.clear();store.set("fra2_saved",[]);renderMy();render();renderCmpBar()}};
 </script>
