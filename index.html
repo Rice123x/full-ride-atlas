@@ -149,6 +149,10 @@
   .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
   .uni{font-size:16.5px; font-weight:700; line-height:1.3; margin:0}
   .uni .flag{margin-right:6px}
+  .unilink{color:inherit; text-decoration:none; cursor:pointer;
+    text-underline-offset:3px; text-decoration-thickness:1px}
+  .unilink:hover{text-decoration:underline; text-decoration-color:var(--link)}
+  .unilink:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:3px}
   .cty{font-size:12.5px; color:var(--muted); margin:1px 0 0}
   .sch{margin:0; font-size:14px}
   .sch b{color:var(--accent); font-weight:650}
@@ -4524,7 +4528,7 @@ function card(d,i){
  const snap=(v,l)=>"<div><b>"+(v!=null&&v!==""?esc(v):"—")+"</b><span>"+l+"</span></div>";
  const links=[link(d.w,"Website"),link(d.adm,"Admissions"),link(d.fa,"Financial aid"),link(d.sch,"Scholarship")].filter(Boolean).join("");
  return '<article class="card">'
- +'<div class="card-top"><div><h3 class="uni"><span class="flag">'+d.f+"</span>"+esc(d.u)+'</h3><p class="cty">'+esc(d.city||"")+(d.city?" · ":"")+esc(d.c)+"</p></div>"
+ +'<div class="card-top"><div><h3 class="uni"><a class="unilink" href="#/u/'+slug(d.u)+'"><span class="flag">'+d.f+"</span>"+esc(d.u)+'</a></h3><p class="cty">'+esc(d.city||"")+(d.city?" · ":"")+esc(d.c)+"</p></div>"
  +'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span></div>"
  +'<p class="sch"><b>'+esc(d.s)+'</b><span class="stype">'+esc(d.st)+"</span></p>"
  +'<p class="covers"><span class="k">How it works · </span>'+esc(d.cov)+"</p>"
@@ -4580,7 +4584,7 @@ function renderMy(){
  if(!list.length){cmpArea.innerHTML='<p class="empty"><b>No colleges yet.</b><br>Use <b>+ Add to my colleges</b> on any university card.</p>';listArea.innerHTML="";return}
  const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
  const majors=d=>["me","cs","se","math","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
- cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>"<th>"+d.f+" "+esc(d.u)+"</th>").join("")+"</tr></thead><tbody>"
+ cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+d.f+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
  +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
  +row("Funding level",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
  +row("Fully or partly funded?",d=>({"auto-full":"<b>Fully funded</b> — follows admission","need-full":"<b>Fully funded</b> if your need qualifies","comp-full":"<b>Fully funded</b> if you win the award","full-tuition":"Tuition only — living costs on you","tuition-free":"No tuition — living costs on you","low-tuition":"Low fees — mostly self-funded","partial":"Partly funded — mostly self-funded"})[d.tier])
@@ -4601,7 +4605,7 @@ function renderMy(){
  const cks=store.get("fra2_ck",{}),dls=store.get("fra2_dl",{});
  listArea.innerHTML='<h2 style="font-size:19px;margin:26px 0 0">Application checklist</h2>'+list.map((d,di)=>{
   const tasks=tasksFor(d);const ck=cks[d.u]||[];const done=tasks.filter((_,i)=>ck[i]).length;
-  return '<div class="saved-card"><div class="saved-top"><div><h3 class="uni" style="font-size:16px">'+d.f+" "+esc(d.u)+'</h3>'
+  return '<div class="saved-card"><div class="saved-top"><div><h3 class="uni" style="font-size:16px"><a class="unilink" href="#/u/'+slug(d.u)+'">'+d.f+" "+esc(d.u)+'</a></h3>'
   +'<p class="cty">'+esc(d.c)+' · <span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span></p>"
   +'<div class="tagrow" style="margin-top:8px">'+planChips(d)+"</div></div>"
   +'<button class="cbtn" data-unsave="'+esc(d.u)+'">★ Remove</button></div>'
