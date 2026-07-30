@@ -43,17 +43,17 @@
     --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
   }
   :root[data-theme="light"]{
-    --bg:#0C0C0B; --surface:#161614; --surface2:#101010;
-    --ink:#E8E6DC; --muted:#9A968B; --line:#262624; --line2:#403F3A;
-    --accent:#E8E6DC; --accent-soft:#242422; --link:#8FB6F5;
-    --g-ink:#9FC0A8; --g-bg:#26332B;
-    --b-ink:#CDC9BB; --b-bg:#2B2A24;
-    --t-ink:#9FB9B4; --t-bg:#233030;
-    --s-ink:#9A968B; --s-bg:#242423;
-    --a-ink:#D6AB6C; --a-bg:#332A18;
-    --v-ink:#B5A5C6; --v-bg:#2D2738;
-    --chip-on-bg:#E8E6DC; --chip-on-ink:#0C0C0B;
-    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.35);
+    --bg:#F2F0EA; --surface:#FBFAF6; --surface2:#E9E7DE;
+    --ink:#1B1A16; --muted:#615E57; --line:#DEDBD1; --line2:#C3C0B4;
+    --accent:#1B1A16; --accent-soft:#E7E4D9; --link:#2F6FD1;
+    --g-ink:#2F5B3E; --g-bg:#DEE9E0;
+    --b-ink:#4A463C; --b-bg:#E7E3D6;
+    --t-ink:#385A56; --t-bg:#DDE8E5;
+    --s-ink:#615E57; --s-bg:#E6E3D9;
+    --a-ink:#8A5A28; --a-bg:#F2E6D2;
+    --v-ink:#54406A; --v-bg:#E7DFEE;
+    --chip-on-bg:#1B1A16; --chip-on-ink:#F2F0EA;
+    --shadow:0 1px 2px rgba(27,26,22,.06),0 4px 14px rgba(27,26,22,.05);
   }
   *{box-sizing:border-box}
   a{color:var(--link)}
@@ -76,8 +76,24 @@
      font-size:clamp(30px,5vw,44px); line-height:1.12; margin:0 0 14px; text-wrap:balance; font-weight:600}
   .lede{max-width:70ch; color:var(--muted); margin:0 0 6px}
   .lede strong{color:var(--ink); font-weight:600}
-  .legend{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0; padding:0; list-style:none; font-size:12.5px; color:var(--muted); align-items:center}
-  .legend li{display:flex; align-items:center; gap:5px}
+  .masthead{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap}
+  .themebtn{appearance:none; cursor:pointer; border:1px solid var(--line2); background:var(--surface); color:var(--ink);
+    border-radius:999px; padding:6px 15px; font-size:13px; font-weight:600; margin-top:6px; white-space:nowrap;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .themebtn:hover{border-color:var(--ink)}
+  .themebtn:focus-visible{outline:2px solid var(--link); outline-offset:2px}
+  .legend{margin:20px 0 0; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow)}
+  .legend summary{cursor:pointer; padding:12px 16px; font-size:13px; font-weight:700; letter-spacing:.02em; list-style:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .legend summary::-webkit-details-marker{display:none}
+  .legend summary::after{content:" ▾"; color:var(--muted)}
+  .legend[open] summary::after{content:" ▴"}
+  .legend[open] summary{border-bottom:1px solid var(--line)}
+  .legend-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; padding:16px}
+  .lgh{margin:0 0 9px; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); font-weight:700;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .lg{display:grid; grid-template-columns:auto 1fr; gap:5px 10px; align-items:baseline; margin-bottom:9px; font-size:13px; color:var(--muted)}
+  .lg .badge{justify-self:start}
 
   /* ---------- badges ---------- */
   .badge{display:inline-block; padding:2px 9px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; white-space:nowrap}
@@ -113,6 +129,11 @@
   .seg button:focus-visible,.chip:focus-visible,.linkbtn:focus-visible,.btn:focus-visible,
   input:focus-visible,select:focus-visible,textarea:focus-visible,.tab2:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
   .chips{display:flex; flex-wrap:wrap; gap:6px}
+  .majormode{display:flex; align-items:center; gap:7px; flex-wrap:wrap; font-size:12.5px; color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .majormode[hidden]{display:none}
+  .majormode .chip{padding:3px 10px; font-size:12.5px}
+  .fhint{font-weight:500; letter-spacing:0; text-transform:none; opacity:.75}
   .chip.zero{opacity:.35}
   .chip.zero .n{opacity:1}
   .ctygroup.zero{opacity:.4}
@@ -326,21 +347,35 @@
     body{background:#fff; color:#000}
   }
 </style>
+<script>try{document.documentElement.setAttribute("data-theme",JSON.parse(localStorage.getItem("fra2_theme"))||"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
 
 <div class="wrap" id="homeWrap">
 <header>
-  <p class="eyebrow">Compiled July 2026 · <span id="nUni">—</span> universities · <span id="nCty">—</span> countries &amp; territories</p>
-  <h1>Full-Ride Atlas</h1>
-  <p class="lede">A research platform for international students applying with <strong>A-levels and the SAT</strong>: universities and scholarships that can fund a <strong>bachelor's degree</strong> — plus application requirements, essay prep, Common App builders, comparison and tracking. Focus majors: <strong>Mechanical Engineering, Software Engineering, Computer Science, Mathematics (pure, applied, statistics), Neuroscience, Aerospace</strong>.</p>
-  <ul class="legend">
-    <li><span class="badge auto-full">Full ride · guaranteed</span> funding follows admission</li>
-    <li><span class="badge need-full">Full need-based aid</span> pay by family income</li>
-    <li><span class="badge comp-full">Full ride · competitive</span> separate contest</li>
-    <li><span class="badge full-tuition">Tuition scholarship</span> living costs on you</li>
-    <li><span class="badge tuition-free">Tuition-free</span> national policy</li>
-    <li><span class="badge low-tuition">Low tuition</span></li>
-    <li><span class="badge partial">Partial</span></li>
-  </ul>
+  <div class="masthead">
+    <div>
+      <p class="eyebrow">Compiled July 2026 · <span id="nUni">—</span> universities · <span id="nCty">—</span> countries · <span id="nSch">—</span> scholarships</p>
+      <h1>Full-Ride Atlas</h1>
+    </div>
+    <button class="themebtn" id="themeBtn" type="button">Light</button>
+  </div>
+  <p class="lede">Universities and scholarships that can fund a <strong>full bachelor's degree</strong> for international students applying with <strong>A-levels and the SAT</strong>.</p>
+
+  <details class="legend" id="legend">
+    <summary>What the funding labels mean</summary>
+    <div class="legend-grid">
+      <div class="lgroup"><p class="lgh">Can cover everything</p>
+        <div class="lg"><span class="badge auto-full">Full ride · guaranteed</span><span>Tuition + living costs, automatic once you're admitted</span></div>
+        <div class="lg"><span class="badge need-full">Full need-based aid</span><span>You pay what your family can afford — often nothing</span></div>
+        <div class="lg"><span class="badge comp-full">Full ride · competitive</span><span>Tuition + living, but you must win a separate contest</span></div>
+      </div>
+      <div class="lgroup"><p class="lgh">Covers part of the cost</p>
+        <div class="lg"><span class="badge full-tuition">Tuition scholarship</span><span>Fees covered — living costs are yours</span></div>
+        <div class="lg"><span class="badge tuition-free">Tuition-free</span><span>No fees for anyone by national policy</span></div>
+        <div class="lg"><span class="badge low-tuition">Low tuition</span><span>Cheap, not free — budget the rest</span></div>
+        <div class="lg"><span class="badge partial">Partial</span><span>A discount only — plan to self-fund most of it</span></div>
+      </div>
+    </div>
+  </details>
 </header>
 
 <nav class="tabbar" role="tablist" aria-label="Sections">
@@ -359,7 +394,7 @@
 <section class="panel on" id="pUni" role="tabpanel">
 <section class="filters" aria-label="Filters">
   <div class="frow">
-    <span class="flabel">Major</span>
+    <span class="flabel">Major <span class="fhint">— pick as many as you like</span></span>
     <div class="seg" id="segMajor" role="group" aria-label="Filter by major">
       <button data-m="all" class="on">All majors</button>
       <button data-m="me">Mechanical Eng</button>
@@ -371,6 +406,11 @@
       <button data-m="stats">Statistics</button>
       <button data-m="neuro">Neuroscience</button>
       <button data-m="aero">Aerospace</button>
+    </div>
+    <div class="majormode" id="majorMode" hidden>
+      <span>Show universities offering</span>
+      <button class="chip on" data-mm="any">any of them</button>
+      <button class="chip" data-mm="all">all of them</button>
     </div>
   </div>
   <div class="frow">
@@ -4331,13 +4371,24 @@ const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e)
 const NV='<span class="nv">Needs verification</span>';
 const link=(u,t)=>u?'<a href="https://'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>':"";
 
-const state={major:"all",tiers:new Set(TIERS.map(t=>t[0])),ctys:new Set(),q:"",
+const state={majors:new Set(),majorMode:"any",tiers:new Set(TIERS.map(t=>t[0])),ctys:new Set(),q:"",
  adv:{blind:"",m100:"",merit:"",govt:"",type:"",rtop:"",atop:"",eng:"",plat:"",dlt:"",sort:""}};
 let saved=new Set(store.get("fra2_saved",[]));
 
 /* header counts */
 $("#nUni").textContent=DATA.length;
 $("#nCty").textContent=new Set(DATA.map(d=>d.c)).size;
+$("#nSch").textContent=GOVT.length;
+
+/* light / dark toggle (persists per browser) */
+function applyTheme(t){
+ document.documentElement.setAttribute("data-theme",t);
+ const b=$("#themeBtn");
+ if(b){b.textContent=t==="light"?"Dark":"Light";
+  b.setAttribute("aria-label",t==="light"?"Switch to dark mode":"Switch to light mode")}
+ store.set("fra2_theme",t)}
+$("#themeBtn").onclick=()=>applyTheme(document.documentElement.getAttribute("data-theme")==="light"?"dark":"light");
+applyTheme(store.get("fra2_theme","dark"));
 
 /* tabs */
 $$(".tab").forEach(t=>t.addEventListener("click",()=>{
@@ -4381,9 +4432,19 @@ function buildCtyChips(){
   g.appendChild(row);ctyWrap.appendChild(g)})}
 
 /* major seg */
+function syncMajorBtns(){
+ $$("#segMajor button").forEach(x=>{
+  const on=x.dataset.m==="all"?state.majors.size===0:state.majors.has(x.dataset.m);
+  x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});
+ const mm=$("#majorMode");if(mm)mm.hidden=state.majors.size<2}
 $$("#segMajor button").forEach(btn=>btn.addEventListener("click",()=>{
- state.major=btn.dataset.m;
- $$("#segMajor button").forEach(x=>x.classList.toggle("on",x===btn));render()}));
+ const m=btn.dataset.m;
+ if(m==="all")state.majors.clear();
+ else state.majors.has(m)?state.majors.delete(m):state.majors.add(m);
+ syncMajorBtns();render()}));
+$$("#majorMode .chip").forEach(b=>b.addEventListener("click",()=>{
+ state.majorMode=b.dataset.mm;
+ $$("#majorMode .chip").forEach(x=>x.classList.toggle("on",x===b));render()}));
 
 /* advanced single-select chip groups */
 $$(".advgrid .chips[data-f]").forEach(g=>{const f=g.dataset.f;
@@ -4396,10 +4457,11 @@ let qt;$("#q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{
 
 /* reset */
 $("#reset").onclick=()=>{
- state.major="all";state.q="";state.ctys.clear();state.tiers=new Set(TIERS.map(t=>t[0]));
+ state.majors.clear();state.majorMode="any";state.q="";state.ctys.clear();state.tiers=new Set(TIERS.map(t=>t[0]));
  Object.keys(state.adv).forEach(k=>state.adv[k]="");
  $("#q").value="";
- $$("#segMajor button").forEach(x=>x.classList.toggle("on",x.dataset.m==="all"));
+ syncMajorBtns();
+ $$("#majorMode .chip").forEach((x,i)=>x.classList.toggle("on",i===0));
  $$("#tierChips .chip").forEach(x=>{x.classList.add("on");x.setAttribute("aria-pressed","true")});
  
  $$("#ctyChips .chip").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-pressed","false")});
@@ -4408,7 +4470,8 @@ $("#reset").onclick=()=>{
 
 function accNum(d){const m=/(\d+(\.\d+)?)/.exec(d.acc||"");return m?parseFloat(m[1]):null}
 function matches(d,skip){
- if(state.major!=="all"&&!d[state.major])return false;
+ if(state.majors.size){const ks=[...state.majors];
+  if(!(state.majorMode==="all"?ks.every(k=>d[k]):ks.some(k=>d[k])))return false}
  if(skip!=="tier"&&!state.tiers.has(d.tier))return false;
  if(skip!=="cty"&&state.ctys.size&&!state.ctys.has(d.c))return false;
  const a=state.adv;
@@ -4428,7 +4491,7 @@ function matches(d,skip){
 
 function yn(v){return v===1?"<b>Yes</b>":v===0?"No":NV}
 function card(d,i){
- const mp=(on,label,key)=>{let cls=on?"yes":"no";if(on&&state.major!=="all")cls+=(key===state.major?" hit":" dim");return '<span class="mpill '+cls+'">'+label+"</span>"};
+ const mp=(on,label,key)=>{let cls=on?"yes":"no";if(on&&state.majors.size)cls+=(state.majors.has(key)?" hit":" dim");return '<span class="mpill '+cls+'">'+label+"</span>"};
  const snap=(v,l)=>"<div><b>"+(v!=null&&v!==""?esc(v):"—")+"</b><span>"+l+"</span></div>";
  const links=[link(d.w,"Website"),link(d.adm,"Admissions"),link(d.fa,"Financial aid"),link(d.sch,"Scholarship")].filter(Boolean).join("");
  return '<article class="card">'
@@ -4443,6 +4506,12 @@ function card(d,i){
  +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ In my colleges":"+ Add to my colleges")+"</button></div></div>"
  +"</article>"}
 
+function majorPhrase(){
+ const l=[...state.majors].map(k=>MAJOR_LABEL[k]);
+ if(!l.length)return "";
+ const join=state.majorMode==="all"?" and ":" or ";
+ const txt=l.length===1?l[0]:l.slice(0,-1).join(", ")+join+l[l.length-1];
+ return (state.majorMode==="all"?" that offer <b>":" that offer <b>")+txt+"</b>"}
 function render(){
  const hits=DATA.filter(matches);const out=[];const sort=state.adv.sort;
  if(sort==="qs"||sort==="name"){
@@ -4453,7 +4522,7 @@ function render(){
    out.push('<section class="region"><h2>'+r+'</h2><p class="rsub">'+RSUB[r]+'</p><div class="grid">'+rows.map(card).join("")+"</div></section>")})}
  $("#results").innerHTML=out.length?out.join(""):'<p class="empty"><b>No matches.</b><br>Widen the funding level or clear advanced filters — genuine full rides are rare in some countries.</p>';
  $("#count").innerHTML="Showing <b>"+hits.length+"</b> of "+DATA.length+" universities"
-  +(state.major!=="all"?" that offer <b>"+MAJOR_LABEL[state.major]+"</b>":"");
+  +majorPhrase();
  updateFacets();
  bindCardButtons()}
 
