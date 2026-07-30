@@ -4462,6 +4462,14 @@ function gotoTab(id){$$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classLis
 
 /* tier + country chips */
 const tierWrap=$("#tierChips");
+const allTiersBtn=document.createElement("button");
+allTiersBtn.className="chip on";allTiersBtn.id="allTiers";allTiersBtn.setAttribute("aria-pressed","true");
+allTiersBtn.innerHTML='All types of funding <span class="n"></span>';
+allTiersBtn.onclick=()=>{
+ state.tiers=new Set(TIERS.map(t=>t[0]));
+ $$("#tierChips .chip[data-t]").forEach(x=>{x.classList.add("on");x.setAttribute("aria-pressed","true")});
+ render()};
+tierWrap.appendChild(allTiersBtn);
 TIERS.forEach(([key,label])=>{const b=document.createElement("button");b.className="chip on";b.setAttribute("aria-pressed","true");
  b.dataset.t=key;
  b.innerHTML=esc(label)+' <span class="n">'+DATA.filter(d=>d.tier===key).length+"</span>";
@@ -4505,6 +4513,7 @@ $("#reset").onclick=()=>{
  $("#q").value="";
  $$("#segMajor button").forEach(x=>x.classList.toggle("on",x.dataset.m==="all"));
  $$("#tierChips .chip").forEach(x=>{x.classList.add("on");x.setAttribute("aria-pressed","true")});
+ 
  $$("#ctyChips .chip").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-pressed","false")});
  $$(".advgrid .chips[data-f]").forEach(g=>g.querySelectorAll(".chip").forEach((x,i)=>x.classList.toggle("on",i===0)));
  render()};
@@ -4564,7 +4573,12 @@ function render(){
    active filter (major, search, advanced) — so picking a major re-counts every
    funding level and country. */
 function updateFacets(){
- $$("#tierChips .chip").forEach(b=>{
+ const allBtn=$("#allTiers");
+ if(allBtn){const n=DATA.reduce((a,d)=>a+(matches(d,"tier")?1:0),0);
+  const el=allBtn.querySelector(".n");if(el)el.textContent=n;
+  const every=state.tiers.size===TIERS.length;
+  allBtn.classList.toggle("on",every);allBtn.setAttribute("aria-pressed",every)}
+ $$("#tierChips .chip[data-t]").forEach(b=>{
   const n=DATA.reduce((a,d)=>a+(d.tier===b.dataset.t&&matches(d,"tier")?1:0),0);
   const el=b.querySelector(".n");if(el)el.textContent=n;
   b.classList.toggle("zero",n===0)});
