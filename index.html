@@ -171,13 +171,46 @@
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px}
   .card{background:var(--surface); border:1px solid var(--line); border-radius:10px;
     padding:16px 16px 14px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:9px}
-  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap}
+  .card-top>.ctitle{flex:1 1 190px}
+  .card-top>.badge{flex:0 0 auto}
   .uni{font-size:16.5px; font-weight:700; line-height:1.3; margin:0}
   .uni .flag{margin-right:6px}
-  .unilink{color:inherit; text-decoration:none; cursor:pointer;
-    text-underline-offset:3px; text-decoration-thickness:1px}
-  .unilink:hover{text-decoration:underline; text-decoration-color:var(--link)}
-  .unilink:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:3px}
+  .unilink{color:inherit; text-decoration:none; cursor:pointer}
+  .unilink:hover{color:var(--muted)}
+  .unilink:focus-visible{outline:2px solid var(--line2); outline-offset:2px; border-radius:3px}
+
+  /* ---------- university logo tile ---------- */
+  .ulogo{position:relative; flex:none; width:36px; height:36px; border-radius:8px; overflow:hidden;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--surface2); background:hsl(var(--lh,40) 16% 21%); border:1px solid var(--line)}
+  .ulogo i{font-style:normal; font-weight:700; font-size:13px; letter-spacing:.01em;
+    color:var(--muted); color:hsl(var(--lh,40) 26% 78%);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .ulogo img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+    padding:4px; background:#fff; opacity:0; transition:opacity .2s}
+  .ulogo img.ok{opacity:1}
+  .ulogo.lg{width:56px; height:56px; border-radius:11px}
+  .ulogo.lg i{font-size:19px}
+  .ulogo.sm{width:26px; height:26px; border-radius:6px}
+  .ulogo.sm i{font-size:10.5px}
+  :root[data-theme="light"] .ulogo{background:hsl(var(--lh,40) 28% 90%)}
+  :root[data-theme="light"] .ulogo i{color:hsl(var(--lh,40) 32% 30%)}
+  .ctitle{display:flex; gap:11px; align-items:flex-start; min-width:0}
+
+  /* ---------- early / regular recommendation ---------- */
+  .reco{margin:0; font-size:13px; border-left:2px solid var(--line2); padding:1px 0 1px 10px}
+  .reco .k{color:var(--muted)}
+  .reco b{font-weight:700}
+  .reco.r-early{border-left-color:var(--g-ink)}
+  .reco.r-asap{border-left-color:var(--a-ink)}
+  .reco.r-care{border-left-color:var(--v-ink)}
+  .reco.r-reg{border-left-color:var(--t-ink)}
+  .reco.r-none{border-left-color:var(--line2)}
+  .recowrap{margin-top:14px}
+  .up-sec .reco{font-size:14px}
+  .card.flash{outline:2px solid var(--line2); outline-offset:3px; animation:flashfade 1.8s ease-out}
+  @keyframes flashfade{0%,55%{outline-color:var(--ink)}100%{outline-color:transparent}}
   .cty{font-size:12.5px; color:var(--muted); margin:1px 0 0}
   .sch{margin:0; font-size:14px}
   .sch b{color:var(--accent); font-weight:650}
@@ -312,7 +345,8 @@
   .up-back{display:inline-block; margin:30px 0 0; font-size:13.5px; font-weight:700; color:var(--ink); cursor:pointer; background:none; border:none; padding:0}
   .up-back:hover{text-decoration:underline}
   .up-head{padding:14px 0 4px}
-  .up-head h1{margin:8px 0 8px}
+  .up-head h1{margin:0}
+  .up-title{display:flex; gap:14px; align-items:center; margin:8px 0 8px}
   .up-kicker{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:13px; color:var(--muted)}
   .up-sec{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:16px; box-shadow:var(--shadow)}
   .up-sec>h2{font-size:12px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin:0 0 14px; font-weight:700}
@@ -4665,6 +4699,109 @@ const PLAN_INFO={
  RD:{name:"Regular Decision",bind:"Non-binding",color:"b"},
  Rolling:{name:"Rolling Admission",bind:"Non-binding",color:"s"}};
 
+/* Round-by-round acceptance rates. Only universities that genuinely publish (or
+   have had widely reported) an early/regular split appear here — everywhere else
+   the profile says so rather than inventing a number. Figures are approximate,
+   from recent cycles, and should be re-checked against the university's own
+   Common Data Set or admissions release. */
+const ACC_ROUND={
+"Massachusetts Institute of Technology (MIT)":{early:"≈5% (Early Action)",reg:"≈4% (Regular)",note:"MIT defers most early applicants into the regular pool instead of denying them, so the two rounds sit closer together than at Early Decision schools."},
+"Harvard University":{early:"≈8% (Restrictive Early Action)",reg:"≈3% (Regular)",note:"The early pool is small, non-binding and unusually strong, so the gap is not all advantage."},
+"Yale University":{early:"≈9% (Single-Choice Early Action)",reg:"≈3% (Regular)",note:"Non-binding — applying early costs you nothing if Yale is your first choice."},
+"Princeton University":{early:"Not published separately",reg:"Not published separately",note:"Princeton no longer releases round-by-round figures. Overall admit rate ≈4%."},
+"Stanford University":{early:"Not published separately",reg:"Not published separately",note:"Stanford stopped publishing admission statistics — treat any round-level number you see elsewhere as unverified."},
+"California Institute of Technology (Caltech)":{early:"Not published separately",reg:"Not published separately",note:"Caltech does not routinely break out its early round. Overall admit rate ≈3%."},
+"University of Chicago":{early:"Not published separately",reg:"Not published separately",note:"UChicago publishes only an overall rate and runs EA, ED I and ED II alongside each other."},
+"Dartmouth College":{early:"≈17% (Early Decision)",reg:"≈4% (Regular)",note:"Roughly half the class is filled in ED — the biggest early gap in the Ivy League, but it is binding."},
+"Brown University":{early:"≈14% (Early Decision)",reg:"≈4% (Regular)",note:"Binding, though Brown meets full demonstrated need, which makes ED less financially risky than at most universities."},
+"Columbia University":{early:"≈11% (Early Decision)",reg:"≈3% (Regular)"},
+"Duke University":{early:"≈13% (Early Decision)",reg:"≈4% (Regular)"},
+"University of Pennsylvania":{early:"≈15% (Early Decision — last published figure)",reg:"≈4% (Regular)",note:"Penn has stopped releasing the ED rate each year; the number shown is the last one published."},
+"Cornell University":{early:"≈17% (Early Decision — last published figure)",reg:"≈5% (Regular)",note:"Cornell no longer publishes round data annually."},
+"Northwestern University":{early:"≈20% (Early Decision — last published figure)",reg:"≈5% (Regular)"},
+"Johns Hopkins University":{early:"≈15% (Early Decision I & II)",reg:"≈4% (Regular)"},
+"Vanderbilt University":{early:"≈17% (Early Decision I & II)",reg:"≈4% (Regular)"},
+"Rice University":{early:"≈15% (Early Decision)",reg:"≈7% (Regular)"},
+"Emory University":{early:"≈30% (Early Decision I & II)",reg:"≈8% (Regular)"},
+"Washington University in St. Louis":{early:"≈25% (Early Decision I & II)",reg:"≈10% (Regular)"},
+"Tufts University":{early:"≈20% (Early Decision I & II)",reg:"≈7% (Regular)"},
+"Boston College":{early:"≈28% (Early Decision I & II)",reg:"≈13% (Regular)"},
+"University of Notre Dame":{early:"≈15% (Restrictive Early Action)",reg:"≈8% (Regular)",note:"Non-binding, so there is no aid trade-off in applying early."},
+"Georgetown University":{early:"≈12% (Early Action)",reg:"≈13% (Regular)",note:"One of the few US universities where the early round carries essentially no statistical advantage — but its EA is non-binding and non-restrictive, so early still means an earlier answer."},
+"Williams College":{early:"≈25% (Early Decision)",reg:"≈6% (Regular)"},
+"Amherst College":{early:"≈30% (Early Decision)",reg:"≈7% (Regular)"},
+"Swarthmore College":{early:"≈20% (Early Decision I & II)",reg:"≈6% (Regular)"},
+"Pomona College":{early:"≈17% (Early Decision I & II)",reg:"≈6% (Regular)"},
+"Bowdoin College":{early:"≈23% (Early Decision I & II)",reg:"≈6% (Regular)"},
+"University of Southern California":{early:"Not published separately",reg:"Not published separately",note:"USC's 1 December early deadline is also the deadline for merit-scholarship consideration — that, not the admit rate, is the reason to apply early."}
+};
+function planKeys(d){const A=APPLY[d.u];const pl=(A&&A.plans)||inferPlans(d);return new Set(pl.map(p=>p.k))}
+function accRound(d){
+ const a=ACC_ROUND[d.u];if(a)return a;
+ const ks=planKeys(d);
+ const early=[...ks].filter(k=>k!=="RD"&&k!=="Rolling");
+ if(!ks.size&&d.c==="USA")return{early:"Not on file — verify on the admissions page",reg:d.acc||"Needs verification",
+  note:"This atlas has no decision-plan data for this university, so whether it runs an early round is unconfirmed — check its admissions page.",single:1};
+ if(!early.length)return{early:"No early round — one application cycle",reg:d.acc||"Needs verification",
+  note:"This university admits in a single cycle, so there is no early/regular split to compare.",single:1};
+ return{early:"Not published separately — needs verification",reg:"Not published separately — needs verification",
+  note:"This university does not publish round-level admit rates. Overall rate: "+(d.acc||"needs verification")+"."};
+}
+/* Should you apply early or regular? Decided from the rounds this university
+   actually runs and whether committing early would cost you the chance to
+   compare aid offers — the thing that matters most on a full-ride budget. */
+function recoFor(d){
+ const ks=planKeys(d);
+ const hasED=ks.has("ED")||ks.has("ED2");
+ const hasEA=ks.has("EA")||ks.has("EA2")||ks.has("REA");
+ if(ks.has("Rolling"))return{c:"asap",t:"Apply as early as you can",
+  w:"Rolling admission — places and scholarship money go to earlier applicants, so there is no reason to wait."};
+ if(!hasED&&!hasEA){
+  if(!ks.size&&d.c==="USA")return{c:"none",t:"Check whether it runs an early round",
+   w:"Decision plans are not on file here — confirm on its admissions page, then apply in the earliest round whose deadline you can meet properly."};
+  return{c:"none",t:"Regular round — there is no early option",
+   w:"One application cycle. Aim to submit well before the deadline so documents and references have time to arrive."}}
+ if(hasEA)return{c:"early",t:"Apply early",
+  w:"Its early round is non-binding, so an early answer costs you nothing and you can still compare every aid offer in the spring."};
+ if(d.m100===1||d.blind===1)return{c:"care",t:"Early only if this is clearly your first choice",
+  w:"Early Decision lifts your odds here, but it is binding — you accept before seeing any other offer. It is defensible at this university because it promises to meet full demonstrated need."};
+ return{c:"reg",t:"Regular round is the safer choice",
+  w:"The only early round is binding Early Decision, and this university does not promise to meet full demonstrated need — committing before you can compare aid offers is a real financial risk."};
+}
+const RECO_CLS={early:"r-early",asap:"r-asap",care:"r-care",reg:"r-reg",none:"r-none"};
+function recoLine(d,short){
+ const r=recoFor(d);
+ return '<p class="reco '+RECO_CLS[r.c]+'"><span class="k">Recommend to apply early or regular · </span><b>'
+  +esc(r.t)+"</b>"+(short?"":" — "+esc(r.w))+"</p>"}
+
+/* Logo tile: a real favicon/crest when the network allows it, otherwise a
+   monogram built from the university's own name. Never a broken image. */
+function logoDomain(d){
+ const w=(d.w||d.adm||d.fa||"").replace(/^https?:\/\//,"").replace(/^www\./,"").split("/")[0];
+ return w.includes(".")?w:""}
+const LOGO_SKIP=/^(university|universität|universitat|universite|université|universidad|universidade|università|universiteit|uniwersytet|universitet|universiteti|college|institute|institut|instituto|school|academy|of|the|and|for|at|de|del|di|der|des|du|da|dos|van|in|it|national|state)$/i;
+function initials(u){
+ const acr=/\(([A-Z][A-Za-z&]{1,4})\)/.exec(u);
+ if(acr)return acr[1].toUpperCase().slice(0,3);
+ const clean=u.replace(/\([^)]*\)/g,"").trim();
+ let w=clean.split(/[\s,\-–—]+/).filter(x=>x&&!LOGO_SKIP.test(x));
+ if(!w.length)w=clean.split(/\s+/).filter(Boolean);
+ if(!w.length)return "?";
+ if(w.length===1)return w[0].slice(0,2).toUpperCase();
+ return (w[0][0]+w[1][0]).toUpperCase()}
+function hueOf(s){let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function ulogo(d,cls){
+ const dom=logoDomain(d);
+ return '<span class="ulogo'+(cls?" "+cls:"")+'" style="--lh:'+hueOf(d.u)+'" aria-hidden="true"><i>'+esc(initials(d.u))+"</i>"
+  +(dom?'<img loading="lazy" decoding="async" alt="" src="https://www.google.com/s2/favicons?domain='+encodeURIComponent(dom)+'&sz=64">':"")
+  +"</span>"}
+function bindLogos(root){
+ (root||document).querySelectorAll(".ulogo img").forEach(im=>{
+  if(im.dataset.b)return;im.dataset.b="1";
+  if(im.complete&&im.naturalWidth>1){im.classList.add("ok");return}
+  im.addEventListener("load",()=>{im.naturalWidth>1?im.classList.add("ok"):im.remove()});
+  im.addEventListener("error",()=>im.remove())})}
+
 /* ==================== APP ==================== */
 const TIERS=[["auto-full","Full ride · guaranteed"],["need-full","Full need-based aid"],["comp-full","Full ride · competitive"],["full-tuition","Tuition scholarship"],["tuition-free","Tuition-free"],["low-tuition","Low tuition"],["partial","Partial"]];
 const TIER_LABEL=Object.fromEntries(TIERS);
@@ -4823,13 +4960,14 @@ function card(d,i){
  const mp=(on,label,key)=>{let cls=on?"yes":"no";if(on&&state.majors.size)cls+=(state.majors.has(key)?" hit":" dim");return '<span class="mpill '+cls+'">'+label+"</span>"};
  const snap=(v,l)=>"<div><b>"+(v!=null&&v!==""?esc(v):"—")+"</b><span>"+l+"</span></div>";
  const links=[link(d.w,"Website"),link(d.adm,"Admissions"),link(d.fa,"Financial aid"),link(d.sch,"Scholarship")].filter(Boolean).join("");
- return '<article class="card">'
- +'<div class="card-top"><div><h3 class="uni"><a class="unilink" href="#/u/'+slug(d.u)+'"><span class="flag">'+d.f+"</span>"+esc(d.u)+'</a></h3><p class="cty">'+esc(d.city||"")+(d.city?" · ":"")+esc(d.c)+"</p></div>"
+ return '<article class="card" id="c-'+slug(d.u)+'">'
+ +'<div class="card-top"><div class="ctitle">'+ulogo(d)+'<div><h3 class="uni"><a class="unilink" href="#/u/'+slug(d.u)+'"><span class="flag">'+d.f+"</span>"+esc(d.u)+'</a></h3><p class="cty">'+esc(d.city||"")+(d.city?" · ":"")+esc(d.c)+"</p></div></div>"
  +'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span></div>"
  +'<p class="sch"><b>'+esc(d.s)+'</b><span class="stype">'+esc(d.st)+"</span></p>"
  +'<p class="covers"><span class="k">How it works · </span>'+esc(d.cov)+"</p>"
  +'<div class="majors">'+mp(d.me,"Mech Eng","me")+mp(d.cs,"CS","cs")+mp(d.se,"Software Eng","se")+mp(d.math,"Maths","math")+mp(d.pmath,"Pure Maths","pmath")+mp(d.amath,"Applied Maths","amath")+mp(d.stats,"Stats","stats")+mp(d.neuro,"Neuro","neuro")+mp(d.aero,"Aero","aero")+"</div>"
  +(d.note?'<p class="note">'+esc(d.note)+"</p>":"")
+ +recoLine(d,1)
  +'<div><button class="linkbtn" data-view="'+esc(d.u)+'">See full profile →</button></div>'
  +'<div class="card-foot"><span class="admit">'+esc(d.admit||"")+"</span>"
  +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ In my colleges":"+ Add to my colleges")+"</button></div></div>"
@@ -4880,6 +5018,7 @@ function updateFacets(){
   const grp=l.parentElement;if(grp)grp.classList.toggle("zero",n===0)})}
 
 function bindCardButtons(){
+ bindLogos($("#results"));
  $$("[data-save]").forEach(b=>b.onclick=()=>{const k=b.dataset.save;saved.has(k)?saved.delete(k):saved.add(k);
   store.set("fra2_saved",[...saved]);updSavedCount();render();renderMy()});
  $$("[data-view]").forEach(b=>b.onclick=()=>{location.hash="#/u/"+slug(b.dataset.view)})}
@@ -4911,7 +5050,7 @@ function renderMy(){
  if(!list.length){cmpArea.innerHTML='<p class="empty"><b>No colleges yet.</b><br>Use <b>+ Add to my colleges</b> on any university card.</p>';listArea.innerHTML="";return}
  const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
  const majors=d=>["me","cs","se","math","pmath","amath","stats","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
- cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+d.f+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
+ cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+ulogo(d,"sm")+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
  +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
  +row("Funding level",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
  +row("Fully or partly funded?",d=>({"auto-full":"<b>Fully funded</b> — follows admission","need-full":"<b>Fully funded</b> if your need qualifies","comp-full":"<b>Fully funded</b> if you win the award","full-tuition":"Tuition only — living costs on you","tuition-free":"No tuition — living costs on you","low-tuition":"Low fees — mostly self-funded","partial":"Partly funded — mostly self-funded"})[d.tier])
@@ -5181,6 +5320,7 @@ function renderUni(d){
  const A=APPLY[d.u]||null;
  const P=promptsFor(d);
  const drafts=store.get("fra2_essays",{})[s]||{};
+ const AR=accRound(d);
  const majors=[["me","Mechanical Engineering"],["cs","Computer Science"],["se","Software Engineering (dedicated)"],["math","Mathematics"],["pmath","Pure Mathematics"],["amath","Applied Mathematics"],["stats","Statistics"],["neuro","Neuroscience"],["aero","Aerospace Engineering"]];
  let essayHTML;
  if(A&&A.essays){
@@ -5205,7 +5345,7 @@ function renderUni(d){
  $("#uniInner").innerHTML=
  '<button class="up-back" id="upBack">← Back to all universities</button>'
  +'<header class="up-head"><p class="eyebrow">'+esc(d.c)+(d.city?" · "+esc(d.city):"")+"</p>"
- +"<h1>"+d.f+" "+esc(d.u)+"</h1>"
+ +'<div class="up-title">'+ulogo(d,"lg")+"<h1>"+d.f+" "+esc(d.u)+"</h1></div>"
  +'<div class="up-kicker"><span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span><span>"+esc(d.type||"")+"</span><span><b>"+esc(d.s)+"</b> · "+esc(d.st)+"</span></div></header>"
  +'<section class="up-sec"><h2>Official links</h2><div class="linksrow" style="font-size:14px">'
  +[link(d.w,"University website"),link(d.fa,"Financial aid page"),link(d.adm,"Admissions office"),(d.npc?link(d.npc,"Net price calculator"):'<span>Net price calculator: '+NV+"</span>"),link(d.sch,"Scholarship page")].filter(Boolean).join(" &nbsp;·&nbsp; ")+"</div></section>"
@@ -5214,6 +5354,12 @@ function renderUni(d){
  +kvBox("Platform",d.plat)+kvBox("Tests & documents",d.req)+kvBox("Deadlines (typical — verify)",d.dl)
  +(d.sdl?kvBox("Scholarship deadline (community-sourced — verify)",d.sdl):"")+"</div>"
  +'<p class="up-para"><span class="k">Advice for applicants · </span>'+esc(d.adv||ADV_TIER[d.tier])+"</p></section>"
+ +'<section class="up-sec"><h2>Acceptance rate — early vs regular</h2><div class="up-grid">'
+ +kvBox("Overall (≈)",d.acc)+kvBox("Early round",AR.early)+kvBox("Regular round",AR.reg)+"</div>"
+ +(AR.note?'<p class="up-para"><span class="k">Round-level note · </span>'+esc(AR.note)+"</p>":"")
+ +'<div class="recowrap">'+recoLine(d,0)+"</div>"
+ +(AR.single?"":'<p class="eguide" style="margin-top:10px">Round-level rates are approximate and drawn from recent cycles — confirm them in the university\'s own Common Data Set before planning around them. A higher early rate is never pure advantage: early pools are self-selected and, in the US, include recruited athletes and legacy applicants.</p>')
+ +"</section>"
  +'<section class="up-sec"><h2>Selectivity &amp; financial aid</h2><div class="up-grid">'
  +kvBox("Acceptance rate (≈)",d.acc)+kvBox("Average aid to internationals",d.aidAvg)
  +kvBox("Full rides / % fully funded",d.frp||"Rarely published — ask the aid office directly")
@@ -5249,13 +5395,37 @@ function renderUni(d){
    out.textContent=c+" / "+n+" "+unit;out.classList.toggle("over",c>n)};
   t.addEventListener("input",()=>{upd();const all=store.get("fra2_essays",{});(all[s]=all[s]||{})[i]=t.value;store.set("fra2_essays",all)});
   upd()});
+ bindLogos($("#uniInner"));
  window.scrollTo(0,0)}
+
+/* Remember exactly where the reader was before opening a profile, so going back
+   returns to the same card, in the same tab, at the same scroll position. */
+let backMark=null,flashT=null;
+function restoreHome(m){
+ if(m.tab)gotoTab(m.tab);
+ const c=document.getElementById("c-"+m.slug);
+ const settle=()=>{
+  window.scrollTo(0,m.y);
+  if(!c)return;
+  const vh=window.innerHeight||document.documentElement.clientHeight||0;
+  const r=c.getBoundingClientRect();
+  /* only nudge if the card really is off-screen — e.g. the list was refiltered */
+  if(vh&&(r.top<8||r.bottom>vh-8))c.scrollIntoView({block:"center"});
+  c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash");
+  clearTimeout(flashT);flashT=setTimeout(()=>c.classList.remove("flash"),1900)};
+ settle();                      /* immediate, so it works in a background tab */
+ requestAnimationFrame(settle)} /* again once layout has settled */
 function router(){
  const m=/^#\/u\/(.+)$/.exec(location.hash||"");
  const d=m&&BY_SLUG[m[1]];
+ const onProfile=$("#uniPage").classList.contains("on");
+ if(d&&!onProfile){
+  const t=$$(".panel").find(p=>p.classList.contains("on"));
+  backMark={slug:m[1],y:window.scrollY,tab:t?t.id:"pUni"}}
  $("#homeWrap").style.display=d?"none":"";
  $("#uniPage").classList.toggle("on",!!d);
- if(d)renderUni(d)}
+ if(d){renderUni(d)}
+ else if(backMark){const b=backMark;backMark=null;restoreHome(b)}}
 window.addEventListener("hashchange",router);
 
 /* compare bar (inject) */
