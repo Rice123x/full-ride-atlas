@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Full-Ride Atlas — Scholarships for A-level & SAT Students</title>
 <style>
   :root{
@@ -59,7 +60,7 @@
   a{color:var(--link)}
   html{-webkit-text-size-adjust:100%}
   body{
-    margin:0; background:var(--bg); color:var(--ink);
+    margin:0; background:var(--bg); color:var(--ink); overflow-wrap:break-word;
     font:16.5px/1.62 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
   }
   button,input,select,textarea,.chip,.tab,.flabel,.badge,.mpill,.tag,.eyebrow,.counter,
@@ -145,13 +146,13 @@
   .region{scroll-margin-top:96px}
 
   /* ---------- back to top ---------- */
-  .totop{position:fixed; right:18px; bottom:18px; z-index:45; appearance:none; cursor:pointer;
+  .totop{position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom)); z-index:45; appearance:none; cursor:pointer;
     background:var(--surface); color:var(--ink); border:1px solid var(--line2); border-radius:999px;
     padding:9px 15px; font-size:12.5px; font-weight:700; box-shadow:var(--shadow); display:none;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
   .totop.on{display:block}
   .totop:hover{border-color:var(--ink)}
-  @media (max-width:640px){.totop{right:12px; bottom:66px; padding:8px 13px}}
+
   .tab{appearance:none; background:none; border:none; padding:10px 15px; font-size:14px; font-weight:600;
        color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap}
   .tab.on{color:var(--ink); border-bottom-color:var(--accent)}
@@ -183,7 +184,13 @@
   .chip.zero .n{opacity:1}
   .ctygroup.zero{opacity:.4}
   .ctylab .rn{color:var(--muted); font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:0}
-  #ctyChips{flex-direction:column; align-items:stretch; gap:10px}
+  #ctyChips{flex-direction:column; align-items:stretch; gap:10px; margin-top:9px}
+  .ctybox>summary{cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+  .ctybox>summary::-webkit-details-marker{display:none}
+  .ctybox>summary::after{content:"▸"; color:var(--muted); font-size:11px}
+  .ctybox[open]>summary::after{content:"▾"}
+  .ctysum{font-size:12px; color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
   .ctygroup{display:flex; flex-direction:column; gap:5px}
   .ctylab{font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); font-weight:700;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
@@ -323,13 +330,14 @@
   .empty b{color:var(--ink)}
 
   /* ---------- compare ---------- */
-  .cmpbar{position:fixed; left:50%; transform:translateX(-50%); bottom:14px; z-index:40;
+  .cmpbar{position:fixed; left:50%; transform:translateX(-50%); z-index:40;
+    bottom:calc(14px + env(safe-area-inset-bottom));
     background:var(--chip-on-bg); color:var(--chip-on-ink); border-radius:999px; padding:9px 18px;
     font-size:13.5px; font-weight:600; box-shadow:var(--shadow); display:none; gap:14px; align-items:center; max-width:92vw}
   .cmpbar.on{display:flex}
   .cmpbar button{appearance:none; border:none; background:var(--chip-on-ink); color:var(--chip-on-bg); border-radius:999px; padding:5px 13px; font-weight:700; font-size:12.5px; cursor:pointer}
   .cmpbar .clr{background:none; color:inherit; opacity:.7; padding:5px 4px}
-  .tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow); margin-top:20px}
+  .tblwrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow); margin-top:20px}
   table.cmp{border-collapse:collapse; min-width:640px; width:100%; font-size:13px}
   table.cmp th,table.cmp td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
   table.cmp th{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); white-space:nowrap; background:var(--surface2)}
@@ -426,6 +434,79 @@
     .card:hover{border-color:var(--line2)}
   }
   @media (max-width:640px){.snap{grid-template-columns:1fr 1fr}}
+
+  .swipehint{display:none; font-size:11.5px; color:var(--muted); margin:16px 0 -12px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+
+  /* ================= phones =================
+     The page is built for a wide screen; below 700px it becomes one column,
+     touch targets grow, and every form control goes to 16px so iOS Safari
+     stops zooming the page whenever a field is focused. */
+  @media (max-width:700px){
+    .wrap{padding:0 14px 96px}
+    header{padding:26px 0 0}
+    .masthead{gap:10px}
+    h1{font-size:30px}
+    .lede{font-size:15.5px}
+
+    /* one column everywhere a grid was sized for a desktop */
+    .grid{grid-template-columns:1fr; gap:13px}
+    .legend-grid{grid-template-columns:1fr; gap:14px; padding:13px}
+    .steps{grid-template-columns:1fr; gap:11px}
+    .tabmap{grid-template-columns:1fr}
+    .advgrid{grid-template-columns:1fr; gap:12px}
+    .up-grid{grid-template-columns:1fr}
+    .two{grid-template-columns:1fr}
+    .fgrid{grid-template-columns:1fr}
+
+    /* panels lose their generous desktop padding */
+    .filters{padding:14px; margin:16px 0 8px; gap:12px}
+    .card{padding:14px 14px 12px}
+    .up-sec{padding:16px 15px; margin-top:13px}
+    .box{padding:15px 16px}
+    .guide{padding:13px 15px}
+
+    /* touch targets: roughly 34-44px tall rather than 24px */
+    .chip{padding:7px 13px; font-size:13.5px}
+    .majormode .chip{padding:5px 11px}
+    .seg button{padding:11px 15px; font-size:14.5px; flex:1 1 auto; text-align:center}
+    .seg{width:100%}
+    .tab{padding:13px 14px}
+    .linkbtn{padding:7px 3px}
+    .cbtn{padding:8px 12px}
+    .jump button{padding:7px 13px}
+    .totop{right:12px; bottom:calc(64px + env(safe-area-inset-bottom)); padding:11px 16px}
+
+    /* 16px stops iOS from zooming the viewport when a field takes focus */
+    input[type=search],input[type=text],input[type=number],select,textarea,.essaybox{font-size:16px}
+    #q{max-width:none}
+    .dlrow input{max-width:none}
+
+    /* the region jump bar becomes one swipeable row instead of four stacked ones */
+    .jump{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch;
+      scrollbar-width:none; padding-bottom:3px; margin-top:14px}
+    .jump::-webkit-scrollbar{display:none}
+    .jump button{flex:none}
+    .jump .jl{flex:none}
+
+    .up-title{gap:11px}
+    .ulogo.lg{width:44px; height:44px; border-radius:9px}
+    .ulogo.lg i{font-size:15px}
+    .up-head h1{font-size:26px}
+    .region{margin-top:26px; scroll-margin-top:74px}
+    .region h2{font-size:19px}
+
+    .cmpbar{font-size:12.5px; padding:8px 13px; gap:9px; max-width:calc(100vw - 20px)}
+    .cmpbar button{padding:6px 11px; font-size:12px}
+    .tabhint{font-size:12px}
+    .swipehint{display:block}
+  }
+  @media (max-width:380px){
+    .wrap{padding:0 11px 96px}
+    h1{font-size:27px}
+    .seg button{padding:10px 11px; font-size:13.5px}
+    .cmpbar .clr{display:none}
+  }
   @media print{
     .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv,.jump,.totop,.guide,.tabhint{display:none!important}
     .panel{display:block!important}
@@ -529,8 +610,10 @@
     <div class="chips" id="tierChips"></div>
   </div>
   <div class="frow">
-    <span class="flabel">Country</span>
-    <div class="chips" id="ctyChips"></div>
+    <details class="ctybox" id="ctyBox" open>
+      <summary><span class="flabel">Country</span><span class="ctysum" id="ctySum"></span></summary>
+      <div class="chips" id="ctyChips"></div>
+    </details>
   </div>
   <div class="frow">
     <span class="flabel">Search</span>
@@ -5129,7 +5212,10 @@ const TAB_HINT={
 function gotoTab(id){
  $$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});
  $$(".panel").forEach(p=>p.classList.toggle("on",p.id===id));
- const h=$("#tabHint");if(h)h.innerHTML=TAB_HINT[id]||""}
+ const h=$("#tabHint");if(h)h.innerHTML=TAB_HINT[id]||"";
+ /* the tab strip scrolls sideways on a phone — keep the live tab in view */
+ const t=$('.tab[data-p="'+id+'"]');
+ if(t&&t.scrollIntoView)t.scrollIntoView({inline:"center",block:"nearest"})}
 
 /* tier + country chips */
 const tierWrap=$("#tierChips");
@@ -5322,6 +5408,8 @@ function updateFacets(){
   const el=b.querySelector(".n");if(el)el.textContent=n;
   b.classList.toggle("zero",n===0);
   const rg=(REGION_OF[b.dataset.c]||"");perRegion[rg]=(perRegion[rg]||0)+n});
+ const cs=$("#ctySum");
+ if(cs)cs.textContent=state.ctys.size?state.ctys.size+" selected — tap to change":"all countries — tap to narrow";
  $$("#ctyChips .ctylab").forEach(l=>{
   const n=perRegion[l.dataset.rg]||0;
   const el=l.querySelector(".rn");if(el)el.textContent="· "+n;
@@ -5360,7 +5448,7 @@ function renderMy(){
  if(!list.length){cmpArea.innerHTML='<p class="empty"><b>No colleges yet.</b><br>Use <b>+ Add to my colleges</b> on any university card.</p>';listArea.innerHTML="";return}
  const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
  const majors=d=>["me","cs","se","math","pmath","amath","stats","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
- cmpArea.innerHTML='<div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+ulogo(d,"sm")+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
+ cmpArea.innerHTML='<p class="swipehint">Swipe the table sideways to see every university →</p><div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+ulogo(d,"sm")+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
  +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
  +row("Funding level",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
  +row("Fully or partly funded?",d=>({"auto-full":"<b>Fully funded</b> — follows admission","need-full":"<b>Fully funded</b> if your need qualifies","comp-full":"<b>Fully funded</b> if you win the award","full-tuition":"Tuition only — living costs on you","tuition-free":"No tuition — living costs on you","low-tuition":"Low fees — mostly self-funded","partial":"Partly funded — mostly self-funded"})[d.tier])
@@ -5753,7 +5841,9 @@ window.addEventListener("hashchange",router);
 
 /* the start-here guide opens itself until the reader dismisses it */
 (function(){const g=$("#guide");if(!g)return;
- g.open=!store.get("fra2_guide_done",false);
+ /* on a phone the expanded guide is a full screen of reading before the first
+    result — leave the summary as the affordance and let the reader open it */
+ g.open=!store.get("fra2_guide_done",false)&&!matchMedia("(max-width:700px)").matches;
  const c=$("#guideClose");
  if(c)c.onclick=()=>{store.set("fra2_guide_done",true);g.open=false};
  g.addEventListener("toggle",()=>{if(!g.open)store.set("fra2_guide_done",true)})})();
@@ -5766,6 +5856,7 @@ $("#cmpClr").onclick=()=>{saved.clear();store.set("fra2_saved",[]);renderCmpBar(
 /* init */
 $("#nSaved").textContent=saved.size?"("+saved.size+")":"";
 buildCtyChips();
+{const cb=$("#ctyBox");if(cb&&matchMedia("(max-width:700px)").matches)cb.open=false}
 render();renderCmpBar();renderMy();renderGovt();gotoTab("pUni");router();
 /* gov scholarship filters */
 $$("#gCov .chip").forEach(b=>b.onclick=()=>{gstate.cov=b.dataset.v;$$("#gCov .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
