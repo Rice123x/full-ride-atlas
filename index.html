@@ -207,6 +207,14 @@
   .reco.r-care{border-left-color:var(--v-ink)}
   .reco.r-reg{border-left-color:var(--t-ink)}
   .reco.r-none{border-left-color:var(--line2)}
+  .feeline{margin:0; font-size:12.5px; color:var(--muted)}
+  .feeline .k{color:var(--muted)}
+  .wtag{margin-left:7px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:1px 6px; border-radius:4px; vertical-align:1px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .wtag.w-free{background:var(--g-bg); color:var(--g-ink)}
+  .wtag.w-waiver{background:var(--t-bg); color:var(--t-ink)}
+  .wtag.w-none{background:var(--s-bg); color:var(--s-ink)}
   .recowrap{margin-top:14px}
   .up-sec .reco{font-size:14px}
   .card.flash{outline:2px solid var(--line2); outline-offset:3px; animation:flashfade 1.8s ease-out}
@@ -462,6 +470,7 @@
   <details class="adv">
     <summary>More filters</summary>
     <div class="advgrid">
+      <div class="frow"><span class="flabel">Application fee</span><div class="chips" data-f="fee"><button class="chip on" data-v="">Any</button><button class="chip" data-v="ok">Free or waiver</button><button class="chip" data-v="free">No fee at all</button><button class="chip" data-v="waiver">Waiver available</button></div></div>
       <div class="frow"><span class="flabel">Need-blind for internationals</span><div class="chips" data-f="blind"><button class="chip on" data-v="">Any</button><button class="chip" data-v="1">Yes</button></div></div>
       <div class="frow"><span class="flabel">Meets 100% need (intl)</span><div class="chips" data-f="m100"><button class="chip on" data-v="">Any</button><button class="chip" data-v="1">Yes</button></div></div>
       <div class="frow"><span class="flabel">Merit scholarships</span><div class="chips" data-f="merit"><button class="chip on" data-v="">Any</button><button class="chip" data-v="1">Yes</button></div></div>
@@ -4838,7 +4847,7 @@ const NV='<span class="nv">Needs verification</span>';
 const link=(u,t)=>u?'<a href="https://'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>':"";
 
 const state={majors:new Set(),majorMode:"any",tiers:new Set(TIERS.map(t=>t[0])),ctys:new Set(),q:"",
- adv:{blind:"",m100:"",merit:"",govt:"",type:"",rtop:"",atop:"",eng:"",plat:"",dlt:"",sort:""}};
+ adv:{fee:"",blind:"",m100:"",merit:"",govt:"",type:"",rtop:"",atop:"",eng:"",plat:"",dlt:"",sort:""}};
 let saved=new Set(store.get("fra2_saved",[]));
 
 /* header counts */
@@ -4934,6 +4943,26 @@ $("#reset").onclick=()=>{
  $$(".advgrid .chips[data-f]").forEach(g=>g.querySelectorAll(".chip").forEach((x,i)=>x.classList.toggle("on",i===0)));
  render()};
 
+/* Application-fee waivers. Read from each university's own fee wording; the one
+   inference made is the Common App fee waiver, which is granted on financial
+   need and honoured by every Common App member college. Anything else is
+   reported as unknown rather than assumed. */
+function feeWaiver(d){
+ const A=APPLY[d.u];
+ const t=(((A&&A.fee)||"")+" "+(d.fee||"")).trim();
+ if(/no waiver|not waived/i.test(t))
+  return{k:"none",lab:"No waiver",how:"This university states it does not waive the application fee — budget for it."};
+ if(/no application fee/i.test(t))
+  return{k:"free",lab:"No fee",how:/uni-assist|handling/i.test(t)
+   ?"The university itself charges nothing, but a separate handling fee applies — see the fee line above."
+   :"There is no application fee to pay."};
+ if(/waiv/i.test(t))
+  return{k:"waiver",lab:"Waiver",how:"A fee waiver is available — request it in the application portal, normally on financial need."};
+ if(/common app/i.test(d.plat||""))
+  return{k:"waiver",lab:"Waiver",how:"Common App member: the Common App fee waiver is granted on financial need and honoured by every member college, so you can apply here free if you qualify."};
+ if(!t)return{k:"unknown",lab:"",how:"No fee information on file — check the admissions page."};
+ return{k:"unknown",lab:"",how:"No waiver information on file. Ask the admissions office directly — many universities grant waivers on request even when they do not advertise them."};
+}
 function accNum(d){const m=/(\d+(\.\d+)?)/.exec(d.acc||"");return m?parseFloat(m[1]):null}
 function matches(d,skip){
  if(state.majors.size){const ks=[...state.majors];
@@ -4941,6 +4970,9 @@ function matches(d,skip){
  if(skip!=="tier"&&!state.tiers.has(d.tier))return false;
  if(skip!=="cty"&&state.ctys.size&&!state.ctys.has(d.c))return false;
  const a=state.adv;
+ if(a.fee){const k=feeWaiver(d).k;
+  if(a.fee==="ok"){if(k!=="free"&&k!=="waiver")return false}
+  else if(k!==a.fee)return false}
  if(a.blind&&d.blind!==1)return false;
  if(a.m100&&d.m100!==1)return false;
  if(a.merit&&d.merit!==1)return false;
@@ -4967,12 +4999,17 @@ function card(d,i){
  +'<p class="covers"><span class="k">How it works · </span>'+esc(d.cov)+"</p>"
  +'<div class="majors">'+mp(d.me,"Mech Eng","me")+mp(d.cs,"CS","cs")+mp(d.se,"Software Eng","se")+mp(d.math,"Maths","math")+mp(d.pmath,"Pure Maths","pmath")+mp(d.amath,"Applied Maths","amath")+mp(d.stats,"Stats","stats")+mp(d.neuro,"Neuro","neuro")+mp(d.aero,"Aero","aero")+"</div>"
  +(d.note?'<p class="note">'+esc(d.note)+"</p>":"")
+ +feeLine(d)
  +recoLine(d,1)
  +'<div><button class="linkbtn" data-view="'+esc(d.u)+'">See full profile →</button></div>'
  +'<div class="card-foot"><span class="admit">'+esc(d.admit||"")+"</span>"
  +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ In my colleges":"+ Add to my colleges")+"</button></div></div>"
  +"</article>"}
 
+function feeLine(d){
+ const A=APPLY[d.u],txt=(A&&A.fee)||d.fee,w=feeWaiver(d);
+ return '<p class="feeline"><span class="k">Application fee · </span>'+esc(txt||"Not on file — verify")
+  +(w.lab?'<span class="wtag w-'+w.k+'">'+w.lab+"</span>":"")+"</p>"}
 function majorPhrase(){
  const l=[...state.majors].map(k=>MAJOR_LABEL[k]);
  if(!l.length)return "";
@@ -5320,7 +5357,7 @@ function renderUni(d){
  const A=APPLY[d.u]||null;
  const P=promptsFor(d);
  const drafts=store.get("fra2_essays",{})[s]||{};
- const AR=accRound(d);
+ const AR=accRound(d),FW=feeWaiver(d);
  const majors=[["me","Mechanical Engineering"],["cs","Computer Science"],["se","Software Engineering (dedicated)"],["math","Mathematics"],["pmath","Pure Mathematics"],["amath","Applied Mathematics"],["stats","Statistics"],["neuro","Neuroscience"],["aero","Aerospace Engineering"]];
  let essayHTML;
  if(A&&A.essays){
@@ -5350,7 +5387,8 @@ function renderUni(d){
  +'<section class="up-sec"><h2>Official links</h2><div class="linksrow" style="font-size:14px">'
  +[link(d.w,"University website"),link(d.fa,"Financial aid page"),link(d.adm,"Admissions office"),(d.npc?link(d.npc,"Net price calculator"):'<span>Net price calculator: '+NV+"</span>"),link(d.sch,"Scholarship page")].filter(Boolean).join(" &nbsp;·&nbsp; ")+"</div></section>"
  +'<section class="up-sec"><h2>Application</h2><div class="up-grid">'
- +kvBox("Application fee",d.fee||"Varies — check the portal; fee waivers are often granted on request")
+ +kvBox("Application fee",(A&&A.fee)||d.fee||"Varies — check the portal; fee waivers are often granted on request")
+ +kvBox("Fee waiver",FW.how)
  +kvBox("Platform",d.plat)+kvBox("Tests & documents",d.req)+kvBox("Deadlines (typical — verify)",d.dl)
  +(d.sdl?kvBox("Scholarship deadline (community-sourced — verify)",d.sdl):"")+"</div>"
  +'<p class="up-para"><span class="k">Advice for applicants · </span>'+esc(d.adv||ADV_TIER[d.tier])+"</p></section>"
