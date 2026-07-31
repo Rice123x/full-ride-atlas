@@ -106,7 +106,52 @@
   .badge.partial{background:var(--a-bg); color:var(--a-ink)}
 
   /* ---------- tabs ---------- */
-  .tabbar{display:flex; gap:2px; overflow-x:auto; margin:28px 0 0; border-bottom:1px solid var(--line); scrollbar-width:thin}
+  .tabbar{display:flex; gap:2px; overflow-x:auto; margin:28px 0 0; border-bottom:1px solid var(--line); scrollbar-width:thin;
+    position:sticky; top:0; z-index:30; background:var(--bg)}
+  .tabhint{font-size:12.5px; color:var(--muted); margin:9px 0 0; max-width:80ch;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .tabhint b{color:var(--ink); font-weight:650}
+
+  /* ---------- start-here guide ---------- */
+  .guide{background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:14px 18px; margin:18px 0 0; box-shadow:var(--shadow)}
+  .guide>summary{cursor:pointer; font-size:13.5px; font-weight:700; list-style:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .guide>summary::-webkit-details-marker{display:none}
+  .guide>summary::after{content:" ▸"; color:var(--muted)}
+  .guide[open]>summary::after{content:" ▾"; color:var(--muted)}
+  .steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; margin-top:14px}
+  .step{border-top:1px solid var(--line2); padding-top:9px}
+  .step .sn{font-size:10.5px; letter-spacing:.12em; font-weight:700; color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .step h4{margin:3px 0 3px; font-size:14.5px; font-weight:650}
+  .step p{margin:0; font-size:13px; color:var(--muted)}
+  .tabmap{margin-top:16px; border-top:1px solid var(--line); padding-top:13px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:7px 20px}
+  .tabmap div{font-size:12.5px; color:var(--muted)}
+  .tabmap b{color:var(--ink); font-weight:650}
+  .guide .gclose{margin-top:14px; appearance:none; background:none; border:none; padding:0;
+    color:var(--muted); font-size:12.5px; font-weight:600; cursor:pointer; text-decoration:underline}
+
+  /* ---------- jump-to-region bar ---------- */
+  .jump{display:flex; flex-wrap:wrap; gap:6px; align-items:baseline; margin:18px 0 0}
+  .jump .jl{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:700;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; margin-right:2px}
+  .jump button{appearance:none; cursor:pointer; background:var(--surface2); border:1px solid var(--line);
+    color:var(--ink); border-radius:999px; padding:3px 11px; font-size:12.5px; font-weight:600;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .jump button:hover{border-color:var(--line2)}
+  .jump button .n{color:var(--muted); margin-left:5px; font-variant-numeric:tabular-nums}
+  .region{scroll-margin-top:96px}
+
+  /* ---------- back to top ---------- */
+  .totop{position:fixed; right:18px; bottom:18px; z-index:45; appearance:none; cursor:pointer;
+    background:var(--surface); color:var(--ink); border:1px solid var(--line2); border-radius:999px;
+    padding:9px 15px; font-size:12.5px; font-weight:700; box-shadow:var(--shadow); display:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .totop.on{display:block}
+  .totop:hover{border-color:var(--ink)}
+  @media (max-width:640px){.totop{right:12px; bottom:66px; padding:8px 13px}}
   .tab{appearance:none; background:none; border:none; padding:10px 15px; font-size:14px; font-weight:600;
        color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap}
   .tab.on{color:var(--ink); border-bottom-color:var(--accent)}
@@ -382,7 +427,7 @@
   }
   @media (max-width:640px){.snap{grid-template-columns:1fr 1fr}}
   @media print{
-    .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv{display:none!important}
+    .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv,.jump,.totop,.guide,.tabhint{display:none!important}
     .panel{display:block!important}
     #pEssays,#pActs,#pHonors,#pAI{display:none!important}
     .card{break-inside:avoid; box-shadow:none}
@@ -391,6 +436,7 @@
 </style>
 <script>try{document.documentElement.setAttribute("data-theme",JSON.parse(localStorage.getItem("fra2_theme"))||"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
 
+<button class="totop" id="toTop" type="button" title="Back to top">↑ Top</button>
 <div class="wrap" id="homeWrap">
 <header>
   <div class="masthead">
@@ -401,6 +447,28 @@
     <button class="themebtn" id="themeBtn" type="button">Light</button>
   </div>
   <p class="lede">Universities and scholarships that can fund a <strong>full bachelor's degree</strong> for international students applying with <strong>A-levels and the SAT</strong>.</p>
+
+  <details class="guide" id="guide">
+    <summary>New here? How to use this site</summary>
+    <div class="steps">
+      <div class="step"><p class="sn">STEP 1</p><h4>Narrow the list</h4><p>Pick your majors and funding level. Every count updates as you go, so a country chip showing 0 means that combination does not exist — not that the filter broke.</p></div>
+      <div class="step"><p class="sn">STEP 2</p><h4>Shortlist as you read</h4><p>Hit <b>+ Add to my colleges</b> on anything promising. Your list is saved in this browser and survives closing the tab.</p></div>
+      <div class="step"><p class="sn">STEP 3</p><h4>Open the full profile</h4><p>Click a university's name for its fees, deadlines, early-versus-regular acceptance rates and essay boxes. Going back returns you to the same card.</p></div>
+      <div class="step"><p class="sn">STEP 4</p><h4>Work through the tools</h4><p>The tabs above run roughly in application order — money first, then deadlines, then the writing.</p></div>
+    </div>
+    <div class="tabmap">
+      <div><b>Universities</b> — the searchable atlas of funded places.</div>
+      <div><b>My Colleges</b> — your shortlist, side by side, with a checklist per university.</div>
+      <div><b>Scholarships</b> — government, provincial and foundation money you apply for separately.</div>
+      <div><b>Financial Aid</b> — what the aid forms want and how to ask for more.</div>
+      <div><b>ED / EA / REA / RD</b> — what each US round commits you to.</div>
+      <div><b>Essay Helper</b> — worked examples and what admissions readers look for.</div>
+      <div><b>Activities Builder</b> — your Common App activities list, within its character limits.</div>
+      <div><b>Honors Builder</b> — the five honours slots, written to fit.</div>
+      <div><b>AI Assistant</b> — prompts that improve your writing without inventing anything.</div>
+    </div>
+    <button class="gclose" id="guideClose" type="button">Got it — hide this guide</button>
+  </details>
 
   <details class="legend" id="legend">
     <summary>What the funding labels mean</summary>
@@ -431,6 +499,7 @@
   <button class="tab" role="tab" aria-selected="false" data-p="pHonors">Honors Builder</button>
   <button class="tab" role="tab" aria-selected="false" data-p="pAI">AI Assistant</button>
 </nav>
+<p class="tabhint" id="tabHint"></p>
 
 <!-- ================= UNIVERSITIES ================= -->
 <section class="panel on" id="pUni" role="tabpanel">
@@ -493,6 +562,7 @@
     </div>
   </div>
 </section>
+<div class="jump" id="jumpBar" hidden></div>
 <main id="results"></main>
 </section>
 
@@ -4456,14 +4526,14 @@ const GOVT=[
  lang:"English",
  w:"risefortheworld.org",
  note:"Age-gated, so it must be applied for before your final school years. If you are 15–17 this is one of the highest-leverage applications available anywhere."},
-{n:"Malaysian sponsors — JPA, Khazanah, Petronas, Bank Negara",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
- pays:"Typically full tuition, living allowance, flights and insurance for study in Malaysia or abroad",
- elig:"Malaysian citizens with strong SPM, A-level, STPM or matriculation results",
- how:"Separate applications: JPA (Public Service Department) via the government portal; Yayasan Khazanah, Petronas Education Sponsorship, Bank Negara Kijang, Shell, Sime Darby, Maybank and MARA each run their own",
- dl:"Most open between February and May, shortly after results",
+{n:"Malaysia — how home sponsorship works (start here)",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Typically full tuition, living allowance, flights and insurance for study in Malaysia or abroad, depending on the sponsor",
+ elig:"Malaysian citizens with strong SPM, A-level, STPM or matriculation results; some schemes add their own criteria",
+ how:"There is no single application. JPA (Public Service Department) runs through the government portal; Yayasan Khazanah, Bank Negara Kijang, PETRONAS, MARA, Yayasan Sime Darby, Shell, Maybank and the Jeffrey Cheah Foundation each run separate rounds — the individual cards below cover the main ones",
+ dl:"Most open between February and May, shortly after results — but several open earlier, so track them individually",
  lang:"English",
  w:"jpa.gov.my",
- note:"If you are Malaysian, these are frequently the most winnable full rides available to you — and far less competitive than MEXT or GKS. Most carry a return-service bond, so read the terms."},
+ note:"If you are Malaysian these are frequently the most winnable full rides available to you, and far less competitive than MEXT or GKS. Three things decide whether one works for you: is your intended major eligible, is it a scholarship or a convertible loan, and what service bond does it carry?"},
 {n:"Singapore PSC & corporate scholarships",c:"Singapore",f:"🇸🇬",r:"Home-country sponsors",cov:"full",ug:1,
  pays:"Full tuition, living allowance and flights for study in Singapore or overseas",
  elig:"Singapore citizens and permanent residents with outstanding results",
@@ -4570,7 +4640,182 @@ const GOVT=[
  dl:"Varies by award",
  lang:"English",
  w:"globalscholarships.com/scholarship-search/bachelors",
- note:"Useful for smaller, country-specific and one-off awards. Treat every listing as a lead to verify, not a fact — aggregator sites go stale quickly."}
+ note:"Useful for smaller, country-specific and one-off awards. Treat every listing as a lead to verify, not a fact — aggregator sites go stale quickly."},
+/* ---- Malaysian sponsors, split out of the overview entry ---- */
+{n:"Yayasan Khazanah Global Scholarship",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Tuition, living allowance, flights, insurance and a study allowance for a full undergraduate degree at a leading overseas or Malaysian university",
+ elig:"Malaysian citizens with outstanding academic results and a real leadership record; applicants normally already hold or expect an offer from a highly ranked university",
+ how:"Online application in the annual round, then written assessment, assessment centre and panel interview",
+ dl:"Cycle usually opens in the last quarter of the year — verify the dates each intake",
+ lang:"English",
+ w:"yayasankhazanah.com.my",
+ note:"Among the most generous awards open to Malaysians, and it funds the whole degree rather than fees alone. Check the current service-obligation terms before accepting — Malaysian sponsorships commonly carry one."},
+{n:"Bank Negara Malaysia Kijang Scholarship",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Full tuition, living allowance, flights and insurance for an undergraduate degree, most often in the United Kingdom or the United States",
+ elig:"Malaysian citizens with excellent results applying to top universities; the bank prioritises fields it recruits into, so confirm your intended major qualifies",
+ how:"Apply online in the annual round, then assessment and interview",
+ dl:"Usually early in the calendar year — verify on the Bank Negara careers page",
+ lang:"English",
+ w:"bnm.gov.my",
+ note:"Carries a bond to serve Bank Negara after graduation. Check the eligible fields of study first: this is not an open-subject award, and engineering applicants in particular should confirm before investing in the application."},
+{n:"PETRONAS Education Sponsorship Programme (PESP)",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Tuition and living costs, mainly at Universiti Teknologi PETRONAS, with a smaller sponsored overseas track",
+ elig:"Malaysian citizens; heavily weighted toward engineering, geoscience and technology",
+ how:"Apply through the PETRONAS education portal once results are out",
+ dl:"Typically opens after SPM or A-level results — verify each cycle",
+ lang:"English",
+ w:"petronas.com",
+ note:"Comes with a service bond. A strong fit if you want mechanical, chemical or petroleum engineering; a poor one if you want pure mathematics or neuroscience."},
+{n:"MARA sponsorship (Majlis Amanah Rakyat)",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Tuition and living costs for local and overseas degrees, awarded either as a scholarship or as a convertible loan depending on the programme",
+ elig:"Bumiputera Malaysian students, by the scheme's own published criteria",
+ how:"Apply through the MARA portal in the annual intake",
+ dl:"Rounds usually follow SPM and A-level results — verify",
+ lang:"English and Malay",
+ w:"mara.gov.my",
+ note:"Read the offer carefully: MARA funds some students by scholarship and others by convertible loan, and the repayment consequences are completely different. Do not assume which one you have been given."},
+{n:"Yayasan Sime Darby Scholarship",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Tuition, living allowance and related costs for undergraduate study, at Malaysian universities and at selected overseas ones",
+ elig:"Malaysian citizens with strong results and demonstrated community involvement",
+ how:"Online application in the annual round, then interview",
+ dl:"Usually opens in the first half of the year — verify",
+ lang:"English",
+ w:"yayasansimedarby.com",
+ note:"Sustainability, engineering and the sciences are recurring priority areas. Community service genuinely counts here in a way it does not for every Malaysian sponsor."},
+{n:"Jeffrey Cheah Foundation & Sunway scholarships",c:"Malaysia",f:"🇲🇾",r:"Home-country sponsors",cov:"full",ug:1,
+ pays:"Full and partial scholarships at Sunway University and Monash Malaysia, plus Jeffrey Cheah Scholar-Leaders awards toward study at partner universities including Oxford, Cambridge and Harvard",
+ elig:"Mainly Malaysian students; the Scholar-Leaders route needs an offer from a partner university",
+ how:"Apply to Sunway for the university awards; the Scholar-Leaders programme runs its own separate round",
+ dl:"Varies by award — verify on the foundation's site",
+ lang:"English",
+ w:"jcfoundation.my",
+ note:"Worth knowing because the partner-university route is one of the few Malaysian paths that pays toward Oxbridge and the Ivy League without a corporate bond."},
+
+/* ---- European schemes not previously covered ---- */
+{n:"Lithuanian State Scholarships",c:"Lithuania",f:"🇱🇹",r:"Northern Europe",cov:"tuition",ug:1,
+ pays:"A tuition grant, and on some tracks a monthly stipend, for study at a Lithuanian state university",
+ elig:"International students admitted to a Lithuanian higher education institution; some places are reserved for specific partner countries",
+ how:"Apply through the Education Exchanges Support Foundation and your chosen university",
+ dl:"Usually spring, before the academic year — verify",
+ lang:"A growing number of English-taught bachelor's programmes, especially in engineering and IT",
+ w:"smpf.lt",
+ note:"Lithuania is one of the cheapest EU countries to live in, so a tuition-only award goes much further here than the same award in the Netherlands or Ireland."},
+{n:"Austria — OeAD grants and the fee reality",c:"Austria",f:"🇦🇹",r:"Western Europe",cov:"partial",ug:1,
+ pays:"Public universities charge non-EU students roughly €726 per semester; OeAD administers grants and mobility funding on top, mostly at postgraduate level",
+ elig:"International students admitted to an Austrian public university",
+ how:"Apply to the university first; search the OeAD grant database separately for anything you qualify for",
+ dl:"University admission deadlines run to early September for the winter semester — verify",
+ lang:"German for most bachelor's degrees; a limited number of English-taught programmes",
+ w:"grants.at",
+ note:"Austria's value is the low fee, not a large scholarship. Budget roughly €900–1,100 a month for Vienna and treat any grant as a bonus."},
+{n:"Belgium — low public tuition, few undergraduate grants",c:"Belgium",f:"🇧🇪",r:"Western Europe",cov:"partial",ug:1,
+ pays:"Nothing directly at bachelor's level in most cases; the saving is in the fee itself, which is far below UK or US levels",
+ elig:"International students admitted to a Flemish or French-community university",
+ how:"Apply to the university; check its own hardship and merit funds, and the VLIR-UOS and ARES schemes, which are mostly master's level",
+ dl:"Set by each university, commonly spring for non-EEA applicants",
+ lang:"Dutch or French for most bachelor's; English mainly at master's level",
+ w:"studyinbelgium.be",
+ note:"Listed so you do not waste a cycle hunting for a Belgian undergraduate full ride that does not exist. KU Leuven and Ghent are excellent and cheap, but you will be funding your own living costs."},
+{n:"Portugal — international student statute",c:"Portugal",f:"🇵🇹",r:"Southern Europe",cov:"partial",ug:1,
+ pays:"No national full ride; public universities set their own international fee, commonly in the low thousands of euros a year, and some run merit discounts",
+ elig:"Non-EU students admitted under the Estatuto do Estudante Internacional",
+ how:"Apply directly to each university under the international student route, not the national competition used by Portuguese applicants",
+ dl:"Rounds typically run spring to summer — verify per university",
+ lang:"Portuguese for most bachelor's; some English-taught engineering and computing programmes",
+ w:"dges.gov.pt",
+ note:"Instituto Superior Técnico in Lisbon is the standout for engineering. Living costs are among the lowest in Western Europe, which is where the real saving is."},
+{n:"Spain — public university fees and la Caixa",c:"Spain",f:"🇪🇸",r:"Southern Europe",cov:"partial",ug:1,
+ pays:"No national undergraduate scholarship for internationals; public fees are typically modest and set by region. Fundación la Caixa funds study abroad but at postgraduate level",
+ elig:"International students admitted to a Spanish public university; the national MEC grants are for residents",
+ how:"Apply through the UNEDasiss route for international qualifications, then to each university",
+ dl:"UNEDasiss and admission rounds run in the spring — verify",
+ lang:"Spanish for most bachelor's; a growing set of English-taught programmes in Madrid and Barcelona",
+ w:"unedasiss.uned.es",
+ note:"Plan on self-funding living costs. Regional governments run their own aid, so check the region — Catalonia, Madrid and Andalusia differ noticeably."},
+{n:"Greece — English-taught programmes and IKY",c:"Greece",f:"🇬🇷",r:"Southern Europe",cov:"partial",ug:1,
+ pays:"IKY administers state scholarships, largely for Greek nationals and postgraduates; public universities charge international students little or nothing on some programmes",
+ elig:"International students admitted to a Greek public university",
+ how:"Apply through the Ministry of Education's route for foreign nationals, or directly to an English-taught programme",
+ dl:"Usually summer — verify",
+ lang:"Greek for most degrees; a small number of English-taught bachelor's programmes now exist",
+ w:"iky.gr",
+ note:"Worth a look only if a specific English-taught programme fits your subject — otherwise the language requirement makes this impractical from A-levels."},
+
+/* ---- Further Asian routes ---- */
+{n:"JASSO Honors Scholarship (Japan)",c:"Japan",f:"🇯🇵",r:"East Asia",cov:"partial",ug:1,
+ pays:"A monthly stipend for privately financed international students — around ¥48,000 a month at undergraduate level",
+ elig:"Privately financed international students already enrolled at a Japanese university with strong academic standing and demonstrated financial need",
+ how:"Nominated by your university after you enrol — you cannot apply directly from abroad",
+ dl:"Nominations run through the academic year; ask your university's international office",
+ lang:"Japanese for most bachelor's; some English-taught programmes",
+ w:"jasso.go.jp",
+ note:"This is a top-up, not a way in. Combine it with a university tuition reduction, which many Japanese universities grant internationals at 30–100%."},
+{n:"Confucius Institute Scholarship (CIS)",c:"China",f:"🇨🇳",r:"East Asia",cov:"full",ug:1,
+ pays:"Tuition, accommodation, comprehensive insurance and a living stipend for Chinese language and related degrees",
+ elig:"International students, usually recommended by a Confucius Institute, a Chinese embassy or an HSK test centre",
+ how:"Apply through the CIS online system with a recommending institution",
+ dl:"Main round usually closes in the spring",
+ lang:"Chinese — this scheme is built around language study",
+ w:"cis.chinese.cn",
+ note:"Not a route into a mainland engineering degree directly, but a real one into China: a funded language year first can make you competitive for a CSC-funded degree afterwards."},
+{n:"Guangdong, Fujian & Shandong provincial scholarships",c:"China",f:"🇨🇳",r:"East Asia",cov:"tuition",ug:1,
+ pays:"Tuition-level awards, sometimes with accommodation, varying by province and university",
+ elig:"International students at universities in the relevant province",
+ how:"Through the university you are admitted to — provinces allocate quotas to institutions",
+ dl:"Usually spring, set province by province",
+ lang:"Chinese for most bachelor's programmes",
+ w:"campuschina.org",
+ note:"Guangdong covers SYSU, SCUT and SUSTech; Shandong covers Shandong University and Ocean University; Fujian covers Xiamen. Stackable with the national CSC — ask the university which combinations it allows."},
+{n:"South Korea — university awards beyond GKS",c:"South Korea",f:"🇰🇷",r:"East Asia",cov:"tuition",ug:1,
+ pays:"Most Korean universities run their own international tuition reductions of 30–100%, renewed against your GPA",
+ elig:"International undergraduates admitted to the university; usually automatic on admission rather than a separate contest",
+ how:"No separate application at most universities — the award is set from your admission file, so your grades and test scores decide it",
+ dl:"Follows the university's admission rounds, typically September to November for the March intake",
+ lang:"Korean for most degrees; KAIST, POSTECH and the international divisions at Yonsei and Korea teach in English",
+ w:"studyinkorea.go.kr",
+ note:"GKS is the famous route but takes very few people. The quieter path is a strong admission file at KAIST, POSTECH, SNU, Yonsei or Korea, where a large tuition waiver is close to standard for good international applicants."},
+
+/* ---- Global and cross-university programmes ---- */
+{n:"Stamps Scholars",c:"United States",f:"🇺🇸",r:"Global & foundations",cov:"full",ug:1,
+ pays:"At most partner universities, full cost of attendance plus an enrichment fund for research, conferences or study abroad",
+ elig:"Applicants to a Stamps partner university; international eligibility varies by partner, so check the individual university",
+ how:"You do not apply to Stamps directly — apply to the partner university, usually by its early or scholarship deadline, and it nominates candidates",
+ dl:"Tied to each university's scholarship deadline, often 1 November to 1 December",
+ lang:"English",
+ w:"stampsfoundation.org",
+ note:"Runs across dozens of US universities including Georgia Tech, Miami, Purdue and Rice. The deadline trap is that scholarship consideration usually requires the early deadline — miss it and you lose the award even if you are admitted."},
+{n:"Named full rides at specific US universities",c:"United States",f:"🇺🇸",r:"Global & foundations",cov:"full",ug:1,
+ pays:"Full tuition, room, board and often summer funding — these are the largest merit awards in US undergraduate admissions",
+ elig:"Applicants to the specific university; a number are open to internationals, but several are restricted to US citizens — check each one",
+ how:"Separate application or nomination on top of your admission application, almost always with an earlier deadline",
+ dl:"Typically 15 October to 1 December, ahead of the normal application deadline",
+ lang:"English",
+ w:"moreheadcain.org",
+ note:"The ones worth checking: Morehead-Cain (UNC), Robertson (Duke and UNC), Jefferson (UVA), Karsh International (Duke, internationals specifically), Park (NC State), Stamps (many). People lose these purely by missing the earlier deadline."},
+{n:"QuestBridge National College Match",c:"United States",f:"🇺🇸",r:"North America",cov:"full",ug:1,
+ pays:"A four-year full scholarship — tuition, room, board and fees — at a matched partner college, with no parent contribution",
+ elig:"High-achieving students from low-income households. Undocumented and DACA students in the US may apply; students living outside the US are generally not eligible, so confirm the current rules before building a plan around it",
+ how:"One QuestBridge application ranks partner colleges; matched students are bound to attend",
+ dl:"Application usually late September, with match results in early December",
+ lang:"English",
+ w:"questbridge.org",
+ note:"Listed with the eligibility caveat because it is the single largest full-ride route in US admissions and people assume it is open to all internationals. Read the residency rules first."},
+{n:"Schulich Leader Scholarships (Canada)",c:"Canada",f:"🇨🇦",r:"North America",cov:"full",ug:1,
+ pays:"C$100,000 for engineering and C$80,000 for science, technology and mathematics, across a four-year degree at a partner Canadian university",
+ elig:"Nominated students entering a STEM programme at one of about 20 partner universities; eligibility has included Canadian and selected international applicants — confirm the current rules",
+ how:"You must be nominated by your high school, which may nominate a limited number of students — ask your school early",
+ dl:"School nominations usually close in the first quarter of the year",
+ lang:"English or French",
+ w:"schulichleaders.com",
+ note:"The nomination requirement is what catches people out: if your school has never heard of it, no application exists to submit. Raise it with your counsellor a year ahead."},
+{n:"Technology-company scholarships for computing students",c:"Global",f:"💻",r:"Global & foundations",cov:"partial",ug:1,
+ pays:"Cash awards, typically in the hundreds to low thousands, often with a summer programme or mentoring attached",
+ elig:"Undergraduates in computer science and related fields; several are aimed at students under-represented in tech, and regional eligibility varies",
+ how:"Apply directly to each programme — Google's regional scholarships, Amazon Future Engineer and Palantir's scholarships each run their own round",
+ dl:"Mostly announced in the first half of the year",
+ lang:"English",
+ w:"buildyourfuture.withgoogle.com",
+ note:"None of these funds a degree on its own, and the money matters less than the network and internship pipeline they open. Treat them as a supplement to a university award, never as your funding plan."}
 ];
 
 /* ==================== APPLICATION REQUIREMENTS & DECISION PLANS ====================
@@ -4867,12 +5112,24 @@ applyTheme(store.get("fra2_theme","dark"));
 
 /* tabs */
 $$(".tab").forEach(t=>t.addEventListener("click",()=>{
- $$(".tab").forEach(x=>{x.classList.toggle("on",x===t);x.setAttribute("aria-selected",x===t)});
- $$(".panel").forEach(p=>p.classList.toggle("on",p.id===t.dataset.p));
+ gotoTab(t.dataset.p);
  if(t.dataset.p==="pMy")renderMy();
  if(t.dataset.p==="pGov")renderGovt();
 }));
-function gotoTab(id){$$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});$$(".panel").forEach(p=>p.classList.toggle("on",p.id===id))}
+const TAB_HINT={
+ pUni:"<b>Universities</b> — every funded place in the atlas. Filter by major, funding level and country; click a name for the full profile.",
+ pMy:"<b>My Colleges</b> — your shortlist compared side by side, each with its own application checklist. Saved in this browser.",
+ pGov:"<b>Scholarships</b> — government, provincial and foundation money you apply for separately from the university.",
+ pAid:"<b>Financial Aid</b> — which forms each system wants, what they ask for, and how to appeal an offer.",
+ pPlans:"<b>ED / EA / REA / RD</b> — what each US application round commits you to, and which are binding.",
+ pEssays:"<b>Essay Helper</b> — what admissions readers actually look for, with worked examples and common traps.",
+ pActs:"<b>Activities Builder</b> — draft your ten Common App activities inside the real character limits.",
+ pHonors:"<b>Honors Builder</b> — the five honours slots, written to fit the space you get.",
+ pAI:"<b>AI Assistant</b> — prompts that sharpen your own writing. It never invents an achievement for you."};
+function gotoTab(id){
+ $$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});
+ $$(".panel").forEach(p=>p.classList.toggle("on",p.id===id));
+ const h=$("#tabHint");if(h)h.innerHTML=TAB_HINT[id]||""}
 
 /* tier + country chips */
 const tierWrap=$("#tierChips");
@@ -5028,7 +5285,23 @@ function render(){
  $("#count").innerHTML="Showing <b>"+hits.length+"</b> of "+DATA.length+" universities"
   +majorPhrase();
  updateFacets();
+ buildJump(hits,sort);
  bindCardButtons()}
+
+/* Jump-to-region bar: on a list this long, scrolling to Oceania is the slowest
+   thing you can be asked to do. Only shown while the results are grouped by
+   region — sorting by rank or name dissolves the sections it points at. */
+function buildJump(hits,sort){
+ const bar=$("#jumpBar");if(!bar)return;
+ if(sort==="qs"||sort==="name"||!hits.length){bar.hidden=true;bar.innerHTML="";return}
+ const rows=REGIONS.map(r=>[r,hits.filter(d=>d.r===r).length]).filter(x=>x[1]);
+ if(rows.length<2){bar.hidden=true;bar.innerHTML="";return}
+ bar.hidden=false;
+ bar.innerHTML='<span class="jl">Jump to</span>'+rows.map(([r,n])=>
+  '<button type="button" data-jump="'+esc(r)+'">'+esc(r)+'<span class="n">'+n+"</span></button>").join("");
+ bar.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{
+  const sec=[...$$("#results .region h2")].find(h=>h.textContent===b.dataset.jump);
+  if(sec)sec.closest(".region").scrollIntoView({block:"start"})})}
 
 /* Live facet counts: each chip shows how many universities match every OTHER
    active filter (major, search, advanced) — so picking a major re-counts every
@@ -5447,8 +5720,10 @@ function restoreHome(m){
   if(!c)return;
   const vh=window.innerHeight||document.documentElement.clientHeight||0;
   const r=c.getBoundingClientRect();
-  /* only nudge if the card really is off-screen — e.g. the list was refiltered */
-  if(vh&&(r.top<8||r.bottom>vh-8))c.scrollIntoView({block:"center"});
+  /* Keep the exact position whenever the card's title is visible; only rescue a
+     card that has genuinely scrolled out of reach, e.g. after a refilter.
+     70px clears the sticky tab bar. */
+  if(vh&&(r.top<70||r.top>vh-90))c.scrollIntoView({block:"center"});
   c.classList.remove("flash");void c.offsetWidth;c.classList.add("flash");
   clearTimeout(flashT);flashT=setTimeout(()=>c.classList.remove("flash"),1900)};
  settle();                      /* immediate, so it works in a background tab */
@@ -5466,6 +5741,23 @@ function router(){
  else if(backMark){const b=backMark;backMark=null;restoreHome(b)}}
 window.addEventListener("hashchange",router);
 
+/* back to top — the results list runs to tens of thousands of pixels */
+(function(){const b=$("#toTop");if(!b)return;
+ b.onclick=()=>{const y0=window.scrollY,reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  /* if smooth scrolling never starts, jump — the button must always work */
+  if(!reduce&&y0>0)setTimeout(()=>{if(window.scrollY===y0)window.scrollTo(0,0)},700)};
+ const upd=()=>b.classList.toggle("on",window.scrollY>800);
+ addEventListener("scroll",upd,{passive:true});
+ upd()})();
+
+/* the start-here guide opens itself until the reader dismisses it */
+(function(){const g=$("#guide");if(!g)return;
+ g.open=!store.get("fra2_guide_done",false);
+ const c=$("#guideClose");
+ if(c)c.onclick=()=>{store.set("fra2_guide_done",true);g.open=false};
+ g.addEventListener("toggle",()=>{if(!g.open)store.set("fra2_guide_done",true)})})();
+
 /* compare bar (inject) */
 document.body.insertAdjacentHTML("beforeend",'<div class="cmpbar" id="cmpBar"><span><b id="cmpN">0</b> in my colleges</span><button id="cmpGo">Open my colleges →</button><button class="clr" id="cmpClr">Clear</button></div>');
 $("#cmpGo").onclick=()=>{gotoTab("pMy");renderMy()};
@@ -5474,7 +5766,7 @@ $("#cmpClr").onclick=()=>{saved.clear();store.set("fra2_saved",[]);renderCmpBar(
 /* init */
 $("#nSaved").textContent=saved.size?"("+saved.size+")":"";
 buildCtyChips();
-render();renderCmpBar();renderMy();renderGovt();router();
+render();renderCmpBar();renderMy();renderGovt();gotoTab("pUni");router();
 /* gov scholarship filters */
 $$("#gCov .chip").forEach(b=>b.onclick=()=>{gstate.cov=b.dataset.v;$$("#gCov .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
 $$("#gUg .chip").forEach(b=>b.onclick=()=>{gstate.ug=b.dataset.v;$$("#gUg .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
