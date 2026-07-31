@@ -259,6 +259,12 @@
   .reco.r-care{border-left-color:var(--v-ink)}
   .reco.r-reg{border-left-color:var(--t-ink)}
   .reco.r-none{border-left-color:var(--line2)}
+  .dlline{margin:0; font-size:12.5px; color:var(--muted)}
+  .dlline .k{color:var(--muted)}
+  .dlline span:not(.k):not(.sep):not(.tbc){color:var(--ink); font-weight:600}
+  .dlline .sep{opacity:.5; margin:0 2px}
+  .dlline .tbc{color:var(--muted); font-style:italic}
+  .kv .tbc{font-style:italic}
   .feeline{margin:0; font-size:12.5px; color:var(--muted)}
   .feeline .k{color:var(--muted)}
   .wtag{margin-left:7px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
@@ -5342,6 +5348,7 @@ function card(d,i){
  +'<p class="covers"><span class="k">How it works · </span>'+esc(d.cov)+"</p>"
  +'<div class="majors">'+mp(d.me,"Mech Eng","me")+mp(d.cs,"CS","cs")+mp(d.se,"Software Eng","se")+mp(d.math,"Maths","math")+mp(d.pmath,"Pure Maths","pmath")+mp(d.amath,"Applied Maths","amath")+mp(d.stats,"Stats","stats")+mp(d.neuro,"Neuro","neuro")+mp(d.aero,"Aero","aero")+"</div>"
  +(d.note?'<p class="note">'+esc(d.note)+"</p>":"")
+ +dlLine(d)
  +feeLine(d)
  +recoLine(d,1)
  +'<div><button class="linkbtn" data-view="'+esc(d.u)+'">See full profile →</button></div>'
@@ -5349,6 +5356,39 @@ function card(d,i){
  +'<div class="cbtns"><button class="cbtn'+(saved.has(d.u)?" on":"")+'" data-save="'+esc(d.u)+'">'+(saved.has(d.u)?"★ In my colleges":"+ Add to my colleges")+"</button></div></div>"
  +"</article>"}
 
+/* Deadlines, resolved into an early round and a regular round.
+   A month name or a day number counts as a real date; the generic placeholders
+   inferPlans falls back to when it cannot read one do not, and become TBC —
+   a guessed month is worse than an honest "not confirmed yet". */
+const DL_GENERIC=/^(november|january|rolling intake)\s*(\(verify\))?$/i;
+const DL_MONTH=/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i;
+function dlHas(t){t=(t||"").trim();return !!t&&!/^n\/a$/i.test(t)&&(DL_MONTH.test(t)||/\d/.test(t))}
+function dlVal(v){v=(v||"").trim();return(!v||DL_GENERIC.test(v))?"TBC":v}
+function deadlines(d){
+ const A=APPLY[d.u],pl=(A&&A.plans)||inferPlans(d);
+ const by={};pl.forEach(p=>{if(by[p.k]===undefined)by[p.k]=(p.d||"").trim()});
+ const ek=["ED","REA","EA","ED2","EA2"].find(k=>k in by)||null;
+ const txt=(d.dl||"").trim();
+ let early;
+ if(ek)early=dlVal(by[ek]);
+ else if(!pl.length&&d.c==="USA")early="TBC";  /* US school with no plans on file — one may exist */
+ else early="No early round";                  /* single application cycle */
+ let reg;
+ if("RD" in by)reg=dlVal(by.RD);
+ else if("Rolling" in by)reg="Rolling — apply early";
+ else{
+  /* single-cycle text is often "UCAS ~15 Oct · scholarship ~Feb" — the first
+     segment is the application deadline; the rest stays in the profile. */
+  const first=txt.split("·")[0].trim();
+  reg=dlHas(first)?first:(dlHas(txt)?txt:"TBC")}
+ const sch=d.sdl?(dlHas(d.sdl)?d.sdl:"TBC"):null;
+ return{ek,early,reg,sch}}
+function dlLine(d){
+ const D=deadlines(d);
+ const cls=v=>v==="TBC"?' class="tbc"':"";
+ return '<p class="dlline"><span class="k">Deadlines · </span>'
+  +"Early: <span"+cls(D.early)+">"+esc(D.early)+"</span>"
+  +' <span class="sep">·</span> Regular: <span'+cls(D.reg)+">"+esc(D.reg)+"</span></p>"}
 function feeLine(d){
  const A=APPLY[d.u],txt=(A&&A.fee)||d.fee,w=feeWaiver(d);
  return '<p class="feeline"><span class="k">Application fee · </span>'+esc(txt||"Not on file — verify")
@@ -5718,7 +5758,7 @@ function renderUni(d){
  const A=APPLY[d.u]||null;
  const P=promptsFor(d);
  const drafts=store.get("fra2_essays",{})[s]||{};
- const AR=accRound(d),FW=feeWaiver(d);
+ const AR=accRound(d),FW=feeWaiver(d),DL=deadlines(d);
  const majors=[["me","Mechanical Engineering"],["cs","Computer Science"],["se","Software Engineering (dedicated)"],["math","Mathematics"],["pmath","Pure Mathematics"],["amath","Applied Mathematics"],["stats","Statistics"],["neuro","Neuroscience"],["aero","Aerospace Engineering"]];
  let essayHTML;
  if(A&&A.essays){
@@ -5778,6 +5818,10 @@ function renderUni(d){
  +kvBox("Application fee",(A&&A.fee)||d.fee||"Varies — fee waivers are often granted on request")
  +((A&&A.extra)?kvBox("Also worth knowing",A.extra):"")+"</div></section>"
  +'<section class="up-sec"><h2>Decision plans &amp; deadlines</h2>'
+ +'<div class="up-grid" style="margin-bottom:14px">'
+ +kvBox("Deadline — early round",DL.ek?DL.ek+": "+DL.early:DL.early)
+ +kvBox("Deadline — regular round",DL.reg)
+ +kvBox("Deadline — scholarship / aid",DL.sch||"Not on file — check the university's aid page")+"</div>"
  +'<div class="tagrow">'+planChips(d)+"</div>"
  +'<p class="up-para"><span class="k">Typical cycle · </span>'+esc(d.dl||"Needs verification")+" <span class='nv'>— always confirm on the official page</span></p>"
  +(d.sdl?'<p class="up-para"><span class="k">Scholarship deadline · </span>'+esc(d.sdl)+"</p>":"")
