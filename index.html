@@ -69,6 +69,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   .wrap{max-width:1100px; margin:0 auto; padding:0 20px 80px}
+  @media (min-width:1500px){.wrap{max-width:1280px}}
 
   /* ---------- masthead ---------- */
   header{padding:44px 0 0}
@@ -107,11 +108,63 @@
   .badge.partial{background:var(--a-bg); color:var(--a-ink)}
 
   /* ---------- tabs ---------- */
-  .tabbar{display:flex; gap:2px; overflow-x:auto; margin:28px 0 0; border-bottom:1px solid var(--line); scrollbar-width:thin;
+  /* The nine tabs need ~1120px in a single row, so above the drawer breakpoint
+     they wrap onto a second line rather than scrolling tabs out of sight. */
+  .tabbar{display:flex; flex-wrap:wrap; gap:2px; margin:28px 0 0; border-bottom:1px solid var(--line);
     position:sticky; top:0; z-index:30; background:var(--bg)}
+  .navbtn,.navscrim,.navhead,.tab .thint{display:none}
   .tabhint{font-size:12.5px; color:var(--muted); margin:9px 0 0; max-width:80ch;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
   .tabhint b{color:var(--ink); font-weight:650}
+
+  /* ---------- narrow screens: the tab strip becomes a left drawer ----------
+     Nine tabs never fitted a phone. Below 860px they stack in a panel that
+     slides in from the left, opened by a button pinned to the top of the page
+     that always names the section you are in. */
+  @media (max-width:860px){
+    .navbtn{position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:11px; width:100%;
+      appearance:none; cursor:pointer; margin:20px 0 0; padding:12px 14px; border-radius:10px;
+      background:var(--surface); border:1px solid var(--line2); color:var(--ink);
+      font-size:15px; font-weight:700; text-align:left; box-shadow:var(--shadow);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .burger{display:flex; flex-direction:column; justify-content:center; gap:4px; width:17px; flex:none}
+    .burger i{display:block; height:2px; background:var(--ink); border-radius:2px}
+    .navlab{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+    .navcue{flex:none; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+
+    .navscrim{display:block; position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.5);
+      opacity:0; transition:opacity .2s}
+    .navscrim.on{opacity:1}
+    .navscrim[hidden]{display:none}
+
+    .tabbar{position:fixed; top:0; left:0; bottom:0; right:auto; width:min(83vw,310px);
+      flex-direction:column; align-items:stretch; gap:0; margin:0; z-index:60;
+      background:var(--surface); border-bottom:none; border-right:1px solid var(--line2);
+      overflow-y:auto; overflow-x:hidden; padding:18px 0 calc(24px + env(safe-area-inset-bottom));
+      transform:translateX(-102%); transition:transform .22s ease; box-shadow:none}
+    .tabbar.open{transform:none; box-shadow:0 0 40px rgba(0,0,0,.45)}
+    .navhead{display:block; margin:0 0 6px; padding:0 20px; font-size:10.5px; font-weight:700;
+      letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .tab{width:100%; text-align:left; white-space:normal; padding:12px 20px; font-size:15.5px;
+      border-bottom:none; border-left:3px solid transparent; color:var(--ink)}
+    .tab.on{border-bottom-color:transparent; border-left-color:var(--accent); background:var(--surface2)}
+    .tab .thint{display:block; font-size:12px; font-weight:500; color:var(--muted); margin-top:2px}
+    .tab:focus-visible{outline-offset:-3px}
+    body.navopen{overflow:hidden}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .tabbar,.navscrim{transition:none}
+  }
+  /* Touch devices at any width: 16px keeps iOS from zooming the viewport when a
+     field takes focus, and controls need a finger-sized target. */
+  @media (pointer:coarse){
+    input[type=search],input[type=text],input[type=number],select,textarea,.essaybox{font-size:16px}
+    .chip{padding:7px 13px}
+    .seg button{padding:11px 15px}
+    .linkbtn{padding:7px 3px}
+    .jump button{padding:7px 13px}
+  }
 
   /* ---------- start-here guide ---------- */
   .guide{background:var(--surface); border:1px solid var(--line); border-radius:10px;
@@ -153,7 +206,7 @@
   .totop.on{display:block}
   .totop:hover{border-color:var(--ink)}
 
-  .tab{appearance:none; background:none; border:none; padding:10px 15px; font-size:14px; font-weight:600;
+  .tab{appearance:none; background:none; border:none; padding:10px 11px; font-size:14px; font-weight:600;
        color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap}
   .tab.on{color:var(--ink); border-bottom-color:var(--accent)}
   .tab:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
@@ -514,7 +567,8 @@
     .cmpbar .clr{display:none}
   }
   @media print{
-    .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv,.jump,.totop,.guide,.tabhint{display:none!important}
+    .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv,.jump,.totop,.guide,.tabhint,
+    .navbtn,.navscrim{display:none!important}
     .panel{display:block!important}
     #pEssays,#pActs,#pHonors,#pAI{display:none!important}
     .card{break-inside:avoid; box-shadow:none}
@@ -575,7 +629,14 @@
   </details>
 </header>
 
-<nav class="tabbar" role="tablist" aria-label="Sections">
+<button class="navbtn" id="navBtn" type="button" aria-expanded="false" aria-controls="tabbar">
+  <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="navlab" id="navLabel">Universities</span>
+  <span class="navcue">Sections</span>
+</button>
+<div class="navscrim" id="navScrim" hidden></div>
+<nav class="tabbar" id="tabbar" role="tablist" aria-label="Sections">
+  <p class="navhead">Sections</p>
   <button class="tab on" role="tab" aria-selected="true" data-p="pUni">Universities</button>
   <button class="tab" role="tab" aria-selected="false" data-p="pMy">My Colleges <span class="n" id="nSaved"></span></button>
   <button class="tab" role="tab" aria-selected="false" data-p="pGov">Scholarships</button>
@@ -5205,6 +5266,17 @@ $$(".tab").forEach(t=>t.addEventListener("click",()=>{
  if(t.dataset.p==="pMy")renderMy();
  if(t.dataset.p==="pGov")renderGovt();
 }));
+/* one-line descriptions shown under each item in the mobile drawer */
+const TAB_SUB={
+ pUni:"Search every funded university",
+ pMy:"Your shortlist and checklists",
+ pGov:"Government & foundation awards",
+ pAid:"Aid forms, and how to appeal",
+ pPlans:"Which US rounds are binding",
+ pEssays:"Examples and what readers want",
+ pActs:"Common App activities, to length",
+ pHonors:"Five honours slots, to length",
+ pAI:"Sharpen your writing, invent nothing"};
 const TAB_HINT={
  pUni:"<b>Universities</b> — every funded place in the atlas. Filter by major, funding level and country; click a name for the full profile.",
  pMy:"<b>My Colleges</b> — your shortlist compared side by side, each with its own application checklist. Saved in this browser.",
@@ -5219,9 +5291,40 @@ function gotoTab(id){
  $$(".tab").forEach(x=>{const on=x.dataset.p===id;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});
  $$(".panel").forEach(p=>p.classList.toggle("on",p.id===id));
  const h=$("#tabHint");if(h)h.innerHTML=TAB_HINT[id]||"";
- /* the tab strip scrolls sideways on a phone — keep the live tab in view */
  const t=$('.tab[data-p="'+id+'"]');
+ const lab=$("#navLabel");
+ if(lab&&t)lab.textContent=t.querySelector(".tlab")?t.querySelector(".tlab").textContent.trim():t.textContent.trim();
+ /* on wide screens the strip can scroll sideways — keep the live tab in view */
  if(t&&t.scrollIntoView)t.scrollIntoView({inline:"center",block:"nearest"})}
+
+/* ---- mobile section drawer ---- */
+(function(){
+ const nav=$("#tabbar"),btn=$("#navBtn"),scrim=$("#navScrim");
+ if(!nav||!btn||!scrim)return;
+ /* wrap each label so the sub-line can sit under it without disturbing the bar */
+ $$(".tab").forEach(t=>{
+  const label=document.createElement("span");
+  label.className="tlab";
+  while(t.firstChild)label.appendChild(t.firstChild);
+  t.appendChild(label);
+  const sub=document.createElement("span");
+  sub.className="thint";sub.textContent=TAB_SUB[t.dataset.p]||"";
+  t.appendChild(sub)});
+ let open=false;
+ const set=v=>{open=v;
+  nav.classList.toggle("open",v);
+  btn.setAttribute("aria-expanded",v);
+  document.body.classList.toggle("navopen",v);
+  if(v){scrim.hidden=false;setTimeout(()=>{if(open)scrim.classList.add("on")},0)}
+  else{scrim.classList.remove("on");setTimeout(()=>{if(!open)scrim.hidden=true},200)}};
+ btn.onclick=()=>{set(!open);if(open){const on=$(".tab.on");if(on&&on.focus)on.focus()}};
+ scrim.onclick=()=>{set(false);btn.focus()};
+ nav.addEventListener("click",e=>{if(e.target.closest(".tab"))set(false)});
+ addEventListener("keydown",e=>{if(e.key==="Escape"&&open){set(false);btn.focus()}});
+ /* leaving the narrow layout must not strand the drawer open */
+ const mq=matchMedia("(max-width:860px)");
+ (mq.addEventListener?mq.addEventListener.bind(mq,"change"):mq.addListener.bind(mq))(()=>{if(!mq.matches)set(false)});
+})();
 
 /* tier + country chips */
 const tierWrap=$("#tierChips");
