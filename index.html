@@ -312,6 +312,33 @@
   .reco.r-care{border-left-color:var(--v-ink)}
   .reco.r-reg{border-left-color:var(--t-ink)}
   .reco.r-none{border-left-color:var(--line2)}
+  .dlchip{display:inline-block; margin-left:7px; font-size:10px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px;
+    background:var(--a-bg); color:var(--a-ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .dlchip.urgent{background:var(--v-bg); color:var(--v-ink)}
+
+  /* ---------- what's due next ---------- */
+  .tline{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+  .tline li{display:flex; gap:14px; align-items:baseline; padding:10px 0;
+    border-top:1px solid var(--line); font-size:14px}
+  .tline li:first-child{border-top:none}
+  .tld{flex:0 0 96px; font-variant-numeric:tabular-nums; font-weight:700; font-size:13px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .tlb{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:1px}
+  .tlb .tlu{font-weight:650}
+  .tlb .tlk{font-size:12px; color:var(--muted);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .tlw{flex:0 0 auto; font-size:12px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .tline li.soon .tld,.tline li.soon .tlw{color:var(--v-ink)}
+  .tline li.near .tld{color:var(--a-ink)}
+  .tline li.gone{opacity:.55}
+  @media (max-width:520px){
+    .tline li{flex-wrap:wrap; gap:2px 12px}
+    .tld{flex:0 0 auto}
+    .tlb{flex:1 1 100%; order:3}
+  }
   .dlline{margin:0; font-size:12.5px; color:var(--muted)}
   .dlline .k{color:var(--muted)}
   .dlline span:not(.k):not(.sep):not(.tbc){color:var(--ink); font-weight:600}
@@ -684,7 +711,7 @@
   </div>
   <div class="frow">
     <span class="flabel">Search</span>
-    <input id="q" type="search" placeholder="University, scholarship, city, keyword… e.g. “Pearson”, “need-blind”, “co-op”">
+    <input id="q" type="search" placeholder="University, city, keyword or group… e.g. “Ivy League”, “Oxbridge”, “C9”, “need-blind”">
   </div>
   <details class="adv">
     <summary>More filters</summary>
@@ -700,7 +727,7 @@
       <div class="frow"><span class="flabel">English-taught degree</span><div class="chips" data-f="eng"><button class="chip on" data-v="">Any</button><button class="chip" data-v="1">Yes</button></div></div>
       <div class="frow"><span class="flabel">Application platform</span><div class="chips" data-f="plat"><button class="chip on" data-v="">Any</button><button class="chip" data-v="Common App">Common App</button><button class="chip" data-v="UCAS">UCAS</button><button class="chip" data-v="OUAC">OUAC</button><button class="chip" data-v="portal">Own portal</button></div></div>
       <div class="frow"><span class="flabel">Deadline type</span><div class="chips" data-f="dlt"><button class="chip on" data-v="">Any</button><button class="chip" data-v="ED">Has ED</button><button class="chip" data-v="EA">Has EA</button><button class="chip" data-v="Rolling">Rolling</button></div></div>
-      <div class="frow"><span class="flabel">Sort by</span><div class="chips" data-f="sort"><button class="chip on" data-v="">Region</button><button class="chip" data-v="qs">QS rank</button><button class="chip" data-v="name">Name A–Z</button></div></div>
+      <div class="frow"><span class="flabel">Sort by</span><div class="chips" data-f="sort"><button class="chip on" data-v="">Region</button><button class="chip" data-v="dl">Deadline — soonest</button><button class="chip" data-v="qs">QS rank</button><button class="chip" data-v="name">Name A–Z</button></div></div>
     </div>
   </details>
   <div class="fmeta">
@@ -5486,12 +5513,63 @@ function deadlines(d){
   reg=dlHas(first)?first:(dlHas(txt)?txt:"TBC")}
  const sch=d.sdl?(dlHas(d.sdl)?d.sdl:"TBC"):null;
  return{ek,early,reg,sch}}
+/* Turn an approximate deadline string into a date we can sort and count down to.
+   Everything on file is approximate by construction — the source says "~1 Nov" —
+   so whether a day was actually found is tracked and shown, never implied. */
+const DL_MON={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+const MON_NAME=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dlDate(txt,from){
+ const t=(txt||"").trim();if(!t)return null;
+ const now=from||new Date();
+ let day=null,mon=null,m;
+ if((m=/(\d{1,2})\s*(?:st|nd|rd|th)?\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.exec(t))){
+  day=+m[1];mon=DL_MON[m[2].toLowerCase()]}
+ else if((m=/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s*(\d{1,2})(?!\d)/i.exec(t))){
+  mon=DL_MON[m[1].toLowerCase()];day=+m[2]}
+ else if((m=/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.exec(t))){
+  mon=DL_MON[m[1].toLowerCase()]}
+ if(mon==null)return null;
+ if(day!=null&&(day<1||day>31))day=null;
+ const y=now.getFullYear();
+ let dt=new Date(y,mon,day||28);
+ /* Deadlines recur every year, so pick the cycle the reader is in. A date up to
+    three weeks behind still reads as "you have just missed this"; older than
+    that and the useful answer is next year's round. */
+ if((now-dt)/864e5>21)dt=new Date(y+1,mon,day||28);
+ return{d:dt,exact:day!=null}}
+function dlEvents(d,from){
+ const D=deadlines(d),out=[];
+ const add=(label,txt)=>{
+  if(!txt||txt==="TBC"||/^No early round/i.test(txt)||/^Rolling/i.test(txt))return;
+  const p=dlDate(txt,from);if(p)out.push({label,txt,when:p.d,exact:p.exact})};
+ add((D.ek||"Early")+" deadline",D.early);
+ add("Regular deadline",D.reg);
+ add("Scholarship deadline",D.sch);
+ return out.sort((a,b)=>a.when-b.when)}
+function daysTo(dt,from){
+ const a=from||new Date();
+ return Math.round((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())
+  -new Date(a.getFullYear(),a.getMonth(),a.getDate()))/864e5)}
+function dlWhen(n){
+ return n<0?Math.abs(n)+" days ago":n===0?"today":n===1?"tomorrow":"in "+n+" days"}
+function dlShow(e){
+ return e.exact?e.when.getDate()+" "+MON_NAME[e.when.getMonth()]+" "+e.when.getFullYear()
+  :MON_NAME[e.when.getMonth()]+" "+e.when.getFullYear()}
+function nextDl(d,from){const e=dlEvents(d,from);return e.length?e[0]:null}
 function dlLine(d){
  const D=deadlines(d);
  const cls=v=>v==="TBC"?' class="tbc"':"";
  return '<p class="dlline"><span class="k">Deadlines · </span>'
   +"Early: <span"+cls(D.early)+">"+esc(D.early)+"</span>"
-  +' <span class="sep">·</span> Regular: <span'+cls(D.reg)+">"+esc(D.reg)+"</span></p>"}
+  +' <span class="sep">·</span> Regular: <span'+cls(D.reg)+">"+esc(D.reg)+"</span>"
+  +dlSoon(d)+"</p>"}
+/* Only speaks up when a deadline is actually close, so it means something when
+   it does appear. Silent the rest of the year. */
+function dlSoon(d){
+ const n=nextDl(d);if(!n||!n.exact)return "";   /* a countdown implies a day we have */
+ const k=daysTo(n.when);
+ if(k<0||k>60)return "";
+ return '<span class="dlchip'+(k<=21?" urgent":"")+'">'+(k===0?"closes today":k===1?"closes tomorrow":"closes in "+k+" days")+"</span>"}
 function feeLine(d){
  const A=APPLY[d.u],txt=(A&&A.fee)||d.fee,w=feeWaiver(d);
  return '<p class="feeline"><span class="k">Application fee · </span>'+esc(txt||"Not on file — verify")
@@ -5504,9 +5582,18 @@ function majorPhrase(){
  return (state.majorMode==="all"?" that offer <b>":" that offer <b>")+txt+"</b>"}
 function render(){
  const hits=DATA.filter(matches);const out=[];const sort=state.adv.sort;
- if(sort==="qs"||sort==="name"){
-  const arr=[...hits].sort((x,y)=>sort==="qs"?((x.qs||9999)-(y.qs||9999)):x.u.localeCompare(y.u));
-  out.push('<section class="region"><h2>'+(sort==="qs"?"Sorted by QS rank (unranked last)":"All universities A–Z")+'</h2><div class="grid">'+arr.map(card).join("")+"</div></section>")
+ if(sort==="qs"||sort==="name"||sort==="dl"){
+  const now=new Date();
+  /* already-passed dates sort after everything still open, but keep their order */
+ const key=d=>{const n=nextDl(d,now);if(!n)return Infinity;
+  const t=n.when.getTime();return t<now.getTime()?t+4e12:t};
+  const arr=[...hits].sort((x,y)=>sort==="qs"?((x.qs||9999)-(y.qs||9999))
+   :sort==="dl"?(key(x)-key(y))||x.u.localeCompare(y.u)
+   :x.u.localeCompare(y.u));
+  const head=sort==="qs"?"Sorted by QS rank (unranked last)"
+   :sort==="dl"?"Sorted by next deadline — approximate dates, always confirm on the official page"
+   :"All universities A–Z";
+  out.push('<section class="region"><h2>'+head+'</h2><div class="grid">'+arr.map(card).join("")+"</div></section>")
  }else{
   REGIONS.forEach(r=>{const rows=hits.filter(d=>d.r===r);if(!rows.length)return;
    out.push('<section class="region"><h2>'+r+'</h2><p class="rsub">'+RSUB[r]+'</p><div class="grid">'+rows.map(card).join("")+"</div></section>")})}
@@ -5522,7 +5609,7 @@ function render(){
    region — sorting by rank or name dissolves the sections it points at. */
 function buildJump(hits,sort){
  const bar=$("#jumpBar");if(!bar)return;
- if(sort==="qs"||sort==="name"||!hits.length){bar.hidden=true;bar.innerHTML="";return}
+ if(sort==="qs"||sort==="name"||sort==="dl"||!hits.length){bar.hidden=true;bar.innerHTML="";return}
  const rows=REGIONS.map(r=>[r,hits.filter(d=>d.r===r).length]).filter(x=>x[1]);
  if(rows.length<2){bar.hidden=true;bar.innerHTML="";return}
  bar.hidden=false;
@@ -5583,6 +5670,23 @@ function planChips(d){
  if(!pl.length)return '<span class="tag">'+(d.c==="USA"?"Plans not on file — verify on the official page":"ED / EA / REA / RD are US-specific — this university uses a single application cycle")+"</span>";
  return pl.map(p=>{const I=PLAN_INFO[p.k]||{name:p.k,bind:""};
   return '<span class="planchip p-'+(I.color||"s")+'"><b>'+p.k+'</b> '+esc(p.d||"")+(I.bind?' · '+I.bind:'')+'</span>'}).join("")}
+/* Every deadline across the shortlist, on one date-sorted list. The whole point
+   of saving colleges is knowing what is due first. */
+function dueNext(list){
+ const now=new Date();
+ const rows=[];
+ list.forEach(d=>dlEvents(d,now).forEach(e=>rows.push({d,e,k:daysTo(e.when,now)})));
+ if(!rows.length)return '<section class="up-sec"><h2>What\'s due next</h2>'
+  +'<p class="eguide">None of your saved universities has a confirmed date on file yet. Open each profile, check its official page, and note the real deadline in the checklist below.</p></section>';
+ rows.sort((a,b)=>a.e.when-b.e.when);
+ return '<section class="up-sec"><h2>What\'s due next</h2>'
+  +'<p class="eguide" style="margin-bottom:12px">Every deadline across your shortlist, soonest first. Dates are approximate — a month with no day shown means only the month is on file. Confirm each one on the university\'s own page before you rely on it.</p>'
+  +'<ol class="tline">'+rows.map(r=>{
+   const cl=r.k<0?"gone":r.k<=21?"soon":r.k<=60?"near":"";
+   return "<li"+(cl?' class="'+cl+'"':"")+'><span class="tld">'+esc(dlShow(r.e))+"</span>"
+    +'<span class="tlb"><span class="tlu">'+r.d.f+" "+esc(r.d.u)+'</span><span class="tlk">'+esc(r.e.label)+" · as listed: "+esc(r.e.txt)+"</span></span>"
+    +'<span class="tlw">'+dlWhen(r.k)+"</span></li>"}).join("")
+  +"</ol></section>"}
 function renderMy(){
  const list=[...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean);
  updSavedCount();
@@ -5591,7 +5695,7 @@ function renderMy(){
  if(!list.length){cmpArea.innerHTML='<p class="empty"><b>No colleges yet.</b><br>Use <b>+ Add to my colleges</b> on any university card.</p>';listArea.innerHTML="";return}
  const row=(label,fn)=>"<tr><td>"+label+"</td>"+list.map(d=>"<td>"+(fn(d)??"—")+"</td>").join("")+"</tr>";
  const majors=d=>["me","cs","se","math","pmath","amath","stats","neuro","aero"].filter(k=>d[k]).map(k=>MAJOR_LABEL[k].split(" (")[0]).join(", ")||"—";
- cmpArea.innerHTML='<p class="swipehint">Swipe the table sideways to see every university →</p><div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+ulogo(d,"sm")+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
+ cmpArea.innerHTML=dueNext(list)+'<p class="swipehint">Swipe the table sideways to see every university →</p><div class="tblwrap"><table class="cmp"><thead><tr><th></th>'+list.map(d=>'<th><a class="unilink" href="#/u/'+slug(d.u)+'">'+ulogo(d,"sm")+" "+esc(d.u)+"</a></th>").join("")+"</tr></thead><tbody>"
  +row("Country",d=>esc((d.city?d.city+", ":"")+d.c))
  +row("Funding level",d=>'<span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span>")
  +row("Fully or partly funded?",d=>({"auto-full":"<b>Fully funded</b> — follows admission","need-full":"<b>Fully funded</b> if your need qualifies","comp-full":"<b>Fully funded</b> if you win the award","full-tuition":"Tuition only — living costs on you","tuition-free":"No tuition — living costs on you","low-tuition":"Low fees — mostly self-funded","partial":"Partly funded — mostly self-funded"})[d.tier])
@@ -5840,11 +5944,22 @@ const SHEET={
 "Politecnico di Torino":{sdl:"Rolling rounds from ~Nov; regional grant deadline differs"},
 "Bocconi University":{sdl:"Scholarship assessed with admission rounds"},
 "Simon Fraser University":{fee:"~C$130",sdl:"USES: ~15 Dec"}};
+/* Searchable groupings — "Ivy League" or "Oxbridge" is how people actually think
+   about these, and typing it found nothing before. Names are matched against the
+   data, so a rename silently drops the tag rather than inventing a member. */
+const GROUPS={
+ "Ivy League":["Harvard University","Yale University","Princeton University","Columbia University","Brown University","Dartmouth College","Cornell University","University of Pennsylvania"],
+ "Ivy Plus":["Harvard University","Yale University","Princeton University","Columbia University","Brown University","Dartmouth College","Cornell University","University of Pennsylvania","Massachusetts Institute of Technology (MIT)","Stanford University","California Institute of Technology (Caltech)","University of Chicago","Duke University"],
+ "Oxbridge":["University of Oxford","University of Cambridge"],
+ "Golden Triangle":["University of Oxford","University of Cambridge","Imperial College London","University College London (UCL)","London School of Economics (LSE)"],
+ "C9 League":["Tsinghua University","Peking University","Fudan University","Zhejiang University","Nanjing University","Xi'an Jiaotong University","Harbin Institute of Technology (HIT)","University of Science & Technology of China (USTC)","Shanghai Jiao Tong, Zhejiang & other C9 universities"]};
 const BY_SLUG={};
 DATA.forEach(d=>{Object.assign(d,PROFILES[d.u]||{});
  d.r=REGION_OF[d.c]||d.r;
  const s=SHEET[d.u];if(s){if(s.fee&&!d.fee)d.fee=s.fee;if(s.sdl)d.sdl=s.sdl}
  BY_SLUG[slug(d.u)]=d});
+Object.keys(GROUPS).forEach(g=>GROUPS[g].forEach(n=>{
+ const d=DATA.find(x=>x.u===n);if(d)(d.tags=d.tags||[]).push(g)}));
 function wLimit(wl){
  if(/char/i.test(wl||"")){const m=/([\d,]+)\s*char/i.exec(wl);if(m)return{n:+m[1].replace(/,/g,""),unit:"characters"}}
  const nums=(wl||"").match(/\d+/g);if(nums)return{n:+nums[nums.length-1],unit:"words"};
