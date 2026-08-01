@@ -69,7 +69,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   .wrap{max-width:1100px; margin:0 auto; padding:0 20px 80px}
-  @media (min-width:1500px){.wrap{max-width:1280px}}
+  
 
   /* ---------- masthead ---------- */
   header{padding:44px 0 0}
@@ -121,50 +121,11 @@
      Nine tabs never fitted a phone. Below 860px they stack in a panel that
      slides in from the left, opened by a button pinned to the top of the page
      that always names the section you are in. */
-  @media (max-width:860px){
-    .navbtn{position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:11px; width:100%;
-      appearance:none; cursor:pointer; margin:20px 0 0; padding:12px 14px; border-radius:10px;
-      background:var(--surface); border:1px solid var(--line2); color:var(--ink);
-      font-size:15px; font-weight:700; text-align:left; box-shadow:var(--shadow);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-    .burger{display:flex; flex-direction:column; justify-content:center; gap:4px; width:17px; flex:none}
-    .burger i{display:block; height:2px; background:var(--ink); border-radius:2px}
-    .navlab{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-    .navcue{flex:none; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
-
-    .navscrim{display:block; position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.5);
-      opacity:0; transition:opacity .2s}
-    .navscrim.on{opacity:1}
-    .navscrim[hidden]{display:none}
-
-    .tabbar{position:fixed; top:0; left:0; bottom:0; right:auto; width:min(83vw,310px);
-      flex-direction:column; align-items:stretch; gap:0; margin:0; z-index:60;
-      background:var(--surface); border-bottom:none; border-right:1px solid var(--line2);
-      overflow-y:auto; overflow-x:hidden; padding:18px 0 calc(24px + env(safe-area-inset-bottom));
-      transform:translateX(-102%); transition:transform .22s ease; box-shadow:none}
-    .tabbar.open{transform:none; box-shadow:0 0 40px rgba(0,0,0,.45)}
-    .navhead{display:block; margin:0 0 6px; padding:0 20px; font-size:10.5px; font-weight:700;
-      letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-    .tab{width:100%; text-align:left; white-space:normal; padding:12px 20px; font-size:15.5px;
-      border-bottom:none; border-left:3px solid transparent; color:var(--ink)}
-    .tab.on{border-bottom-color:transparent; border-left-color:var(--accent); background:var(--surface2)}
-    .tab .thint{display:block; font-size:12px; font-weight:500; color:var(--muted); margin-top:2px}
-    .tab:focus-visible{outline-offset:-3px}
-    body.navopen{overflow:hidden}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .tabbar,.navscrim{transition:none}
-  }
+  
+  
   /* Touch devices at any width: 16px keeps iOS from zooming the viewport when a
      field takes focus, and controls need a finger-sized target. */
-  @media (pointer:coarse){
-    input[type=search],input[type=text],input[type=number],select,textarea,.essaybox{font-size:16px}
-    .chip{padding:7px 13px}
-    .seg button{padding:11px 15px}
-    .linkbtn{padding:7px 3px}
-    .jump button{padding:7px 13px}
-  }
+  
 
   /* ---------- start-here guide ---------- */
   .guide{background:var(--surface); border:1px solid var(--line); border-radius:10px;
@@ -334,11 +295,7 @@
   .tline li.soon .tld,.tline li.soon .tlw{color:var(--v-ink)}
   .tline li.near .tld{color:var(--a-ink)}
   .tline li.gone{opacity:.55}
-  @media (max-width:520px){
-    .tline li{flex-wrap:wrap; gap:2px 12px}
-    .tld{flex:0 0 auto}
-    .tlb{flex:1 1 100%; order:3}
-  }
+  
   .dlline{margin:0; font-size:12.5px; color:var(--muted)}
   .dlline .k{color:var(--muted)}
   .dlline span:not(.k):not(.sep):not(.tbc){color:var(--ink); font-weight:600}
@@ -432,13 +389,13 @@
 
   /* ---------- builders / forms ---------- */
   .two{display:grid; grid-template-columns:1.05fr .95fr; gap:20px; margin-top:20px}
-  @media (max-width:840px){.two{grid-template-columns:1fr}}
+  
   .box{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow)}
   .box h3{margin:0 0 4px; font-size:16px}
   .box .sub{font-size:12.5px; color:var(--muted); margin:0 0 14px}
   .fgrid{display:grid; grid-template-columns:1fr 1fr; gap:11px}
   .fgrid .full{grid-column:1/-1}
-  @media (max-width:520px){.fgrid{grid-template-columns:1fr}}
+  
   .field{display:flex; flex-direction:column; gap:4px}
   .field label{font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
   .field input,.field select,.field textarea{width:100%}
@@ -515,11 +472,8 @@
   /* ---------- footer ---------- */
   footer{margin-top:56px; border-top:1px solid var(--line); padding-top:22px; font-size:13px; color:var(--muted); max-width:78ch}
   footer p{margin:0 0 10px}
-  @media (prefers-reduced-motion:no-preference){
-    .card{transition:border-color .15s ease}
-    .card:hover{border-color:var(--line2)}
-  }
-  @media (max-width:640px){.snap{grid-template-columns:1fr 1fr}}
+  
+  
 
   .swipehint{display:none; font-size:11.5px; color:var(--muted); margin:16px 0 -12px;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
@@ -528,6 +482,49 @@
      The page is built for a wide screen; below 700px it becomes one column,
      touch targets grow, and every form control goes to 16px so iOS Safari
      stops zooming the page whenever a field is focused. */
+
+
+  /* ================= responsive & capability layers =================
+     Kept last so a media query is never silently overridden by a plain
+     rule that happens to sit further down the sheet. */
+  @media (min-width:1500px){.wrap{max-width:1280px}}
+  @media (prefers-reduced-motion:no-preference){
+    .card{transition:border-color .15s ease}
+    .card:hover{border-color:var(--line2)}
+  }
+  @media (max-width:860px){
+    .navbtn{position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:11px; width:100%;
+      appearance:none; cursor:pointer; margin:20px 0 0; padding:12px 14px; border-radius:10px;
+      background:var(--surface); border:1px solid var(--line2); color:var(--ink);
+      font-size:15px; font-weight:700; text-align:left; box-shadow:var(--shadow);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .burger{display:flex; flex-direction:column; justify-content:center; gap:4px; width:17px; flex:none}
+    .burger i{display:block; height:2px; background:var(--ink); border-radius:2px}
+    .navlab{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+    .navcue{flex:none; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+
+    .navscrim{display:block; position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.5);
+      opacity:0; transition:opacity .2s}
+    .navscrim.on{opacity:1}
+    .navscrim[hidden]{display:none}
+
+    .tabbar{position:fixed; top:0; left:0; bottom:0; right:auto; width:min(83vw,310px);
+      flex-direction:column; align-items:stretch; gap:0; margin:0; z-index:60;
+      background:var(--surface); border-bottom:none; border-right:1px solid var(--line2);
+      overflow-y:auto; overflow-x:hidden; padding:18px 0 calc(24px + env(safe-area-inset-bottom));
+      transform:translateX(-102%); transition:transform .22s ease; box-shadow:none}
+    .tabbar.open{transform:none; box-shadow:0 0 40px rgba(0,0,0,.45)}
+    .navhead{display:block; margin:0 0 6px; padding:0 20px; font-size:10.5px; font-weight:700;
+      letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .tab{width:100%; text-align:left; white-space:normal; padding:12px 20px; font-size:15.5px;
+      border-bottom:none; border-left:3px solid transparent; color:var(--ink)}
+    .tab.on{border-bottom-color:transparent; border-left-color:var(--accent); background:var(--surface2)}
+    .tab .thint{display:block; font-size:12px; font-weight:500; color:var(--muted); margin-top:2px}
+    .tab:focus-visible{outline-offset:-3px}
+    body.navopen{overflow:hidden}
+  }
+  @media (max-width:840px){.two{grid-template-columns:1fr}}
   @media (max-width:700px){
     .wrap{padding:0 14px 96px}
     header{padding:26px 0 0}
@@ -557,7 +554,7 @@
     .majormode .chip{padding:5px 11px}
     .seg button{padding:11px 15px; font-size:14.5px; flex:1 1 auto; text-align:center}
     .seg{width:100%}
-    .tab{padding:13px 14px}
+    .tab{padding:13px 20px}   /* aligns with the drawer's "Sections" heading */
     .linkbtn{padding:7px 3px}
     .cbtn{padding:8px 12px}
     .jump button{padding:7px 13px}
@@ -587,12 +584,30 @@
     .tabhint{font-size:12px}
     .swipehint{display:block}
   }
+  @media (max-width:640px){.snap{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){
+    .tline li{flex-wrap:wrap; gap:2px 12px}
+    .tld{flex:0 0 auto}
+    .tlb{flex:1 1 100%; order:3}
+  }
+  @media (max-width:520px){.fgrid{grid-template-columns:1fr}}
   @media (max-width:380px){
     .wrap{padding:0 11px 96px}
     h1{font-size:27px}
     .seg button{padding:10px 11px; font-size:13.5px}
     .cmpbar .clr{display:none}
   }
+  @media (pointer:coarse){
+    input[type=search],input[type=text],input[type=number],select,textarea,.essaybox{font-size:16px}
+    .chip{padding:7px 13px}
+    .seg button{padding:11px 15px}
+    .linkbtn{padding:7px 3px}
+    .jump button{padding:7px 13px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .tabbar,.navscrim{transition:none}
+  }
+
   @media print{
     .filters,.tabbar,.cmpbar,.cbtns,.factions,details.adv,.jump,.totop,.guide,.tabhint,
     .navbtn,.navscrim{display:none!important}
@@ -664,20 +679,20 @@
 <div class="navscrim" id="navScrim" hidden></div>
 <nav class="tabbar" id="tabbar" role="tablist" aria-label="Sections">
   <p class="navhead">Sections</p>
-  <button class="tab on" role="tab" aria-selected="true" data-p="pUni">Universities</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pMy">My Colleges <span class="n" id="nSaved"></span></button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pGov">Scholarships</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pAid">Financial Aid</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pPlans">ED / EA / REA / RD</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pEssays">Essay Helper</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pActs">Activities Builder</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pHonors">Honors Builder</button>
-  <button class="tab" role="tab" aria-selected="false" data-p="pAI">AI Assistant</button>
+  <button class="tab on" id="tab-pUni" role="tab" aria-selected="true" aria-controls="pUni" data-p="pUni">Universities</button>
+  <button class="tab" id="tab-pMy" role="tab" aria-selected="false" aria-controls="pMy" data-p="pMy">My Colleges <span class="n" id="nSaved"></span></button>
+  <button class="tab" id="tab-pGov" role="tab" aria-selected="false" aria-controls="pGov" data-p="pGov">Scholarships</button>
+  <button class="tab" id="tab-pAid" role="tab" aria-selected="false" aria-controls="pAid" data-p="pAid">Financial Aid</button>
+  <button class="tab" id="tab-pPlans" role="tab" aria-selected="false" aria-controls="pPlans" data-p="pPlans">ED / EA / REA / RD</button>
+  <button class="tab" id="tab-pEssays" role="tab" aria-selected="false" aria-controls="pEssays" data-p="pEssays">Essay Helper</button>
+  <button class="tab" id="tab-pActs" role="tab" aria-selected="false" aria-controls="pActs" data-p="pActs">Activities Builder</button>
+  <button class="tab" id="tab-pHonors" role="tab" aria-selected="false" aria-controls="pHonors" data-p="pHonors">Honors Builder</button>
+  <button class="tab" id="tab-pAI" role="tab" aria-selected="false" aria-controls="pAI" data-p="pAI">AI Assistant</button>
 </nav>
 <p class="tabhint" id="tabHint"></p>
 
 <!-- ================= UNIVERSITIES ================= -->
-<section class="panel on" id="pUni" role="tabpanel">
+<section class="panel on" id="pUni" role="tabpanel" aria-labelledby="tab-pUni">
 <section class="filters" aria-label="Filters">
   <div class="frow">
     <span class="flabel">Major <span class="fhint">— pick as many as you like</span></span>
@@ -744,7 +759,7 @@
 </section>
 
 <!-- ================= ACTIVITIES ================= -->
-<section class="panel" id="pActs" role="tabpanel">
+<section class="panel" id="pActs" role="tabpanel" aria-labelledby="tab-pActs">
   <p class="panel-note"><b>Common App Activities builder.</b> Limits are real Common App limits: position <b>50</b>, organization <b>100</b>, description <b>150 characters</b>. The polish suggestions below are rule-based (verbs, cuts, structure) and never invent facts — for a deeper rewrite, copy the generated prompt into Claude; it instructs the AI to improve wording only.</p>
   <div class="two">
     <div class="box">
@@ -785,7 +800,7 @@
 </section>
 
 <!-- ================= HONORS ================= -->
-<section class="panel" id="pHonors" role="tabpanel">
+<section class="panel" id="pHonors" role="tabpanel" aria-labelledby="tab-pHonors">
   <p class="panel-note"><b>Honors &amp; Awards builder.</b> Common App allows 5 honors, title max <b>100 characters</b>, plus grade level and recognition level. Outputs below reformat what you enter — they never add awards, ranks or numbers you didn't state.</p>
   <div class="two">
     <div class="box">
@@ -822,7 +837,7 @@
 </section>
 
 <!-- ================= GOV SCHOLARSHIPS ================= -->
-<section class="panel" id="pGov" role="tabpanel">
+<section class="panel" id="pGov" role="tabpanel" aria-labelledby="tab-pGov">
   <p class="panel-note"><b>Scholarships.</b> National government schemes, global foundations and home-country sponsors that fund international students — sorted so the <b>full rides</b> come first. Several entries are deliberate <b>heads-ups</b>: countries where people assume a government scholarship exists for undergraduates but it does not (the US, Canada, the UK, Germany, Switzerland, Sweden, Finland). Deadlines are typical cycles — always confirm the current call on the official site.</p>
   <div class="filters" style="margin-top:16px">
     <div class="frow"><span class="flabel">Coverage</span><div class="chips" id="gCov">
@@ -842,7 +857,7 @@
 </section>
 
 <!-- ================= FINANCIAL AID ================= -->
-<section class="panel" id="pAid" role="tabpanel">
+<section class="panel" id="pAid" role="tabpanel" aria-labelledby="tab-pAid">
   <p class="panel-note"><b>Applying for financial aid.</b> Aid is a <i>separate application</i> from admission, with its own forms and its own deadlines — missing them usually means no aid for the whole degree, even if you are admitted. This is the general process; every university differs, so check each one's aid page (linked on its profile).</p>
 
   <section class="up-sec"><h2>Step 1 · Work out what kind of money you are chasing</h2>
@@ -899,7 +914,7 @@
 </section>
 
 <!-- ================= DECISION PLANS ================= -->
-<section class="panel" id="pPlans" role="tabpanel">
+<section class="panel" id="pPlans" role="tabpanel" aria-labelledby="tab-pPlans">
   <p class="panel-note"><b>ED, EA, REA and RD explained.</b> When you apply to a US university, you choose an application plan. They differ in deadline, whether you are committed if admitted, and whether you can compare financial aid offers before deciding. For international students on a budget, that last point usually matters most.</p>
 
   <div class="tblwrap" style="margin-top:18px"><table class="cmp"><thead><tr>
@@ -951,7 +966,7 @@
 </section>
 
 <!-- ================= MY COLLEGES ================= -->
-<section class="panel" id="pMy" role="tabpanel">
+<section class="panel" id="pMy" role="tabpanel" aria-labelledby="tab-pMy">
   <p class="panel-note"><b>My Colleges.</b> Add universities with <b>+ Add to my colleges</b> on any card, then compare funding, deadlines and decision plans side by side and work the application checklist. Everything is stored in your browser only — no account, nothing uploaded.</p>
   <div class="btnrow"><button class="linkbtn" id="csvSaved">⬇ Export CSV</button><button class="linkbtn" id="printSaved">🖨 Print / PDF</button><button class="linkbtn" id="clrSaved">Clear list</button></div>
   <div id="myCmp"></div>
@@ -959,7 +974,7 @@
 </section>
 
 <!-- ================= ESSAY HELPER ================= -->
-<section class="panel" id="pEssays" role="tabpanel">
+<section class="panel" id="pEssays" role="tabpanel" aria-labelledby="tab-pEssays">
   <p class="panel-note"><b>Essay helper.</b> How to write the personal statement that goes to every Common App university — the principles, the structures that work, worked examples, and a revision checklist. <b>University-specific supplemental prompts now live on each university's own profile page</b> (open a card → See full profile → Essays).</p>
 
   <section class="up-sec"><h2>What the personal essay is actually for</h2>
@@ -1051,7 +1066,7 @@
 </section>
 
 <!-- ================= AI ================= -->
-<section class="panel" id="pAI" role="tabpanel">
+<section class="panel" id="pAI" role="tabpanel" aria-labelledby="tab-pAI">
   <p class="panel-note"><b>AI admissions assistant.</b> This page can't run an AI model itself — instead it builds a rigorous prompt containing your profile and this site's <b>verified data block</b> for the universities you choose, with strict instructions to separate verified facts from suggestions and never invent deadlines or policies. Copy it into <a class="off" href="https://claude.ai/new" target="_blank" rel="noopener">Claude</a> (or any AI) for reach/target/safety analysis, essay brainstorming, and interview prep.</p>
   <div class="two">
     <div class="box">
@@ -5033,7 +5048,7 @@ const APPLY={
   {t:"Academics (optional)",w:"—",q:"Have you had any extenuating circumstances (such as limited course selection, inconsistent grades, or disruptions) that have affected your coursework but are not described elsewhere in your application?"}]},
 
 "Harvard University":{
- fee:"US$90 (international and domestic; fee waivers available)",
+ fee:"US$85 (international and domestic; fee waivers available)",
  test:"SAT or ACT — always required",
  eng:"No English proficiency test required",
  grades:"Courses & Grades: not used. School report, mid-year report and final report all required.",
@@ -5061,7 +5076,7 @@ const APPLY={
   {t:"More about me",w:"50 words each",q:"What is a new skill you would like to learn in college? · What brings you joy? · What song represents the soundtrack of your life at this moment?"}]},
 
 "Stanford University":{
- fee:"US$100 (international and domestic; fee waivers available)",
+ fee:"US$90 (international and domestic; fee waivers available)",
  test:"SAT (without essay) or ACT (without science or writing) — always required",
  eng:"See Stanford's website for accepted English tests",
  grades:"Courses & Grades: required. School report, mid-year report and final report all required.",
@@ -5099,7 +5114,7 @@ const APPLY={
  grades:"Courses & Grades: required. School report, counsellor recommendation, mid-year report and final report all required.",
  recs:"Counsellor recommendation required; teacher evaluations are optional (1 optional).",
  extra:"You indicate one major you want to pursue at USC. Merit scholarship consideration requires the early December application deadline.",
- plans:[{k:"EA",d:"1 November",note:"Non-restrictive"},{k:"RD",d:"15 January",note:"Merit scholarship deadline is ~1 December — earlier than RD"}],
+ plans:[{k:"EA",d:"1 December",note:"Non-restrictive; also the merit-scholarship deadline"},{k:"RD",d:"15 January"}],
  essays:[
   {t:"Why your major at USC",w:"~250 words",q:"Describe how you plan to pursue your academic interests and why you want to explore them at USC specifically. Please feel free to address your first- and second-choice major selections."},
   {t:"Educational gap (if applicable)",w:"250 words",q:"Starting with the beginning of high school/secondary school, if you have had a gap where you were not enrolled in school during a fall or spring term, please address this gap in your educational history. You do not need to address a summer break."},
@@ -5259,7 +5274,7 @@ const RSUB={
  "Middle East":"Several Gulf packages are automatic on admission (KFUPM, Khalifa); Türkiye Bursları is the region's big government ride.",
  "East Asia":"Government scholarships dominate (MEXT, GKS, CSC, Taiwan MOE) — applied via embassies about a year ahead. KAIST-model institutes fund essentially every admit.",
  "Southeast Asia":"Singapore's bonded scholarships are the region's gold standard; Malaysian branch campuses deliver Western degrees at a third of the price.",
- "South & Central Asia":"State-funded quota schemes (ICCR, Kazakhstan) plus Nazarbayev's English-medium state grant.",
+ "South & Central Asia":"No universities listed — the region's routes are the government quota schemes in the Scholarships tab.",
  "Latin America":"The public giants are tuition-free or near-free for everyone — but only in Portuguese or Spanish; learn the language first.",
  "Oceania":"Full tuition is realistic (Melbourne, Monash, UNSW); full living support is not — budget accordingly."};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -5570,6 +5585,37 @@ function dlSoon(d){
  const k=daysTo(n.when);
  if(k<0||k>60)return "";
  return '<span class="dlchip'+(k<=21?" urgent":"")+'">'+(k===0?"closes today":k===1?"closes tomorrow":"closes in "+k+" days")+"</span>"}
+/* ---- export ---- */
+function csvCell(v){const s=v==null?"":String(v);
+ return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+const CSV_COLS=[
+ ["University",d=>d.u],["Country",d=>d.c],["City",d=>d.city],["Region",d=>d.r],
+ ["Funding level",d=>TIER_LABEL[d.tier]],["Scholarship",d=>d.s],["Award type",d=>d.st],
+ ["How it works",d=>d.cov],
+ ["Deadline - early",d=>deadlines(d).early],
+ ["Deadline - regular",d=>deadlines(d).reg],
+ ["Deadline - scholarship",d=>deadlines(d).sch||""],
+ ["Apply early or regular",d=>recoFor(d).t],
+ ["Application fee",d=>{const A=APPLY[d.u];return (A&&A.fee)||d.fee||""}],
+ ["Fee waiver",d=>feeWaiver(d).lab||"not on file"],
+ ["Acceptance rate",d=>d.acc],["QS rank",d=>d.qs],
+ ["Need-blind (intl)",d=>d.blind===1?"yes":d.blind===0?"no":""],
+ ["Meets 100% need",d=>d.m100===1?"yes":d.m100===0?"no":""],
+ ["Merit scholarships",d=>d.merit===1?"yes":d.merit===0?"no":""],
+ ["Majors offered",d=>["me","cs","se","math","pmath","amath","stats","neuro","aero"]
+   .filter(k=>d[k]).map(k=>MAJOR_LABEL[k]).join("; ")],
+ ["Platform",d=>d.plat],["Tests & documents",d=>d.req],
+ ["Website",d=>d.w],["Financial aid page",d=>d.fa],["Scholarship page",d=>d.sch]];
+function toCSV(rows){
+ return [CSV_COLS.map(c=>csvCell(c[0])).join(",")]
+  .concat(rows.map(d=>CSV_COLS.map(c=>csvCell(c[1](d))).join(","))).join("\r\n")}
+function dl(name,text){
+ /* the BOM keeps flags and accented names readable when Excel opens the file */
+ const b=new Blob(["\ufeff"+text],{type:"text/csv;charset=utf-8"});
+ const u=URL.createObjectURL(b),a=document.createElement("a");
+ a.href=u;a.download=name;a.style.display="none";
+ document.body.appendChild(a);a.click();
+ setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},250)}
 function feeLine(d){
  const A=APPLY[d.u],txt=(A&&A.fee)||d.fee,w=feeWaiver(d);
  return '<p class="feeline"><span class="k">Application fee · </span>'+esc(txt||"Not on file — verify")
@@ -5925,7 +5971,6 @@ const SHEET={
 "University College Dublin (UCD)":{fee:"~€70",sdl:"Global Excellence Scholarship round (verify)"},
 "Japanese national universities (UTokyo, Kyoto, Science Tokyo…)":{fee:"No application fee (MEXT embassy track)",sdl:"Embassy call, usually April–June"},
 "Ritsumeikan APU":{fee:"~¥5,500",sdl:"University application timeline"},
-"Nazarbayev University":{fee:"~10,000 KZT",sdl:"Usually January"},
 "KAIST":{fee:"~US$80 (fee waiver available)",sdl:"Usually September–January"},
 "SNU, Korea Univ., Yonsei & other GKS partners":{fee:"No application fee (GKS)",sdl:"GKS: usually September–October"},
 "National University of Singapore (NUS)":{fee:"~S$20",sdl:"University application timeline"},
@@ -5942,8 +5987,7 @@ const SHEET={
 "Aalto University":{fee:"~€100",sdl:"Admission round, ~mid-Jan"},
 "University of Helsinki":{fee:"~€100",sdl:"Admission round, ~mid-Jan"},
 "Politecnico di Torino":{sdl:"Rolling rounds from ~Nov; regional grant deadline differs"},
-"Bocconi University":{sdl:"Scholarship assessed with admission rounds"},
-"Simon Fraser University":{fee:"~C$130",sdl:"USES: ~15 Dec"}};
+"Bocconi University":{sdl:"Scholarship assessed with admission rounds"}};
 /* Searchable groupings — "Ivy League" or "Oxbridge" is how people actually think
    about these, and typing it found nothing before. Names are matched against the
    data, so a rename silently drops the tag rather than inventing a member. */
@@ -6124,6 +6168,9 @@ render();renderCmpBar();renderMy();renderGovt();gotoTab("pUni");router();
 $$("#gCov .chip").forEach(b=>b.onclick=()=>{gstate.cov=b.dataset.v;$$("#gCov .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
 $$("#gUg .chip").forEach(b=>b.onclick=()=>{gstate.ug=b.dataset.v;$$("#gUg .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
 let gqt;$("#gq").addEventListener("input",e=>{clearTimeout(gqt);gqt=setTimeout(()=>{gstate.q=e.target.value.trim().toLowerCase();renderGovt()},120)});
+/* universities: export what is currently filtered, not the whole atlas */
+$("#csvBtn").onclick=()=>dl("full-ride-atlas.csv",toCSV(DATA.filter(d=>matches(d))));
+$("#printBtn").onclick=()=>window.print();
 /* my colleges actions */
 $("#csvSaved").onclick=()=>dl("my-colleges.csv",toCSV([...saved].map(k=>DATA.find(d=>d.u===k)).filter(Boolean)));
 $("#printSaved").onclick=()=>window.print();
