@@ -624,7 +624,7 @@
 <header>
   <div class="masthead">
     <div>
-      <p class="eyebrow">Compiled July 2026 · <span id="nUni">—</span> universities · <span id="nCty">—</span> countries · <span id="nSch">—</span> scholarships</p>
+      <p class="eyebrow">Compiled July 2026 · <span id="nUni">—</span> universities · <span id="nCty">—</span> countries · <span id="nSch">—</span> scholarships · <span id="nInt">—</span> internships</p>
       <h1>Full-Ride Atlas</h1>
     </div>
     <button class="themebtn" id="themeBtn" type="button">Light</button>
@@ -643,6 +643,7 @@
       <div><b>Universities</b> — the searchable atlas of funded places.</div>
       <div><b>My Colleges</b> — your shortlist, side by side, with a checklist per university.</div>
       <div><b>Scholarships</b> — government, provincial and foundation money you apply for separately.</div>
+      <div><b>Internships</b> — research and programmes to apply to before university.</div>
       <div><b>Financial Aid</b> — what the aid forms want and how to ask for more.</div>
       <div><b>ED / EA / REA / RD</b> — what each US round commits you to.</div>
       <div><b>Essay Helper</b> — worked examples and what admissions readers look for.</div>
@@ -682,6 +683,7 @@
   <button class="tab on" id="tab-pUni" role="tab" aria-selected="true" aria-controls="pUni" data-p="pUni">Universities</button>
   <button class="tab" id="tab-pMy" role="tab" aria-selected="false" aria-controls="pMy" data-p="pMy">My Colleges <span class="n" id="nSaved"></span></button>
   <button class="tab" id="tab-pGov" role="tab" aria-selected="false" aria-controls="pGov" data-p="pGov">Scholarships</button>
+  <button class="tab" id="tab-pInt" role="tab" aria-selected="false" aria-controls="pInt" data-p="pInt">Internships</button>
   <button class="tab" id="tab-pAid" role="tab" aria-selected="false" aria-controls="pAid" data-p="pAid">Financial Aid</button>
   <button class="tab" id="tab-pPlans" role="tab" aria-selected="false" aria-controls="pPlans" data-p="pPlans">ED / EA / REA / RD</button>
   <button class="tab" id="tab-pEssays" role="tab" aria-selected="false" aria-controls="pEssays" data-p="pEssays">Essay Helper</button>
@@ -854,6 +856,58 @@
     <div class="fmeta"><span class="count" id="gCount" aria-live="polite"></span></div>
   </div>
   <div id="gList"></div>
+</section>
+
+<!-- ================= INTERNSHIPS & RESEARCH ================= -->
+<section class="panel" id="pInt" role="tabpanel" aria-labelledby="tab-pInt">
+  <p class="panel-note"><b>Internships &amp; research.</b> Programmes you can apply to before university, tagged to the same majors as the atlas. <b>Citizenship and residency limits are stated wherever a programme has them</b> — that is the commonest reason an international applicant wastes a cycle. Deadlines are typical windows, not confirmed dates: always check the official page.</p>
+
+  <section class="up-sec">
+    <h2>What actually helps your application</h2>
+    <p class="up-para"><span class="k">Depth beats breadth · </span>One thing pursued for two years, with something to show for it, outranks six one-week certificates. Admissions readers are looking for evidence you follow through, not a list.</p>
+    <p class="up-para"><span class="k">Free and selective beats expensive and open · </span>A place at RSI, PROMYS or Beamline for Schools means something because thousands were turned away. A programme that admits anyone who pays means only that you could pay — and readers know which is which.</p>
+    <p class="up-para"><span class="k">The best option here costs nothing · </span>Emailing researchers at a nearby university has the highest return per hour on this page. It is free, it produces a real supervisor who can write about you, and the initiative is exactly what selective programmes screen for. Most emails go unanswered — send ten.</p>
+    <p class="up-para"><span class="k">Write the result, not the label · </span>"Attended a summer programme" says nothing. "Determined the orbit of asteroid 1998 QE2 from our own telescope images and submitted it to the Minor Planet Center" says everything. Whatever you do, finish something you can describe concretely.</p>
+    <p class="eguide" style="margin-top:12px">Nothing on this page is required. Students are admitted with full funding every year having done none of it — what they have instead is one thing they went deep on. Use the <b>Activities Builder</b> tab to write up whatever you choose.</p>
+  </section>
+
+  <div class="filters" style="margin-top:16px">
+    <div class="frow">
+      <span class="flabel">Major <span class="fhint">— pick as many as you like</span></span>
+      <div class="seg" id="segIntMajor" role="group" aria-label="Filter internships by major">
+        <button data-m="all" class="on">All majors</button>
+        <button data-m="me">Mechanical Eng</button>
+        <button data-m="cs">Computer Science</button>
+        <button data-m="se">Software Eng</button>
+        <button data-m="math">Mathematics</button>
+        <button data-m="pmath">Pure Maths</button>
+        <button data-m="amath">Applied Maths</button>
+        <button data-m="stats">Statistics</button>
+        <button data-m="neuro">Neuroscience</button>
+        <button data-m="aero">Aerospace</button>
+      </div>
+    </div>
+    <div class="frow"><span class="flabel">Cost</span><div class="chips" id="iCost">
+      <button class="chip on" data-v="">Any</button>
+      <button class="chip" data-v="free">No cost to you</button>
+      <button class="chip" data-v="stipend">Pays a stipend</button>
+      <button class="chip" data-v="paid">You pay</button>
+    </div></div>
+    <div class="frow"><span class="flabel">Eligibility</span><div class="chips" id="iIntl">
+      <button class="chip on" data-v="">Any</button>
+      <button class="chip" data-v="1">Open to internationals</button>
+      <button class="chip" data-v="0">Restricted — show me what I cannot apply to</button>
+    </div></div>
+    <div class="frow"><span class="flabel">Format</span><div class="chips" id="iFmt">
+      <button class="chip on" data-v="">Any</button>
+      <button class="chip" data-v="Remote">Remote</button>
+      <button class="chip" data-v="In person">In person</button>
+      <button class="chip" data-v="Hybrid">Hybrid</button>
+    </div></div>
+    <div class="frow"><span class="flabel">Search</span><input id="iq" type="search" placeholder="Programme, organisation, keyword… e.g. “olympiad”, “open source”, “neuroscience”"></div>
+    <div class="fmeta"><span class="count" id="iCount" aria-live="polite"></span></div>
+  </div>
+  <div id="iList"></div>
 </section>
 
 <!-- ================= FINANCIAL AID ================= -->
@@ -5248,6 +5302,325 @@ function bindLogos(root){
   im.addEventListener("load",()=>{im.naturalWidth>1?im.classList.add("ok"):im.remove()});
   im.addEventListener("error",()=>im.remove())})}
 
+/* ==================== INTERNSHIPS & RESEARCH PROGRAMMES ====================
+   Programmes a school student or recent leaver can actually apply to, tagged to
+   the same majors as the university filter. Citizenship and residency limits are
+   stated wherever a programme has them — they are the single most common reason
+   an international applicant wastes a cycle. Deadlines are typical cycles, not
+   confirmed dates; every entry says so and links to the official page. */
+const ALL_M=["me","cs","se","math","pmath","amath","stats","neuro","aero"];
+const INT=[
+/* ---------- selective research programmes ---------- */
+{n:"Research Science Institute (RSI)",org:"Center for Excellence in Education & MIT",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"free",intl:1,age:"Rising seniors, typically 16–18",
+ majors:ALL_M,dl:"Usually mid-December to mid-January (verify)",
+ what:"Six weeks at MIT: a week of intensive classes, then five weeks doing real research with a mentor, ending in a written paper and conference-style talk.",
+ who:"About 100 students worldwide, roughly 80 US and 20 international. No fee at all — tuition, room and board are covered.",
+ worth:"The most selective free science programme in the world, and admissions officers know it. Treat it as a reach and apply to others alongside.",
+ w:"cee.org/programs/research-science-institute"},
+{n:"Summer Science Program (SSP)",org:"SSP International",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"free",intl:1,age:"Rising seniors, 15–18",
+ majors:["math","amath","stats","aero","cs","neuro"],dl:"Usually February (verify)",
+ what:"Five weeks doing one genuine research project — determining an asteroid's orbit, sequencing a genome, or characterising a fungal enzyme — in a team of three.",
+ who:"International applicants welcome. Tuition is charged but need-based aid is substantial and many pay nothing.",
+ worth:"The asteroid track is the strongest pre-university astronomy and applied-maths experience going: you write real orbit-determination code and submit results to the Minor Planet Center.",
+ w:"summerscience.org"},
+{n:"Clark Scholars Program",org:"Texas Tech University",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"stipend",intl:1,age:"17+ by the start date",
+ majors:ALL_M,dl:"Usually February (verify)",
+ what:"Seven weeks of one-to-one research with a Texas Tech faculty member across engineering, maths, computing and the life sciences.",
+ who:"Twelve students a year. Room, board and a stipend are provided. International applicants have been accepted — confirm the current rules before investing in the application.",
+ worth:"Tiny cohort and a real faculty mentor, which is exactly what makes a research letter of recommendation carry weight.",
+ w:"clarkscholars.ttu.edu"},
+{n:"Research in Science & Engineering (RISE)",org:"Boston University",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"Rising seniors",
+ majors:ALL_M,dl:"Usually February (verify)",
+ what:"Six weeks in a BU lab on the Internship track, or a structured group course on the Practicum track, ending in a poster symposium.",
+ who:"Open to international students. Tuition is significant; need-based aid exists but is limited — check the figure before you plan on it.",
+ worth:"A genuine lab placement rather than a lecture course, which is the distinction that matters when you write about it.",
+ w:"bu.edu/summer/high-school-programs/research"},
+{n:"Simons Summer Research Program",org:"Stony Brook University",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"stipend",intl:0,age:"Rising seniors",
+ majors:ALL_M,dl:"Usually February (verify)",
+ what:"Seven weeks embedded in a Stony Brook research group, with a stipend and a final poster session.",
+ who:"Restricted to students attending a US high school — listed so you do not spend a week on an application you cannot submit.",
+ worth:"Excellent if you are studying in the US. If you are not, put the time into RSI, SSP or a local university lab instead.",
+ w:"stonybrook.edu/simons"},
+{n:"NIH Summer Internship Program",org:"US National Institutes of Health",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"stipend",intl:0,age:"16+ ",
+ majors:["neuro","stats","cs","amath"],dl:"Usually early in the calendar year (verify)",
+ what:"Paid summer research in an NIH laboratory, including substantial neuroscience and computational biology groups.",
+ who:"US citizens and permanent residents only. Stated plainly because the neuroscience opportunities here are otherwise outstanding.",
+ worth:"If you do not qualify, the equivalent move is emailing neuroscience labs at your nearest research university — see the Brain Bee and the do-it-yourself section below.",
+ w:"training.nih.gov/research-training/pb/sip"},
+{n:"NASA OSTEM internships",org:"NASA",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"Hybrid",cost:"stipend",intl:0,age:"16+ (high school through postgraduate)",
+ majors:["aero","me","cs","se","math","amath","stats"],dl:"Three rounds a year — usually autumn, winter and spring (verify)",
+ what:"Paid internships across NASA centres in aeronautics, propulsion, robotics, flight software and mission data analysis.",
+ who:"US citizens only, with no exceptions. This catches out more aspiring aerospace students than any other restriction in this list.",
+ worth:"If you are not a US citizen, the realistic aerospace routes are CERN Beamline for Schools, national space-agency schools, university open labs and design competitions — all listed here.",
+ w:"intern.nasa.gov"},
+{n:"Aspiring Scientists Summer Internship Program (ASSIP)",org:"George Mason University",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"free",intl:2,age:"15+",
+ majors:ALL_M,dl:"Usually January to February (verify)",
+ what:"Eight weeks of unpaid but free research in a Mason lab — bioengineering, computational science, neuroscience and more.",
+ who:"You must be able to attend in person in Virginia. Non-US students have participated, but visa status governs eligibility — confirm directly before applying.",
+ worth:"One of the few large US programmes with no tuition charge at all, so worth checking if you can already be in the area.",
+ w:"assip.gmu.edu"},
+{n:"International Summer School for Young Physicists (ISSYP)",org:"Perimeter Institute",c:"Canada",f:"🇨🇦",cat:"Selective research programmes",
+ fmt:"Hybrid",cost:"free",intl:1,age:"Final two years of school",
+ majors:["math","pmath","amath","aero","cs"],dl:"Usually February to March (verify)",
+ what:"Two weeks of theoretical physics — relativity, quantum mechanics, cosmology — taught by Perimeter researchers, with in-person and online editions.",
+ who:"Genuinely international, and the in-person edition covers accommodation and meals. There is an application fee with waivers available.",
+ worth:"The clearest signal you can send that your interest in mathematical physics is real rather than decorative, and it is free.",
+ w:"perimeterinstitute.ca/issyp"},
+{n:"Yale Young Global Scholars (YYGS)",org:"Yale University",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"16–18",
+ majors:ALL_M,dl:"Usually January (verify)",
+ what:"Two weeks on Yale's campus across themed sessions including Applied Science & Engineering and Science, Policy & Innovation.",
+ who:"Explicitly international — over half the cohort comes from outside the US — and full need-based scholarships are available.",
+ worth:"An academic enrichment programme rather than research, so write about what you built or argued there, not the brand. The need-based aid is real and generous.",
+ w:"globalscholars.yale.edu"},
+{n:"Telluride Association Summer Seminar (TASS)",org:"Telluride Association",c:"USA",f:"🇺🇸",cat:"Selective research programmes",
+ fmt:"In person",cost:"free",intl:1,age:"Rising juniors and seniors",
+ majors:ALL_M,dl:"Usually January (verify)",
+ what:"Six weeks of university-level seminar teaching and self-governed community living, free of charge including travel in many cases.",
+ who:"US and international applicants. Humanities and critical-theory focused rather than technical.",
+ worth:"Listed because it is fully free and highly selective; the writing and discussion training transfers directly to your essays.",
+ w:"tellurideassociation.org"},
+
+/* ---------- mathematics ---------- */
+{n:"Ross Mathematics Program",org:"Ross Mathematics Foundation",c:"USA",f:"🇺🇸",cat:"Mathematics programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"15–18",
+ majors:["math","pmath","amath","cs","stats"],dl:"Usually late March to early April (verify)",
+ what:"Six weeks of number theory taught the hard way: you are given problem sets and expected to discover and prove the results yourself.",
+ who:"International students welcome, and need-based financial aid is available. Sister programmes have run in Asia and at Otterbein in Ohio.",
+ worth:"Along with PROMYS, the strongest signal of genuine mathematical ability outside the olympiad route — and it teaches you to write proofs properly.",
+ w:"rossprogram.org"},
+{n:"PROMYS",org:"Boston University",c:"USA",f:"🇺🇸",cat:"Mathematics programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"14–18",
+ majors:["math","pmath","amath","cs","stats"],dl:"Usually March (verify)",
+ what:"Six weeks of immersion in number theory through daily problem sets, with optional advanced seminars and a research-style exploration.",
+ who:"International applicants accepted; PROMYS states that no student is turned away for inability to pay.",
+ worth:"The application is a problem set — solving it is itself excellent preparation, whatever the outcome.",
+ w:"promys.org"},
+{n:"PROMYS Europe",org:"University of Oxford & Wadham College",c:"United Kingdom",f:"🇬🇧",cat:"Mathematics programmes",
+ fmt:"In person",cost:"free",intl:1,age:"16–18",
+ majors:["math","pmath","amath"],dl:"Usually March (verify)",
+ what:"Six weeks in Oxford on the same number-theory model as PROMYS in Boston.",
+ who:"Open to students from Europe and beyond; full and partial financial support is available and many participants pay nothing.",
+ worth:"Closer and cheaper than the US programmes if you are applying to UK universities anyway, with the same intellectual content.",
+ w:"promys-europe.org"},
+{n:"Canada/USA Mathcamp",org:"Mathematics Foundation of America",c:"Canada",f:"🇨🇦",cat:"Mathematics programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"13–18",
+ majors:["math","pmath","amath","cs","stats"],dl:"Usually March (verify)",
+ what:"Five weeks of self-chosen university-level maths — topology, combinatorics, logic, whatever is running — with no fixed curriculum.",
+ who:"Students from anywhere in the world; substantial need-based aid, including full scholarships.",
+ worth:"Broader than Ross or PROMYS. The qualifying quiz is open-book and worth attempting on its own merits.",
+ w:"mathcamp.org"},
+{n:"Stanford University Mathematics Camp (SUMaC)",org:"Stanford University",c:"USA",f:"🇺🇸",cat:"Mathematics programmes",
+ fmt:"Hybrid",cost:"paid",intl:1,age:"Rising juniors and seniors",
+ majors:["math","pmath","amath"],dl:"Usually February to March (verify)",
+ what:"Abstract algebra and number theory, or algebraic topology, taught at university level in residential and online editions.",
+ who:"International students admitted. Fees are high; need-based aid exists — ask for the figure before committing.",
+ worth:"The online edition removes the travel and visa problem entirely, which makes it one of the more practical options from Asia.",
+ w:"sumac.spcs.stanford.edu"},
+{n:"Hampshire College Summer Studies in Mathematics (HCSSiM)",org:"Hampshire College",c:"USA",f:"🇺🇸",cat:"Mathematics programmes",
+ fmt:"In person",cost:"paid",intl:1,age:"Rising juniors and seniors",
+ majors:["math","pmath"],dl:"Usually spring (verify)",
+ what:"Six weeks of intensive mathematics, four hours of class a day plus problem sessions, on topics chosen by the staff.",
+ who:"International participants accepted; some financial aid available.",
+ worth:"Long-running and well regarded among mathematicians, with less name recognition than Ross or PROMYS — which also means less competition.",
+ w:"hcssim.org"},
+{n:"National and international mathematical olympiads",org:"Your national mathematical society",c:"Global",f:"🌍",cat:"Mathematics programmes",
+ fmt:"In person",cost:"free",intl:1,age:"Pre-university",
+ majors:["math","pmath","amath","cs","stats"],dl:"National rounds usually run in the school year (verify with your national body)",
+ what:"The route from a national olympiad through training camps to the IMO, APMO or regional equivalents.",
+ who:"Free and open through your national mathematical society. In Malaysia this runs through IMO Malaysia and the national olympiad.",
+ worth:"Still the single most legible signal of mathematical ability to an admissions committee, and it costs nothing but time. Even a national-round result is worth listing.",
+ w:"imo-official.org"},
+
+/* ---------- computing & software ---------- */
+{n:"Google Summer of Code",org:"Google Open Source",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Remote",cost:"stipend",intl:1,age:"18+ at registration",
+ majors:["cs","se","math","amath","stats"],dl:"Contributor applications usually open in March (verify)",
+ what:"Twelve weeks writing code for an established open-source project with a mentor, paid a stipend scaled to your country.",
+ who:"Anyone 18 or over who is new to open source, anywhere in the world. Since 2021 you no longer need to be enrolled at a university.",
+ worth:"The strongest computing credential on this list that has no citizenship restriction and pays you. If you turn 18 before the deadline, prioritise this over any paid summer programme.",
+ w:"summerofcode.withgoogle.com"},
+{n:"Outreachy",org:"Software Freedom Conservancy",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Remote",cost:"stipend",intl:1,age:"18+",
+ majors:["cs","se","stats"],dl:"Two rounds a year — usually opening around January and August (verify)",
+ what:"Paid three-month remote internships in open source, with a mentor and a structured contribution period.",
+ who:"Open worldwide to people subject to systemic bias or under-representation in tech in their country.",
+ worth:"Real paid experience with a named mentor. The initial contribution phase teaches you more than most summer courses.",
+ w:"outreachy.org"},
+{n:"Contributing to open source",org:"GitHub, Hacktoberfest and project communities",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Remote",cost:"free",intl:1,age:"Any",
+ majors:["cs","se","stats","amath"],dl:"No deadline — start whenever",
+ what:"Find a library you already use, read its issue tracker, fix a documented bug, open a pull request. Repeat until you are trusted with bigger work.",
+ who:"Anyone with a computer and an internet connection. Hacktoberfest each October is a structured on-ramp.",
+ worth:"A public commit history that a stranger can inspect beats almost any certificate. Sustained contribution over a year reads as commitment; one October of typo fixes does not.",
+ w:"github.com/explore"},
+{n:"Kaggle competitions",org:"Kaggle",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Remote",cost:"free",intl:1,age:"Any (some prizes 18+)",
+ majors:["cs","se","stats","amath","math","neuro"],dl:"Rolling — competitions open and close continuously",
+ what:"Public machine-learning competitions with real datasets, public leaderboards and shared solution notebooks.",
+ who:"Free and open worldwide. Prize eligibility can have age limits; participation does not.",
+ worth:"A ranked leaderboard position is verifiable and specific. Writing up your approach in a public notebook is what turns it into something you can talk about.",
+ w:"kaggle.com/competitions"},
+{n:"Major League Hacking events and Fellowship",org:"MLH",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Hybrid",cost:"free",intl:1,age:"Mostly 18+ for the Fellowship; hackathons vary",
+ majors:["cs","se"],dl:"Hackathons run year-round; Fellowship rounds are seasonal (verify)",
+ what:"Hundreds of student hackathons worldwide, plus a twelve-week remote fellowship in open source or software engineering.",
+ who:"Hackathons are open to school students at many events; the Fellowship generally requires 18+.",
+ worth:"Hackathons are the cheapest way to get from 'I am learning to code' to 'I have shipped something with other people'.",
+ w:"mlh.io"},
+{n:"Competitive programming — Codeforces, AtCoder, USACO",org:"Various",c:"Global",f:"🌍",cat:"Computing & software",
+ fmt:"Remote",cost:"free",intl:1,age:"Any",
+ majors:["cs","se","math","amath"],dl:"Contests run weekly",
+ what:"Regular timed algorithmic contests with public ratings, and the USACO training ladder which is open to anyone regardless of country.",
+ who:"Free and global. USACO's divisions are open internationally even though its team selection is for US students.",
+ worth:"A rating is a number an admissions reader can check, and the practice directly prepares you for the IOI route through your national olympiad.",
+ w:"codeforces.com"},
+
+/* ---------- engineering & aerospace ---------- */
+{n:"CERN Beamline for Schools",org:"CERN",c:"Switzerland",f:"🇨🇭",cat:"Engineering & aerospace",
+ fmt:"In person",cost:"free",intl:1,age:"16+, in teams",
+ majors:["aero","me","cs","math","amath","stats"],dl:"Usually spring, around April (verify)",
+ what:"Teams of school students write a proposal for a particle-physics experiment; the winning teams travel to CERN or DESY and actually run it on a beamline.",
+ who:"Open to teams anywhere in the world. Travel and accommodation for winners are covered.",
+ worth:"There is nothing else at school level where you design and execute a real physics experiment at a national laboratory. Even a strong unsuccessful proposal is a serious piece of work to write about.",
+ w:"beamline-for-schools.web.cern.ch"},
+{n:"NASA International Space Apps Challenge",org:"NASA and partner agencies",c:"Global",f:"🌍",cat:"Engineering & aerospace",
+ fmt:"Hybrid",cost:"free",intl:1,age:"Any",
+ majors:["aero","cs","se","math","amath","stats","me"],dl:"Annual event, usually held in October (verify)",
+ what:"A 48-hour global hackathon solving problems set by NASA using open space and Earth-science data, run at hundreds of local sites.",
+ who:"Free and open to everyone worldwide — unlike NASA's internships, this has no citizenship restriction.",
+ worth:"The most accessible way for a non-US student to do something genuinely aerospace-flavoured, and local sites exist across Southeast Asia.",
+ w:"spaceappschallenge.org"},
+{n:"European Astro Pi Challenge",org:"ESA & Raspberry Pi Foundation",c:"Europe",f:"🇪🇺",cat:"Engineering & aerospace",
+ fmt:"Remote",cost:"free",intl:2,age:"Under 19",
+ majors:["cs","se","aero","math","stats"],dl:"Mission Zero and Mission Space Lab run through the school year (verify)",
+ what:"Write Python that runs on Raspberry Pi computers aboard the International Space Station and get your results back.",
+ who:"Restricted to ESA member and associate states plus a few partners — check the eligible-country list before starting.",
+ worth:"Your code literally runs in orbit. If your country is not eligible, the Space Apps Challenge is the open equivalent.",
+ w:"astro-pi.org"},
+{n:"F1 in Schools",org:"F1 in Schools",c:"Global",f:"🌍",cat:"Engineering & aerospace",
+ fmt:"In person",cost:"paid",intl:1,age:"School teams, 9–19",
+ majors:["me","aero","cs"],dl:"National rounds run through the school year (verify)",
+ what:"Teams design, simulate, manufacture and race a miniature CO2-powered car, with engineering, sponsorship and presentation judged together.",
+ who:"Runs in around 50 countries including Malaysia and Singapore. Teams raise their own sponsorship for costs.",
+ worth:"CFD, CAD and manufacturing under a real constraint — the closest school-level analogue to a mechanical engineering design cycle. National finalists are genuinely competitive.",
+ w:"f1inschools.com"},
+{n:"FIRST Robotics and World Robot Olympiad",org:"FIRST / WRO Association",c:"Global",f:"🌍",cat:"Engineering & aerospace",
+ fmt:"In person",cost:"paid",intl:1,age:"School teams",
+ majors:["me","cs","se","aero"],dl:"Seasons run roughly September to April (verify locally)",
+ what:"Team robotics competitions with a new challenge each season, from build and control through to competition strategy.",
+ who:"Both run national programmes across Asia, Europe and the Americas. Costs vary by league and are usually met by school or sponsor funding.",
+ worth:"Multi-year involvement with a clear progression — member, then subsystem lead, then mentor — is exactly the shape of activity that reads well.",
+ w:"firstinspires.org"},
+{n:"Space Camp and Advanced Space Academy",org:"US Space & Rocket Center",c:"USA",f:"🇺🇸",cat:"Engineering & aerospace",
+ fmt:"In person",cost:"paid",intl:1,age:"Programmes from 9 to 18",
+ majors:["aero","me"],dl:"Rolling sessions through the year (verify)",
+ what:"Simulated missions, rocketry and astronaut training exercises at the Marshall Space Flight Center site in Alabama.",
+ who:"International participants welcome; some national partners and honours programmes offer scholarships.",
+ worth:"Enrichment rather than research, and it is paid — so it supports an interest rather than proving one. Do not build an application around it.",
+ w:"rocketcenter.com"},
+
+/* ---------- neuroscience & life sciences ---------- */
+{n:"International Brain Bee",org:"International Brain Bee",c:"Global",f:"🌍",cat:"Neuroscience & life sciences",
+ fmt:"Hybrid",cost:"free",intl:1,age:"13–19",
+ majors:["neuro","stats","cs"],dl:"National and local rounds run through the school year (verify)",
+ what:"A neuroscience competition progressing from local to national to world championship, covering anatomy, neurology, imaging and current research.",
+ who:"Free, runs through national chapters in dozens of countries, and winners often gain lab placements.",
+ worth:"The clearest neuroscience-specific credential available before university, and preparing for it teaches you the field properly rather than superficially.",
+ w:"thebrainbee.org"},
+{n:"EyeWire and citizen neuroscience",org:"Princeton / Seung Lab and others",c:"Global",f:"🌍",cat:"Neuroscience & life sciences",
+ fmt:"Remote",cost:"free",intl:1,age:"Any",
+ majors:["neuro","cs","stats"],dl:"No deadline — contribute any time",
+ what:"Map real neurons by tracing them in electron-microscopy data; contributions have fed into published connectomics research.",
+ who:"Free and open to anyone with a browser.",
+ worth:"Only meaningful at volume and paired with your own analysis or write-up. Thousands of classifications plus a blog post about what you learned is a project; an afternoon of clicking is not.",
+ w:"eyewire.org"},
+{n:"Zooniverse citizen science",org:"Zooniverse",c:"Global",f:"🌍",cat:"Neuroscience & life sciences",
+ fmt:"Remote",cost:"free",intl:1,age:"Any",
+ majors:["neuro","stats","cs","amath","aero"],dl:"No deadline",
+ what:"Hundreds of live research projects needing human classification — from brain imaging and cell biology to exoplanet transits and galaxy morphology.",
+ who:"Free and worldwide. Some projects credit high-volume contributors in publications.",
+ worth:"Genuine data for a genuine paper. The strong version is picking one project, contributing seriously, then analysing the public dataset yourself.",
+ w:"zooniverse.org"},
+{n:"iGEM (High School track)",org:"iGEM Foundation",c:"Global",f:"🌍",cat:"Neuroscience & life sciences",
+ fmt:"In person",cost:"paid",intl:1,age:"School teams",
+ majors:["neuro","cs","stats","amath"],dl:"Team registration usually in the first half of the year (verify)",
+ what:"Teams design and build a synthetic-biology project over a summer and present it at the Grand Jamboree.",
+ who:"Teams from anywhere; there is a registration fee and lab access is required, usually through a partner university.",
+ worth:"Demanding and expensive, but a genuine research cycle. The modelling and software roles suit maths and computing students as much as biologists.",
+ w:"igem.org"},
+
+/* ---------- competitions with real weight ---------- */
+{n:"Regeneron International Science and Engineering Fair (ISEF)",org:"Society for Science",c:"Global",f:"🌍",cat:"Competitions that carry weight",
+ fmt:"In person",cost:"free",intl:1,age:"Grades 9–12",
+ majors:ALL_M,dl:"Qualify through an affiliated fair — local rounds run from autumn (verify)",
+ what:"The world's largest pre-university science competition: you qualify through an affiliated regional or national fair and compete internationally.",
+ who:"Affiliated fairs exist in roughly 70 countries. Entry through your national fair is free or low cost.",
+ worth:"An ISEF finalist place is recognised everywhere, and the project itself — a year of independent research — is what actually fills your application.",
+ w:"societyforscience.org/isef"},
+{n:"Breakthrough Junior Challenge",org:"Breakthrough Prize Foundation",c:"Global",f:"🌍",cat:"Competitions that carry weight",
+ fmt:"Remote",cost:"free",intl:1,age:"13–18",
+ majors:ALL_M,dl:"Usually opens in spring and closes in summer (verify)",
+ what:"Explain a big idea in physics, maths or life science in a short video, judged on clarity and creativity.",
+ who:"Free and open worldwide. The prize includes a substantial university scholarship plus funding for your school and teacher.",
+ worth:"Costs nothing but effort, and the skill it forces — explaining something hard in three minutes — is the same skill your personal essay needs.",
+ w:"breakthroughjuniorchallenge.org"},
+{n:"International science olympiads",org:"IPhO, IOI, IBO, IOAA and national bodies",c:"Global",f:"🌍",cat:"Competitions that carry weight",
+ fmt:"In person",cost:"free",intl:1,age:"Pre-university",
+ majors:["math","pmath","amath","cs","se","neuro","aero","stats","me"],dl:"National selection usually runs early in the year (verify)",
+ what:"Physics, informatics, biology and astronomy olympiads reached through national selection and training camps.",
+ who:"Free through your national body. Malaysia fields teams in several of these.",
+ worth:"Along with the IMO, the most portable credential in the world — it means the same thing to Tsinghua, MIT and Cambridge. Selection camps also count in their own right.",
+ w:"ipho-unofficial.org"},
+{n:"Conrad Challenge",org:"Conrad Foundation",c:"Global",f:"🌍",cat:"Competitions that carry weight",
+ fmt:"Hybrid",cost:"paid",intl:1,age:"13–18, in teams",
+ majors:["aero","me","cs","se","neuro"],dl:"Registration usually in autumn (verify)",
+ what:"Teams develop a commercially viable innovation across categories including aerospace and health, judged on both technology and business case.",
+ who:"International teams compete; there is an entry fee per team.",
+ worth:"Unusual in rewarding the engineering and the business plan together, which suits students aiming at engineering with an entrepreneurial angle.",
+ w:"conradchallenge.org"},
+
+/* ---------- paid mentorship programmes ---------- */
+{n:"Paid research mentorship programmes",org:"Polygence, Lumiere, Horizon Academic and similar",c:"Global",f:"💳",cat:"Paid research mentorships",
+ fmt:"Remote",cost:"paid",intl:1,age:"Typically 14–18",
+ majors:ALL_M,dl:"Rolling cohorts through the year",
+ what:"You are matched with a graduate-student or postdoctoral mentor and produce a research paper or project over several months, remotely.",
+ who:"Open to anyone who can pay; fees commonly run to four figures. Several offer need-based discounts — ask.",
+ worth:"Be clear-eyed: admissions officers know these are purchased, and a paper from one carries far less weight than a selective free programme or work you organised yourself. If money is the constraint, cold-emailing a local university lab costs nothing and reads better.",
+ w:"polygence.org"},
+
+/* ---------- do it yourself ---------- */
+{n:"Cold-email a university lab near you",org:"Any research university",c:"Global",f:"✉️",cat:"Build it yourself",
+ fmt:"In person",cost:"free",intl:1,age:"Any",
+ majors:ALL_M,dl:"No deadline — term time works better than the summer rush",
+ what:"Find three or four researchers whose recent papers you have actually read, email each one specifically, and offer to help with something concrete.",
+ who:"Anyone. In Malaysia, UM, USM, UKM, UTM and Monash Malaysia all run active research groups that take school volunteers.",
+ worth:"The highest return per hour on this whole page. It is free, it produces a real supervisor who can write about you, and the initiative it demonstrates is the exact quality selective programmes are screening for. Expect most emails to go unanswered — send ten.",
+ w:"scholar.google.com"},
+{n:"Run a project, not an activity",org:"You",c:"Global",f:"🔨",cat:"Build it yourself",
+ fmt:"Hybrid",cost:"free",intl:1,age:"Any",
+ majors:ALL_M,dl:"No deadline",
+ what:"Pick one problem and work it for a year: replicate a paper's results, build and publish a tool people use, run a maths circle at a nearby school, collect and analyse your own dataset.",
+ who:"Anyone. This is what fills the Activities Builder tab far more convincingly than a list of one-week programmes.",
+ worth:"Depth beats breadth in every published admissions statement. One thing pursued for two years with something to show for it outranks six summer certificates, and it costs nothing.",
+ w:"commonapp.org"},
+{n:"Teach what you have learned",org:"Your school or community",c:"Global",f:"🧑‍🏫",cat:"Build it yourself",
+ fmt:"In person",cost:"free",intl:1,age:"Any",
+ majors:ALL_M,dl:"No deadline",
+ what:"Start an olympiad training group, tutor juniors in mechanics or programming, write up your notes and publish them.",
+ who:"Anyone, and it scales with however much time you have.",
+ worth:"Sustained teaching demonstrates mastery and leadership at once, and it produces something concrete — attendance, results, published notes — that you can point at rather than assert.",
+ w:"commonapp.org"}
+];
+
 /* ==================== APP ==================== */
 const TIERS=[["auto-full","Full ride · guaranteed"],["need-full","Full need-based aid"],["comp-full","Full ride · competitive"],["full-tuition","Tuition scholarship"],["tuition-free","Tuition-free"],["low-tuition","Low tuition"],["partial","Partial"]];
 const TIER_LABEL=Object.fromEntries(TIERS);
@@ -5291,6 +5664,7 @@ let saved=new Set(store.get("fra2_saved",[]));
 $("#nUni").textContent=DATA.length;
 $("#nCty").textContent=new Set(DATA.map(d=>d.c)).size;
 $("#nSch").textContent=GOVT.length;
+$("#nInt").textContent=INT.length;
 
 /* light / dark toggle (persists per browser) */
 function applyTheme(t){
@@ -5307,12 +5681,14 @@ $$(".tab").forEach(t=>t.addEventListener("click",()=>{
  gotoTab(t.dataset.p);
  if(t.dataset.p==="pMy")renderMy();
  if(t.dataset.p==="pGov")renderGovt();
+ if(t.dataset.p==="pInt")renderInt();
 }));
 /* one-line descriptions shown under each item in the mobile drawer */
 const TAB_SUB={
  pUni:"Search every funded university",
  pMy:"Your shortlist and checklists",
  pGov:"Government & foundation awards",
+ pInt:"Programmes before university, by major",
  pAid:"Aid forms, and how to appeal",
  pPlans:"Which US rounds are binding",
  pEssays:"Examples and what readers want",
@@ -5323,6 +5699,7 @@ const TAB_HINT={
  pUni:"<b>Universities</b> — every funded place in the atlas. Filter by major, funding level and country; click a name for the full profile.",
  pMy:"<b>My Colleges</b> — your shortlist compared side by side, each with its own application checklist. Saved in this browser.",
  pGov:"<b>Scholarships</b> — government, provincial and foundation money you apply for separately from the university.",
+ pInt:"<b>Internships &amp; research</b> — programmes you can apply to before university, filtered by your major, with every citizenship restriction stated.",
  pAid:"<b>Financial Aid</b> — which forms each system wants, what they ask for, and how to appeal an offer.",
  pPlans:"<b>ED / EA / REA / RD</b> — what each US application round commits you to, and which are binding.",
  pEssays:"<b>Essay Helper</b> — what admissions readers actually look for, with worked examples and common traps.",
@@ -6154,6 +6531,70 @@ window.addEventListener("hashchange",router);
  if(c)c.onclick=()=>{store.set("fra2_guide_done",true);g.open=false};
  g.addEventListener("toggle",()=>{if(!g.open)store.set("fra2_guide_done",true)})})();
 
+/* ---------- internships & research ---------- */
+const ICAT=["Selective research programmes","Mathematics programmes","Computing & software",
+ "Engineering & aerospace","Neuroscience & life sciences","Competitions that carry weight",
+ "Paid research mentorships","Build it yourself"];
+const ICAT_SUB={
+ "Selective research programmes":"Structured placements with a mentor and a real output. The most competitive things on this page.",
+ "Mathematics programmes":"Proof-based summer schools and the olympiad route — the clearest signals of mathematical ability before university.",
+ "Computing & software":"Open source, competitions and paid remote internships. Almost none of it has a citizenship restriction.",
+ "Engineering & aerospace":"Design, build and experiment programmes, including the routes open to non-US students.",
+ "Neuroscience & life sciences":"Competitions and citizen-science projects that go deeper than a summer course.",
+ "Competitions that carry weight":"Recognised internationally, mostly free, and reached through your own national body.",
+ "Paid research mentorships":"Real programmes, but purchased — read the honest assessment before spending.",
+ "Build it yourself":"No application, no fee, no deadline. Usually the strongest option on this page."};
+const ICOST_LAB={free:"No cost to you",stipend:"Pays a stipend",paid:"You pay",varies:"Cost varies"};
+const ICOST_CLS={free:"auto-full",stipend:"comp-full",paid:"partial",varies:"low-tuition"};
+const IINTL_LAB={1:"Open to internationals",0:"Citizenship or residency restricted",2:"Restrictions apply — check first"};
+const istate={majors:new Set(),cost:"",intl:"",fmt:"",q:""};
+function imatches(p){
+ if(istate.majors.size&&![...istate.majors].some(k=>p.majors.includes(k)))return false;
+ if(istate.cost&&p.cost!==istate.cost)return false;
+ if(istate.intl!==""&&String(p.intl)!==istate.intl)return false;
+ if(istate.fmt&&p.fmt!==istate.fmt)return false;
+ if(istate.q){const h=(p.n+" "+p.org+" "+p.c+" "+p.cat+" "+p.what+" "+p.who+" "+p.worth+" "+p.age+" "+p.fmt).toLowerCase();
+  if(!h.includes(istate.q))return false}
+ return true}
+function renderInt(){
+ const hits=INT.filter(imatches);
+ const out=[];
+ ICAT.forEach(cat=>{
+  const rows=hits.filter(p=>p.cat===cat);if(!rows.length)return;
+  out.push('<section class="region"><h2>'+esc(cat)+'</h2><p class="rsub">'+esc(ICAT_SUB[cat]||"")+'</p><div class="grid">'
+   +rows.map(p=>'<article class="card">'
+    +'<div class="card-top"><div class="ctitle"><div><h3 class="uni"><span class="flag">'+p.f+"</span>"+esc(p.n)+'</h3>'
+    +'<p class="cty">'+esc(p.org)+" · "+esc(p.c)+"</p></div></div>"
+    +'<span class="badge '+(ICOST_CLS[p.cost]||"low-tuition")+'">'+esc(ICOST_LAB[p.cost]||p.cost)+"</span></div>"
+    +'<p class="covers"><span class="k">What it is · </span>'+esc(p.what)+"</p>"
+    +'<div class="majors">'+ALL_M.map(k=>'<span class="mpill '+(p.majors.includes(k)?(istate.majors.has(k)?"yes hit":"yes"):"no")+'">'
+      +esc(MAJOR_LABEL[k].replace(" (dedicated degree)","").replace("Engineering","Eng"))+"</span>").join("")+"</div>"
+    +'<ul class="qa"><li><b>Who can apply:</b> '+esc(p.who)+"</li>"
+    +"<li><b>Ages:</b> "+esc(p.age)+" · <b>Format:</b> "+esc(p.fmt)+"</li>"
+    +"<li><b>Deadline:</b> "+esc(p.dl)+" <span class='nv'>— verify</span></li></ul>"
+    +'<p class="note"><b>Worth it?</b> '+esc(p.worth)+"</p>"
+    +'<div class="card-foot"><span class="admit">'+esc(IINTL_LAB[p.intl])+"</span>"
+    +'<div class="linksrow">'+link(p.w,"Official page")+"</div></div></article>").join("")+"</div></section>")});
+ $("#iList").innerHTML=out.length?out.join(""):'<p class="empty"><b>No programmes match.</b><br>Clear a filter — the restricted-eligibility view in particular hides most of the list.</p>';
+ const phrase=istate.majors.size?" for <b>"+[...istate.majors].map(k=>MAJOR_LABEL[k].replace(" (dedicated degree)","")).join(", ")+"</b>":"";
+ $("#iCount").innerHTML="Showing <b>"+hits.length+"</b> of "+INT.length+" programmes"+phrase;
+ syncIntMajors()}
+function syncIntMajors(){
+ $$("#segIntMajor button").forEach(b=>{
+  const m=b.dataset.m;
+  b.classList.toggle("on",m==="all"?istate.majors.size===0:istate.majors.has(m))})}
+$$("#segIntMajor button").forEach(b=>b.addEventListener("click",()=>{
+ const m=b.dataset.m;
+ if(m==="all")istate.majors.clear();
+ else istate.majors.has(m)?istate.majors.delete(m):istate.majors.add(m);
+ renderInt()}));
+[["#iCost","cost"],["#iIntl","intl"],["#iFmt","fmt"]].forEach(([sel,key])=>{
+ $$(sel+" .chip").forEach(b=>b.addEventListener("click",()=>{
+  istate[key]=b.dataset.v;
+  $$(sel+" .chip").forEach(x=>x.classList.toggle("on",x===b));renderInt()}))});
+let iqt;$("#iq").addEventListener("input",e=>{clearTimeout(iqt);
+ iqt=setTimeout(()=>{istate.q=e.target.value.trim().toLowerCase();renderInt()},120)});
+
 /* compare bar (inject) */
 document.body.insertAdjacentHTML("beforeend",'<div class="cmpbar" id="cmpBar"><span><b id="cmpN">0</b> in my colleges</span><button id="cmpGo">Open my colleges →</button><button class="clr" id="cmpClr">Clear</button></div>');
 $("#cmpGo").onclick=()=>{gotoTab("pMy");renderMy()};
@@ -6163,7 +6604,7 @@ $("#cmpClr").onclick=()=>{saved.clear();store.set("fra2_saved",[]);renderCmpBar(
 $("#nSaved").textContent=saved.size?"("+saved.size+")":"";
 buildCtyChips();
 {const cb=$("#ctyBox");if(cb&&matchMedia("(max-width:700px)").matches)cb.open=false}
-render();renderCmpBar();renderMy();renderGovt();gotoTab("pUni");router();
+render();renderCmpBar();renderMy();renderGovt();renderInt();gotoTab("pUni");router();
 /* gov scholarship filters */
 $$("#gCov .chip").forEach(b=>b.onclick=()=>{gstate.cov=b.dataset.v;$$("#gCov .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
 $$("#gUg .chip").forEach(b=>b.onclick=()=>{gstate.ug=b.dataset.v;$$("#gUg .chip").forEach(x=>x.classList.toggle("on",x===b));renderGovt()});
