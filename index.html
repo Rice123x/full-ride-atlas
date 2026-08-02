@@ -310,6 +310,22 @@
   .wtag.w-free{background:var(--g-bg); color:var(--g-ink)}
   .wtag.w-waiver{background:var(--t-bg); color:var(--t-ink)}
   .wtag.w-none{background:var(--s-bg); color:var(--s-ink)}
+  /* ---------- before / after examples ---------- */
+  .ba{border:1px solid var(--line); border-radius:9px; background:var(--surface2);
+    padding:13px 15px; margin-top:14px}
+  .ba-row{display:flex; gap:11px; align-items:flex-start}
+  .ba-row+.ba-row{margin-top:9px; padding-top:9px; border-top:1px solid var(--line)}
+  .ba-row p{margin:0; font-size:14.5px; flex:1 1 auto; min-width:0}
+  .ba-tag{flex:0 0 auto; font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    padding:2px 7px; border-radius:4px; margin-top:3px; white-space:nowrap;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .ba-tag.bad{background:var(--s-bg); color:var(--s-ink)}
+  .ba-tag.good{background:var(--g-bg); color:var(--g-ink)}
+  .ba-why{margin:11px 0 0; font-size:13px; color:var(--muted); border-top:1px solid var(--line); padding-top:10px}
+  .ba-why b{color:var(--ink)}
+  .steps-num{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:9px; font-size:14.5px}
+  .steps-num li{padding-left:3px}
+  .steps-num li::marker{color:var(--muted); font-weight:700; font-size:13px}
   .recowrap{margin-top:14px}
   .up-sec .reco{font-size:14px}
   .card.flash{outline:2px solid var(--line2); outline-offset:3px; animation:flashfade 1.8s ease-out}
@@ -647,6 +663,7 @@
       <div><b>Financial Aid</b> — what the aid forms want and how to ask for more.</div>
       <div><b>ED / EA / REA / RD</b> — what each US round commits you to.</div>
       <div><b>Essay Helper</b> — worked examples and what admissions readers look for.</div>
+      <div><b>Common App</b> — how the application works, section by section, with worked examples.</div>
       <div><b>Activities Builder</b> — your Common App activities list, within its character limits.</div>
       <div><b>Honors Builder</b> — the five honours slots, written to fit.</div>
       <div><b>AI Assistant</b> — prompts that improve your writing without inventing anything.</div>
@@ -687,6 +704,7 @@
   <button class="tab" id="tab-pAid" role="tab" aria-selected="false" aria-controls="pAid" data-p="pAid">Financial Aid</button>
   <button class="tab" id="tab-pPlans" role="tab" aria-selected="false" aria-controls="pPlans" data-p="pPlans">ED / EA / REA / RD</button>
   <button class="tab" id="tab-pEssays" role="tab" aria-selected="false" aria-controls="pEssays" data-p="pEssays">Essay Helper</button>
+  <button class="tab" id="tab-pCommon" role="tab" aria-selected="false" aria-controls="pCommon" data-p="pCommon">Common App</button>
   <button class="tab" id="tab-pActs" role="tab" aria-selected="false" aria-controls="pActs" data-p="pActs">Activities Builder</button>
   <button class="tab" id="tab-pHonors" role="tab" aria-selected="false" aria-controls="pHonors" data-p="pHonors">Honors Builder</button>
   <button class="tab" id="tab-pAI" role="tab" aria-selected="false" aria-controls="pAI" data-p="pAI">AI Assistant</button>
@@ -758,6 +776,147 @@
 </section>
 <div class="jump" id="jumpBar" hidden></div>
 <main id="results"></main>
+</section>
+
+<!-- ================= COMMON APP ================= -->
+<section class="panel" id="pCommon" role="tabpanel" aria-labelledby="tab-pCommon">
+  <p class="panel-note"><b>The Common App, section by section.</b> One account, one set of forms, up to <b>20 colleges</b>. It opens on <b>1 August</b> every year and your work rolls over from the account you create now. This page walks each section, flags the parts that catch international applicants out, and shows worked before-and-after examples so you can see what "make it stronger" actually means in 150 characters.</p>
+
+  <section class="up-sec">
+    <h2>What it is, in one minute</h2>
+    <div class="up-grid">
+      <div class="kv"><b>Cost</b>Free to create and fill in. You pay a fee per college at submission — commonly US$50–90 each.</div>
+      <div class="kv"><b>Colleges</b>Up to 20 per account. Add and remove them freely until you submit.</div>
+      <div class="kv"><b>Opens</b>1 August each year, for entry the following autumn.</div>
+      <div class="kv"><b>The essay</b>One personal essay, 250–650 words, goes to every college you apply to.</div>
+      <div class="kv"><b>Supplements</b>Each college adds its own questions and essays on top. These are where fit is judged.</div>
+      <div class="kv"><b>Recommendations</b>Usually a counsellor report plus one or two teachers, invited through the system.</div>
+    </div>
+    <p class="up-para"><span class="k">The one thing to understand · </span>The <b>common</b> parts are written once and sent to everyone, so they must not mention any single university. Everything university-specific lives in that college's supplement. Getting this backwards — a personal essay about why you love one particular campus — is the most common structural mistake there is.</p>
+  </section>
+
+  <section class="up-sec">
+    <h2>Working order — what to do when</h2>
+    <ol class="steps-num">
+      <li><b>August.</b> Create the account, fill Profile, Family and Education. Add your school; if it is not in the system, use the "my school is not listed" route and give your counsellor's details. Start the personal essay.</li>
+      <li><b>September.</b> Ask your teachers and counsellor in person, then invite them formally in the system. Complete the FERPA release first — recommenders cannot be invited until you do. Draft your ten activities.</li>
+      <li><b>October.</b> Finish the essay. Write the supplements for your early colleges. Check whether each college wants Courses &amp; Grades filled in — only some do, and it takes longer than you expect.</li>
+      <li><b>1 November.</b> Most Early Decision and Early Action deadlines. Submit at least two days early: the portal is slow on deadline day and the fee payment can fail.</li>
+      <li><b>December to early January.</b> Regular Decision supplements, and Early Decision II if you are using it.</li>
+      <li><b>1–15 January.</b> Most Regular Decision deadlines. Financial aid forms — the CSS Profile in particular — often have their own, earlier dates. Check the <b>Financial Aid</b> tab.</li>
+    </ol>
+    <p class="eguide" style="margin-top:12px">Dates are the usual pattern, not a promise. Every deadline that matters to you is on the university's own page and in your <b>My Colleges</b> list.</p>
+  </section>
+
+  <section class="up-sec">
+    <h2>Section by section</h2>
+    <div class="up-grid">
+      <div class="kv"><b>Profile</b>Name exactly as it appears on your passport, address, contact details, citizenship. Use one email you will still read in April, not your school address.</div>
+      <div class="kv"><b>Family</b>Parents' education and occupation. Answer honestly — first-generation status helps you, and hiding it helps nobody.</div>
+      <div class="kv"><b>Education</b>Your school, dates, current courses, grading scale, class rank if your school gives one. Report your grades in your school's own system.</div>
+      <div class="kv"><b>Testing</b>Self-report SAT/ACT and any A-level or predicted results. Check each college's current policy — many remain test-optional and some have reinstated the requirement.</div>
+      <div class="kv"><b>Activities</b>Ten slots. Position 50 characters, organisation 100, description 150. The <b>Activities Builder</b> tab enforces these while you draft.</div>
+      <div class="kv"><b>Writing</b>The personal essay (250–650 words), plus an Additional Information box of up to 650 words that most people should leave empty.</div>
+      <div class="kv"><b>Courses &amp; Grades</b>A full transcript typed in by hand. Required by only some colleges — check before you start, and set aside an evening.</div>
+      <div class="kv"><b>College questions</b>Per-university: intended major, entry term, supplemental essays, and sometimes a scholarship question you must tick to be considered.</div>
+      <div class="kv"><b>Recommenders &amp; FERPA</b>Complete FERPA first, and <b>waive</b> your right to read the letters. Not waiving makes the letters count for less — readers know they were not confidential.</div>
+      <div class="kv"><b>Review and submit</b>The PDF preview is what the reader sees. Read it as a document, not as a form — that is when the typos surface.</div>
+    </div>
+  </section>
+
+  <section class="up-sec">
+    <h2>What catches international applicants out</h2>
+    <ul class="qa">
+      <li><b>Fee waivers.</b> The Common App's own waiver is built around US indicators and most international students will not qualify. The route that does work is asking each university's admissions office directly, in writing, before you submit. Many say yes. See the fee-waiver filter in the Universities tab for who documents this.</li>
+      <li><b>Your school may not be in the system.</b> Search carefully first; if it really is absent, add it manually and enter your counsellor's details by hand.</li>
+      <li><b>You may not have a "counsellor".</b> Most schools outside the US do not. Your form teacher, head of year or principal can fill the counsellor role — ask early, because the school report takes them time.</li>
+      <li><b>Do not convert your grades to a US GPA.</b> Report A-levels as A-levels and percentages as percentages. Admissions offices read international transcripts every day; a converted number invites doubt.</li>
+      <li><b>Predicted grades matter.</b> If you have not sat your A-levels yet, your predicted grades carry the weight. Get them right before your counsellor submits.</li>
+      <li><b>Currency and income.</b> Aid forms want figures in your local currency with the currency named. Do not convert to dollars unless asked.</li>
+      <li><b>Time zones.</b> Deadlines are almost always 23:59 in <b>your</b> local time, but confirm — and either way, do not test it.</li>
+    </ul>
+  </section>
+
+  <section class="up-sec">
+    <h2>The ten activity slots — how to make them good</h2>
+    <p class="up-para"><span class="k">Choose and order them like this · </span>Slot 1 gets the thing you have done longest and deepest, not the most impressive-sounding. Readers spend seconds here, and the list is read top-down. Leave slots empty rather than padding — nine strong entries beat ten with a filler.</p>
+    <p class="up-para"><span class="k">The formula that fits 150 characters · </span><b>What you did · at what scale · with what result.</b> Cut every word that carries no information: "I was responsible for", "various", "many", "helped to", "in order to". Use figures wherever you honestly have them.</p>
+
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Weak</span><p>I was the president of the robotics club where we did many competitions and I learned a lot about teamwork and leadership.</p></div>
+      <div class="ba-row"><span class="ba-tag good">Stronger</span><p>Led 14-member team to national F1 in Schools final; ran the CAD and CFD workflow, cut drag 18%; raised RM 9,000 in sponsorship.</p></div>
+      <p class="ba-why"><b>Why · </b>The first sentence could describe anyone in any club. The second names the scale (14 people), the actual work (CAD and CFD, not "engineering"), a measured result (18%) and a second skill entirely (raising money). Same length, four times the information.</p>
+    </div>
+
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Weak</span><p>Volunteered at a children's home, helping the kids with their studies every weekend and organising activities for them.</p></div>
+      <div class="ba-row"><span class="ba-tag good">Stronger</span><p>Weekly maths tutoring for 12 children at a shelter; wrote a 20-lesson syllabus; 9 of 12 moved up a grade band within the year.</p></div>
+      <p class="ba-why"><b>Why · </b>"Helping the kids with their studies" tells a reader nothing about what you can do. Writing a syllabus is a real, transferable piece of work, and the outcome is the sentence's whole point — put it last, where it lands.</p>
+    </div>
+
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Weak</span><p>Member of the school maths club. Participated in the national olympiad and other maths competitions throughout the year.</p></div>
+      <div class="ba-row"><span class="ba-tag good">Stronger</span><p>Trained 6 h/week for the national olympiad, placed in the top 50; now run weekly problem sessions for 20 juniors at school.</p></div>
+      <p class="ba-why"><b>Why · </b>"Member" and "participated" are the two weakest words available. The rewrite shows commitment as a number of hours, the result as a placing, and — most valuable — that you turned it into something for other people.</p>
+    </div>
+
+    <p class="eguide">Every number in these examples is invented to illustrate the shape. Use your own real figures, and if you do not have a number, describe the thing precisely instead. <b>Never invent one.</b> Draft yours in the <b>Activities Builder</b> tab, which counts characters as you type.</p>
+  </section>
+
+  <section class="up-sec">
+    <h2>The five honours slots</h2>
+    <p class="up-para"><span class="k">100 characters each · </span>Name the award, then the scale that makes it meaningful. An award nobody outside your school has heard of still counts — but only if you say how many people it was chosen from.</p>
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Weak</span><p>Got a medal in a maths competition</p></div>
+      <div class="ba-row"><span class="ba-tag good">Stronger</span><p>Bronze, Malaysian National Mathematical Olympiad — top 50 of ~3,000 entrants</p></div>
+      <p class="ba-why"><b>Why · </b>"A medal" could be third of four. The scale is what converts an award into evidence.</p>
+    </div>
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Weak</span><p>School prize for science</p></div>
+      <div class="ba-row"><span class="ba-tag good">Stronger</span><p>Best Physics Student, awarded once per year group of 180 — school-level</p></div>
+      <p class="ba-why"><b>Why · </b>Naming the recognition level honestly is better than leaving a reader to guess. School-level is not a weakness; vagueness is.</p>
+    </div>
+    <p class="eguide">The <b>Honors Builder</b> tab formats these to the character limit without adding anything you did not state.</p>
+  </section>
+
+  <section class="up-sec">
+    <h2>Additional Information — usually leave it empty</h2>
+    <p class="up-para">This 650-word box exists for context a reader genuinely needs and cannot get elsewhere: a term of illness, a school that offers no A-level physics, a grading system that needs explaining, a year of family disruption. It is <b>not</b> a second essay and not a place for the activity that would not fit.</p>
+    <div class="ba">
+      <div class="ba-row"><span class="ba-tag bad">Don't</span><p>A 500-word second personal essay about your love of engineering, or a longer version of an activity already in the list.</p></div>
+      <div class="ba-row"><span class="ba-tag good">Do</span><p>"My school does not offer A-level Further Mathematics. I studied the Edexcel syllabus independently and sat it as a private candidate in June 2026."</p></div>
+      <p class="ba-why"><b>Why · </b>Two sentences that pre-empt a reader's question are worth more than 500 words they did not ask for. If nothing here applies to you, leaving it blank costs you nothing at all.</p>
+    </div>
+  </section>
+
+  <section class="up-sec">
+    <h2>Mistakes that cost people places</h2>
+    <ul class="qa">
+      <li><b>Writing the personal essay about one university.</b> It goes to all of them. Fit belongs in the supplement.</li>
+      <li><b>Reusing a supplement without changing the university's name.</b> Readers see this every year, and it ends the application.</li>
+      <li><b>Not waiving FERPA.</b> It signals distrust of your own referees and devalues their letters.</li>
+      <li><b>Padding to ten activities.</b> A filler entry drags down the nine above it.</li>
+      <li><b>Asking for recommendations in October.</b> Teachers write dozens. Ask in September, in person, and give them your activity list and a paragraph on what you are applying for.</li>
+      <li><b>Missing a scholarship tick-box.</b> Several universities put "do you wish to be considered for merit scholarships?" inside the college questions. Missing it can cost you the award even when you are admitted.</li>
+      <li><b>Submitting on deadline day.</b> Payment failures and portal slowdowns are real. Two days early costs nothing.</li>
+      <li><b>Letting anyone write it for you.</b> Readers compare your essay against your teacher's description of how you write. A mismatch is worse than a plain essay.</li>
+    </ul>
+  </section>
+
+  <section class="up-sec">
+    <h2>Before you press submit</h2>
+    <ul class="qa">
+      <li>Read the <b>PDF preview</b> end to end — it is what the reader actually sees.</li>
+      <li>Your name matches your passport, and your email is one you will still check in April.</li>
+      <li>No university's name appears in the common personal essay.</li>
+      <li>Every supplement names the right university, in every paragraph.</li>
+      <li>Activities are ordered by depth, with no filler.</li>
+      <li>Every number in the application is one you can prove.</li>
+      <li>Recommenders have submitted, or have confirmed they will in time.</li>
+      <li>Scholarship questions inside each college's section are answered.</li>
+      <li>Fee paid, or a waiver confirmed in writing by that university.</li>
+    </ul>
+  </section>
 </section>
 
 <!-- ================= ACTIVITIES ================= -->
@@ -6014,6 +6173,7 @@ const TAB_SUB={
  pAid:"Aid forms, and how to appeal",
  pPlans:"Which US rounds are binding",
  pEssays:"Examples and what readers want",
+ pCommon:"Section by section, with examples",
  pActs:"Common App activities, to length",
  pHonors:"Five honours slots, to length",
  pAI:"Sharpen your writing, invent nothing"};
@@ -6025,6 +6185,7 @@ const TAB_HINT={
  pAid:"<b>Financial Aid</b> — which forms each system wants, what they ask for, and how to appeal an offer.",
  pPlans:"<b>ED / EA / REA / RD</b> — what each US application round commits you to, and which are binding.",
  pEssays:"<b>Essay Helper</b> — what admissions readers actually look for, with worked examples and common traps.",
+ pCommon:"<b>Common App</b> — every section explained, the traps that catch international applicants, and before-and-after examples of activities and honours.",
  pActs:"<b>Activities Builder</b> — draft your ten Common App activities inside the real character limits.",
  pHonors:"<b>Honors Builder</b> — the five honours slots, written to fit the space you get.",
  pAI:"<b>AI Assistant</b> — prompts that sharpen your own writing. It never invents an achievement for you."};
