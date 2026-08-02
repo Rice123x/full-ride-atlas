@@ -296,6 +296,11 @@
   .tline li.near .tld{color:var(--a-ink)}
   .tline li.gone{opacity:.55}
   
+  .applyline{margin:0; font-size:12.5px; color:var(--muted)}
+  .applyline .k{color:var(--muted)}
+  .applyline b{color:var(--ink); font-weight:650}
+  .applyline .sep{opacity:.5; margin:0 3px}
+  .applylink{display:inline-block; margin-top:5px; font-size:12.5px}
   .dlline{margin:0; font-size:12.5px; color:var(--muted)}
   .dlline .k{color:var(--muted)}
   .dlline span:not(.k):not(.sep):not(.tbc){color:var(--ink); font-weight:600}
@@ -6353,6 +6358,7 @@ function card(d,i){
  +'<p class="covers"><span class="k">How it works · </span>'+esc(d.cov)+"</p>"
  +'<div class="majors">'+mp(d.me,"Mech Eng","me")+mp(d.cs,"CS","cs")+mp(d.se,"Software Eng","se")+mp(d.math,"Maths","math")+mp(d.pmath,"Pure Maths","pmath")+mp(d.amath,"Applied Maths","amath")+mp(d.stats,"Stats","stats")+mp(d.neuro,"Neuro","neuro")+mp(d.aero,"Aero","aero")+"</div>"
  +(d.note?'<p class="note">'+esc(d.note)+"</p>":"")
+ +applyLine(d)
  +dlLine(d)
  +feeLine(d)
  +recoLine(d,1)
@@ -6445,6 +6451,100 @@ function dlSoon(d){
  const k=daysTo(n.when);
  if(k<0||k>60)return "";
  return '<span class="dlchip'+(k<=21?" urgent":"")+'">'+(k===0?"closes today":k===1?"closes tomorrow":"closes in "+k+" days")+"</span>"}
+/* Where you actually submit. The platform was recorded on every university but
+   only ever shown as a one-word "Platform" field; these map the recorded text to
+   the real system, with a link to it and a line on what it is. Anything not
+   recognised falls back to the university's own portal, which is the truth for
+   more than half the atlas. */
+const APPLY_SYS=[
+ {re:/common app/i,name:"Common App",url:"commonapp.org",
+  what:"One application to up to 20 US universities, with a single personal essay. The Common App tab walks through every section."},
+ {re:/coalition/i,name:"Coalition Application",url:"coalitionforcollegeaccess.org",
+  what:"An alternative to the Common App, accepted by many of the same universities. Pick one — you do not need both."},
+ {re:/ucas/i,name:"UCAS",url:"ucas.com",
+  what:"One UK application for up to five courses with a single personal statement. There is no university-specific essay."},
+ {re:/ouac/i,name:"OUAC — form 105",url:"ouac.on.ca",
+  what:"Ontario's central application service. Form 105 is the one for applicants from outside Ontario."},
+ {re:/applytexas/i,name:"ApplyTexas",url:"goapplytexas.org",
+  what:"The shared application for public universities in Texas."},
+ {re:/studielink/i,name:"Studielink",url:"studielink.nl",
+  what:"The Dutch national enrolment system. You register here as well as applying to the university itself — both are required."},
+ {re:/uni-assist/i,name:"uni-assist",url:"uni-assist.de",
+  what:"Germany's central credential-checking service. It charges a handling fee per application, separate from any university fee."},
+ {re:/universityadmissions\.se/i,name:"universityadmissions.se",url:"universityadmissions.se",
+  what:"Sweden's single national portal — every Swedish university is applied to from here."},
+ {re:/studyinfo\.fi/i,name:"Studyinfo.fi",url:"studyinfo.fi",
+  what:"Finland's national application portal, covering all Finnish universities."},
+ {re:/optagelse\.dk/i,name:"optagelse.dk",url:"optagelse.dk",
+  what:"Denmark's national admission portal."},
+ {re:/samordna/i,name:"Samordna opptak",url:"samordnaopptak.no",
+  what:"Norway's coordinated admission service."},
+ {re:/dreamapply/i,name:"DreamApply",url:"dreamapply.com",
+  what:"A shared admissions platform used by several Baltic and Central European universities."},
+ {re:/campuschina/i,name:"CSC — campuschina.org",url:"campuschina.org",
+  what:"The Chinese Government Scholarship portal. Most Chinese universities need this <b>and</b> their own portal — two applications, not one."},
+ {re:/campus france|parcoursup/i,name:"Campus France / Parcoursup",url:"campusfrance.org",
+  what:"France's route for international applicants. Campus France runs a pre-consular procedure in many countries — start it early."},
+ {re:/\bCAO\b/,name:"CAO",url:"cao.ie",
+  what:"Ireland's central applications office. Non-EU applicants often apply directly to the university instead — check which route applies to you."},
+ {re:/stipendium hungaricum|\bSH portal\b|via SH/i,name:"Stipendium Hungaricum portal",url:"stipendiumhungaricum.hu",
+  what:"Hungary's scholarship portal. You apply here and to the university, and your home country nominates you."},
+ {re:/turkiyeburslari/i,name:"Türkiye Bursları portal",url:"turkiyeburslari.gov.tr",
+  what:"Türkiye's single government scholarship application, covering both the award and university placement."},
+ {re:/embassy|representative office|taipei mission|\bMFA\b|consular/i,name:"Through an embassy or mission",url:"",
+  what:"The application goes through that country's embassy or mission in your country, not directly to the university. Contact them well before the deadline."},
+ {re:/vestibular|entrance exam|\bENEM\b|FUVEST|UNAM/i,name:"National entrance examination",url:"",
+  what:"Admission is decided by a national or university entrance examination that you must sit, usually in the country itself."},
+ {re:/\bNAWA\b|\bIRK\b/,name:"NAWA / IRK",url:"nawa.gov.pl",
+  what:"Poland's national agency portal, used alongside the university's own IRK registration system."},
+ {re:/\bDGES\b/,name:"DGES portal",url:"dges.gov.pt",
+  what:"Portugal's higher-education directorate portal for international applicants."},
+ {re:/preinscripci|unedasiss/i,name:"UNEDasiss + regional preinscripción",url:"unedasiss.uned.es",
+  what:"Spain requires international qualifications to be processed by UNEDasiss before you can register with a region."},
+ {re:/\bKNB\b/,name:"KNB portal",url:"knb.kemdiktisaintek.go.id",
+  what:"Indonesia's government scholarship for international students, nominated through the Indonesian embassy in your country."},
+ {re:/australia awards/i,name:"Australia Awards country portal",url:"dfat.gov.au/people-to-people/australia-awards",
+  what:"Applications run through the Australia Awards office for your country, not the university."},
+ {re:/icdf/i,name:"TaiwanICDF portal",url:"icdf.org.tw",
+  what:"Taiwan's development-fund scholarship portal, applied for alongside university admission."},
+ {re:/globaluni\.ru|education-in-russia/i,name:"Russian government portal",url:"education-in-russia.com",
+  what:"Russia's state quota application, run centrally rather than by the university."},
+ {re:/AMPEU|agency for mobility/i,name:"AMPEU",url:"mobilnost.hr",
+  what:"Croatia's mobility and programmes agency."},
+ {re:/viaa|\bVIAA\b/i,name:"VIAA",url:"viaa.gov.lv",
+  what:"Latvia's state education development agency, which administers state scholarships."},
+ {re:/moheri/i,name:"MOHERI portal",url:"moheri.gov.om",
+  what:"Oman's ministry portal for government scholarships."},
+ {re:/studyinsaudi/i,name:"Study in Saudi portal",url:"studyinsaudi.moe.gov.sa",
+  what:"Saudi Arabia's central portal for international students."},
+ {re:/bahrain moe/i,name:"Bahrain MOE portal",url:"moe.gov.bh",
+  what:"Bahrain's ministry of education portal."},
+ {re:/amexcid|gob\.mx/i,name:"AMEXCID portal",url:"gob.mx/amexcid",
+  what:"Mexico's government scholarship agency."},
+ {re:/isdb/i,name:"IsDB scholarship portal",url:"isdb.org",
+  what:"The Islamic Development Bank's scholarship application, separate from any university."},
+ {re:/studyinromania|romanian mfa/i,name:"studyinromania.gov.ro",url:"studyinromania.gov.ro",
+  what:"Romania's national portal for international applicants."},
+ {re:/studyinestonia/i,name:"studyinestonia.ee",url:"studyinestonia.ee",
+  what:"Estonia's national information and application gateway."},
+ {re:/greek ministry/i,name:"Greek Ministry foreign-applicant round",url:"minedu.gov.gr",
+  what:"Greece admits foreign nationals through a separate ministry-run round, not the domestic system."},
+ {re:/bdgs/i,name:"BDGS portal",url:"mfa.gov.bn",
+  what:"Brunei's government scholarship application, run by its Ministry of Foreign Affairs."}];
+const OWN_RE=/portal|direct|own|apply@|application/i;
+function applyRoutes(d){
+ const t=(d.plat||"").trim();
+ const out=[];let rest=t;
+ APPLY_SYS.forEach(sys=>{if(sys.re.test(t)){out.push(sys);rest=rest.replace(new RegExp(sys.re.source,"gi"),"")}});
+ if(!out.length||OWN_RE.test(rest))
+  out.push({name:"The university's own portal",url:d.adm||d.w||"",
+   what:"You apply directly on the university's own admissions site — there is no shared system to go through."});
+ return out}
+function applyLine(d){
+ const r=applyRoutes(d);
+ return '<p class="applyline"><span class="k">Apply via · </span>'
+  +r.map(x=>"<b>"+esc(x.name)+"</b>").join(' <span class="sep">+</span> ')+"</p>"}
+
 /* ---- export ---- */
 function csvCell(v){const s=v==null?"":String(v);
  return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
@@ -6880,7 +6980,7 @@ function renderUni(d){
  const A=APPLY[d.u]||null;
  const P=promptsFor(d);
  const drafts=store.get("fra2_essays",{})[s]||{};
- const AR=accRound(d),FW=feeWaiver(d),DL=deadlines(d);
+ const AR=accRound(d),FW=feeWaiver(d),DL=deadlines(d),AR2=applyRoutes(d);
  const majors=[["me","Mechanical Engineering"],["cs","Computer Science"],["se","Software Engineering (dedicated)"],["math","Mathematics"],["pmath","Pure Mathematics"],["amath","Applied Mathematics"],["stats","Statistics"],["neuro","Neuroscience"],["aero","Aerospace Engineering"]];
  let essayHTML;
  if(A&&A.essays){
@@ -6909,6 +7009,12 @@ function renderUni(d){
  +'<div class="up-kicker"><span class="badge '+d.tier+'">'+TIER_LABEL[d.tier]+"</span><span>"+esc(d.type||"")+"</span><span><b>"+esc(d.s)+"</b> · "+esc(d.st)+"</span></div></header>"
  +'<section class="up-sec"><h2>Official links</h2><div class="linksrow" style="font-size:14px">'
  +[link(d.w,"University website"),link(d.fa,"Financial aid page"),link(d.adm,"Admissions office"),(d.npc?link(d.npc,"Net price calculator"):'<span>Net price calculator: '+NV+"</span>"),link(d.sch,"Scholarship page")].filter(Boolean).join(" &nbsp;·&nbsp; ")+"</div></section>"
+ +'<section class="up-sec"><h2>Where to apply</h2>'
+ +'<div class="up-grid">'+AR2.map(x=>'<div class="kv"><b>'+esc(x.name)+"</b>"+x.what
+   +(x.url?'<br><span class="applylink">'+link(x.url,x.url)+"</span>":"")+"</div>").join("")+"</div>"
+ +(AR2.length>1?'<p class="up-para"><span class="k">Note · </span>This university needs <b>'+AR2.length+' separate applications</b> — one to each system above. Missing either one means no application at all.</p>':"")
+ +'<p class="up-para"><span class="k">Recorded platform · </span>'+esc(d.plat||"Not on file — check the admissions page")+"</p>"
+ +'<div class="linksrow" style="margin-top:10px;font-size:14px">'+[link(d.adm,"University admissions page"),link(d.w,"University website")].filter(Boolean).join(" &nbsp;·&nbsp; ")+"</div></section>"
  +'<section class="up-sec"><h2>Application</h2><div class="up-grid">'
  +kvBox("Application fee",(A&&A.fee)||d.fee||"Varies — check the portal; fee waivers are often granted on request")
  +kvBox("Fee waiver",FW.how)
