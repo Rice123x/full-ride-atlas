@@ -669,7 +669,7 @@
       <div><b>ED / EA / REA / RD</b> — what each US round commits you to.</div>
       <div><b>Essay Helper</b> — worked examples and what admissions readers look for.</div>
       <div><b>Common App</b> — how the application works, section by section, with worked examples.</div>
-      <div><b>Activities Builder</b> — your Common App activities list, within its character limits.</div>
+      <div><b>Activities Builder</b> — your Activities and Experiences list, within its character limits.</div>
       <div><b>Honors Builder</b> — the five honours slots, written to fit.</div>
       <div><b>AI Assistant</b> — prompts that improve your writing without inventing anything.</div>
     </div>
@@ -788,6 +788,19 @@
   <p class="panel-note"><b>The Common App, section by section.</b> One account, one set of forms, up to <b>20 colleges</b>. It opens on <b>1 August</b> every year and your work rolls over from the account you create now. This page walks each section, flags the parts that catch international applicants out, and shows worked before-and-after examples so you can see what "make it stronger" actually means in 150 characters.</p>
 
   <section class="up-sec">
+    <h2>What changed for 2026–27</h2>
+    <p class="eguide" style="margin-bottom:12px">This is a quiet year. Common App refined the application rather than rebuilding it, so almost everything you read about last cycle still applies.</p>
+    <ul class="qa">
+      <li><b>The essay prompts have not changed.</b> Common App confirmed on 27 February 2026 that all seven prompts stay exactly as they were, and said the decision came from positive feedback from students, counsellors and colleges. The wording below is the current wording.</li>
+      <li><b>"Activities" is now "Activities and Experiences".</b> The rename is the point: family responsibilities, paid work, caregiving, independent projects and hobbies count, not only school clubs and official titles. If you have been leaving out a job or looking after siblings because it did not feel like an "activity", put it in. The character limits are unchanged.</li>
+      <li><b>Fewer required questions about parents and siblings</b>, which makes the form easier for independent applicants and for anyone whose family situation does not fit the standard boxes.</li>
+      <li><b>Citizenship and standardised-testing questions</b> have been reworded for clarity. Nothing substantive changed, but read them rather than answering from memory of last year's form.</li>
+      <li><b>Georgetown now accepts the Common App</b>, on a three-year pilot starting 1 August 2026. It previously used its own application only. Georgetown says it does not distinguish between the two routes — so use whichever you prefer.</li>
+    </ul>
+    <p class="eguide" style="margin-top:12px">Checked against Common App's own announcements and Georgetown's newsroom in August 2026. Always confirm on the official site before relying on any of it.</p>
+  </section>
+
+  <section class="up-sec">
     <h2>What it is, in one minute</h2>
     <div class="up-grid">
       <div class="kv"><b>Cost</b>Free to create and fill in. You pay a fee per college at submission — commonly US$50–90 each.</div>
@@ -820,7 +833,7 @@
       <div class="kv"><b>Family</b>Parents' education and occupation. Answer honestly — first-generation status helps you, and hiding it helps nobody.</div>
       <div class="kv"><b>Education</b>Your school, dates, current courses, grading scale, class rank if your school gives one. Report your grades in your school's own system.</div>
       <div class="kv"><b>Testing</b>Self-report SAT/ACT and any A-level or predicted results. Check each college's current policy — many remain test-optional and some have reinstated the requirement.</div>
-      <div class="kv"><b>Activities</b>Ten slots. Position 50 characters, organisation 100, description 150. The <b>Activities Builder</b> tab enforces these while you draft.</div>
+      <div class="kv"><b>Activities and Experiences</b>Renamed for 2026–27. Ten slots — position 50 characters, organisation 100, description 150, all unchanged. The <b>Activities Builder</b> tab enforces these while you draft.</div>
       <div class="kv"><b>Writing</b>The personal essay (250–650 words), plus an Additional Information box of up to 650 words that most people should leave empty.</div>
       <div class="kv"><b>Courses &amp; Grades</b>A full transcript typed in by hand. Required by only some colleges — check before you start, and set aside an evening.</div>
       <div class="kv"><b>College questions</b>Per-university: intended major, entry term, supplemental essays, and sometimes a scholarship question you must tick to be considered.</div>
@@ -926,7 +939,7 @@
 
 <!-- ================= ACTIVITIES ================= -->
 <section class="panel" id="pActs" role="tabpanel" aria-labelledby="tab-pActs">
-  <p class="panel-note"><b>Common App Activities builder.</b> Limits are real Common App limits: position <b>50</b>, organization <b>100</b>, description <b>150 characters</b>. The polish suggestions below are rule-based (verbs, cuts, structure) and never invent facts — for a deeper rewrite, copy the generated prompt into Claude; it instructs the AI to improve wording only.</p>
+  <p class="panel-note"><b>Common App Activities and Experiences builder.</b> <b>Renamed for 2026–27</b> — family responsibilities, paid work, caregiving and independent projects all belong here, not just clubs and titles. Limits are real Common App limits: position <b>50</b>, organization <b>100</b>, description <b>150 characters</b>. The polish suggestions below are rule-based (verbs, cuts, structure) and never invent facts — for a deeper rewrite, copy the generated prompt into Claude; it instructs the AI to improve wording only.</p>
   <div class="two">
     <div class="box">
       <h3>Your activity</h3>
@@ -1474,9 +1487,9 @@ const DATA = [
  s:"Need-based aid (need-aware for internationals)",st:"Need-based",
  cov:"Meets 100% of demonstrated need of admitted students; international aid exists but is limited and need-aware — apply early and document carefully.",
  blind:0,m100:1,merit:0,govt:0,docs:"CSS Profile + income documents",
- plat:"Georgetown portal (own application)",req:"SAT/ACT expected · TOEFL/IELTS · teacher + counselor LORs · alumni interview",dl:"EA ~1 Nov · RD ~10 Jan",
+ plat:"Common App / Georgetown portal",req:"SAT/ACT expected · TOEFL/IELTS · teacher + counselor LORs · alumni interview",dl:"EA ~1 Nov · RD ~10 Jan",
  w:"georgetown.edu",adm:"uadmissions.georgetown.edu",fa:"finaid.georgetown.edu",essay:"georgetown",admit:"A-levels ✓ · SAT expected",
- note:"No engineering — include only if CS/Math + policy interests you; separate portal and essays."},
+ note:"New for 2026–27: Georgetown now accepts the Common App as well as its own portal, on a three-year pilot, and says it does not distinguish between the two. No engineering school — include only if CS, maths and policy interest you."},
 {u:"Williams College",c:"USA",city:"Williamstown, MA",f:"🇺🇸",r:"North America",tier:"need-full",type:"Private",
  acc:"~8%",ug:"~2,100",me:0,cs:1,se:0,math:1,amath:1,stats:1,pmath:1,neuro:1,aero:0,eng:1,tags:["Top LAC","Tutorial system","All-grant aid"],
  s:"Need-based aid (need-aware intl, all-grant)",st:"Need-based",
@@ -5427,14 +5440,14 @@ const DATA = [
 /* ==================== ESSAY DATABASE ==================== */
 /* exact:true = stable public wording quoted; exact:false = paraphrase of recent cycles — verify in portal */
 const ESSAYS = {
-"commonapp":{name:"Common App Personal Statement",cat:"platform",sub:"One essay sent to every Common App college · 250–650 words · prompts stable since 2021",link:"commonapp.org",prompts:[
- {y:"2021–26",t:"Prompt 1 — Background & identity",exact:1,q:"Some students have a background, identity, interest, or talent that is so meaningful they believe their application would be incomplete without it. If this sounds like you, then please share your story.",wl:"250–650 words",req:"Choose 1 of 7",th:"Identity",ev:"Self-knowledge and how your context shaped concrete choices.",mi:"Summarising your CV instead of telling one story.",id:"One tradition, place, or obsession that explains how you think.",ol:"Scene → what it taught you → how it shows up in your actions now."},
- {y:"2021–26",t:"Prompt 2 — Setback",exact:1,q:"The lessons we take from obstacles we encounter can be fundamental to later success. Recount a time when you faced a challenge, setback, or failure. How did it affect you, and what did you learn from the experience?",wl:"250–650 words",req:"Choose 1 of 7",th:"Resilience",ev:"Honest reflection and changed behaviour — not the size of the disaster.",mi:"Choosing a fake failure (got A instead of A*) or blaming others.",id:"A real project that collapsed; what you rebuilt differently.",ol:"Failure in one paragraph → messy middle → specific new habit."},
- {y:"2021–26",t:"Prompt 3 — Questioned a belief",exact:1,q:"Reflect on a time when you questioned or challenged a belief or idea. What prompted your thinking? What was the outcome?",wl:"250–650 words",req:"Choose 1 of 7",th:"Independent thought",ev:"Intellectual courage and fairness to the other side.",mi:"Picking a strawman belief nobody holds.",id:"A norm in your school/community you tested politely.",ol:"The belief → the trigger → your process → where you landed."},
- {y:"2021–26",t:"Prompt 4 — Gratitude",exact:1,q:"Reflect on something that someone has done for you that has made you happy or thankful in a surprising way. How has this gratitude affected or motivated you?",wl:"250–650 words",req:"Choose 1 of 7",th:"Gratitude",ev:"Warmth, humility, and what you did with the kindness.",mi:"Ending at the feeling instead of the action it motivated.",id:"A teacher/stranger's small act that redirected you.",ol:"The act → why it surprised you → what you now do for others."},
- {y:"2021–26",t:"Prompt 5 — Growth",exact:1,q:"Discuss an accomplishment, event, or realization that sparked a period of personal growth and a new understanding of yourself or others.",wl:"250–650 words",req:"Choose 1 of 7 (most popular)",th:"Growth",ev:"A believable before/after with evidence.",mi:"Claiming transformation without showing new behaviour.",id:"First time you taught someone; leading when it went wrong.",ol:"Before-self → catalyst moment → after-self in action."},
- {y:"2021–26",t:"Prompt 6 — Engrossing topic",exact:1,q:"Describe a topic, idea, or concept you find so engaging that it makes you lose all track of time. Why does it captivate you? What or who do you turn to when you want to learn more?",wl:"250–650 words",req:"Choose 1 of 7",th:"Intellectual passion",ev:"Genuine curiosity with named sources, rabbit holes, people.",mi:"Wikipedia-summary of the topic instead of your relationship with it.",id:"The exact problem that hooked you on mechanics/algorithms/proofs.",ol:"The hook → how you chase it → where it is taking you."},
- {y:"2021–26",t:"Prompt 7 — Free choice",exact:1,q:"Share an essay on any topic of your choice. It can be one you've already written, one that responds to a different prompt, or one of your own design.",wl:"250–650 words",req:"Choose 1 of 7",th:"Open",ev:"Same as all others — voice, reflection, specificity.",mi:"Using it as an excuse for a gimmick with no substance.",id:"Any story that doesn't fit prompts 1–6.",ol:"Any structure that serves the story — clarity beats cleverness."}]},
+"commonapp":{name:"Common App Personal Statement",cat:"platform",sub:"One essay sent to every Common App college · 250–650 words · confirmed unchanged for 2026–27 (announced 27 Feb 2026), stable since 2021",link:"commonapp.org",prompts:[
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 1 — Background & identity",exact:1,q:"Some students have a background, identity, interest, or talent that is so meaningful they believe their application would be incomplete without it. If this sounds like you, then please share your story.",wl:"250–650 words",req:"Choose 1 of 7",th:"Identity",ev:"Self-knowledge and how your context shaped concrete choices.",mi:"Summarising your CV instead of telling one story.",id:"One tradition, place, or obsession that explains how you think.",ol:"Scene → what it taught you → how it shows up in your actions now."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 2 — Setback",exact:1,q:"The lessons we take from obstacles we encounter can be fundamental to later success. Recount a time when you faced a challenge, setback, or failure. How did it affect you, and what did you learn from the experience?",wl:"250–650 words",req:"Choose 1 of 7",th:"Resilience",ev:"Honest reflection and changed behaviour — not the size of the disaster.",mi:"Choosing a fake failure (got A instead of A*) or blaming others.",id:"A real project that collapsed; what you rebuilt differently.",ol:"Failure in one paragraph → messy middle → specific new habit."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 3 — Questioned a belief",exact:1,q:"Reflect on a time when you questioned or challenged a belief or idea. What prompted your thinking? What was the outcome?",wl:"250–650 words",req:"Choose 1 of 7",th:"Independent thought",ev:"Intellectual courage and fairness to the other side.",mi:"Picking a strawman belief nobody holds.",id:"A norm in your school/community you tested politely.",ol:"The belief → the trigger → your process → where you landed."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 4 — Gratitude",exact:1,q:"Reflect on something that someone has done for you that has made you happy or thankful in a surprising way. How has this gratitude affected or motivated you?",wl:"250–650 words",req:"Choose 1 of 7",th:"Gratitude",ev:"Warmth, humility, and what you did with the kindness.",mi:"Ending at the feeling instead of the action it motivated.",id:"A teacher/stranger's small act that redirected you.",ol:"The act → why it surprised you → what you now do for others."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 5 — Growth",exact:1,q:"Discuss an accomplishment, event, or realization that sparked a period of personal growth and a new understanding of yourself or others.",wl:"250–650 words",req:"Choose 1 of 7",th:"Growth",ev:"A believable before/after with evidence.",mi:"Claiming transformation without showing new behaviour.",id:"First time you taught someone; leading when it went wrong.",ol:"Before-self → catalyst moment → after-self in action."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 6 — Engrossing topic",exact:1,q:"Describe a topic, idea, or concept you find so engaging that it makes you lose all track of time. Why does it captivate you? What or who do you turn to when you want to learn more?",wl:"250–650 words",req:"Choose 1 of 7",th:"Intellectual passion",ev:"Genuine curiosity with named sources, rabbit holes, people.",mi:"Wikipedia-summary of the topic instead of your relationship with it.",id:"The exact problem that hooked you on mechanics/algorithms/proofs.",ol:"The hook → how you chase it → where it is taking you."},
+ {y:"2026–27 (unchanged since 2021)",t:"Prompt 7 — Free choice (most chosen last cycle)",exact:1,q:"Share an essay on any topic of your choice. It can be one you've already written, one that responds to a different prompt, or one of your own design.",wl:"250–650 words",req:"Choose 1 of 7",th:"Open",ev:"Same as all others — voice, reflection, specificity.",mi:"Using it as an excuse for a gimmick with no substance.",id:"Any story that doesn't fit prompts 1–6.",ol:"Any structure that serves the story — clarity beats cleverness."}]},
 "uc":{name:"University of California — Personal Insight Questions",cat:"platform",sub:"UC Application (separate from Common App) · answer 4 of 8 · 350 words each · stable wording for years",link:"admission.universityofcalifornia.edu",prompts:[
  {y:"stable",t:"PIQ 1 — Leadership",exact:1,q:"Describe an example of your leadership experience in which you have positively influenced others, helped resolve disputes, or contributed to group efforts over time.",wl:"350 words",req:"Pick 4 of 8",th:"Leadership",ev:"Influence over time, not titles.",mi:"Listing positions; UC wants one situation examined.",id:"Captaining, tutoring, family responsibility.",ol:"Situation → your specific actions → measurable/observable effect."},
  {y:"stable",t:"PIQ 2 — Creative side",exact:1,q:"Every person has a creative side, and it can be expressed in many ways: problem solving, original and innovative thinking, and artistically, to name a few. Describe how you express your creative side.",wl:"350 words",req:"Pick 4 of 8",th:"Creativity",ev:"Creative process, not artistic talent.",mi:"Assuming it needs to be art — engineering hacks count.",id:"A jugaad fix, a mod, a proof approach, a design.",ol:"The problem → your unconventional route → result."},
@@ -7279,7 +7292,7 @@ const TAB_HINT={
  pPlans:"<b>ED / EA / REA / RD</b> — what each US application round commits you to, and which are binding.",
  pEssays:"<b>Essay Helper</b> — what admissions readers actually look for, with worked examples and common traps.",
  pCommon:"<b>Common App</b> — every section explained, the traps that catch international applicants, and before-and-after examples of activities and honours.",
- pActs:"<b>Activities Builder</b> — draft your ten Common App activities inside the real character limits.",
+ pActs:"<b>Activities Builder</b> — draft your ten Common App activities and experiences inside the real character limits. Renamed for 2026–27: paid work, caregiving and family responsibilities count.",
  pHonors:"<b>Honors Builder</b> — the five honours slots, written to fit the space you get.",
  pAI:"<b>AI Assistant</b> — prompts that sharpen your own writing. It never invents an achievement for you."};
 function gotoTab(id){
